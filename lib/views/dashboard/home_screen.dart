@@ -2,10 +2,10 @@ import 'package:easy_world_vendor/controller/dashboard/home_screen_controller.da
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
+import 'package:easy_world_vendor/views/dashboard/customers_message_screen.dart';
 import 'package:easy_world_vendor/widgets/customer_messages_widget.dart';
 import 'package:easy_world_vendor/widgets/home_bar_chart_widget.dart';
 import 'package:easy_world_vendor/widgets/home_category_widget.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -184,7 +184,9 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(() => CustomersMessageScreen());
+                    },
                     child: Text(
                       "View All",
                       style: CustomTextStyles.f12W400(
