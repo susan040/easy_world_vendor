@@ -8,10 +8,10 @@ class ImagePath {
   static const String eye = "$baseIconPath/eye.svg";
   static const String eyeOff = "$baseIconPath/eye_off.svg";
   static const String profile = "$baseIconPath/profile.svg";
-  
+  static const String notification = "$baseIconPath/notification.svg";
+
   static const String message = "$baseIconPath/chat.svg";
   static const String menu = "$baseIconPath/menu.svg";
-  static const String notification = "$baseIconPath/notification.svg";
   static const String filter = "$baseIconPath/filter.svg";
   static const String heart = "$baseIconPath/heart.svg";
   static const String star = "$baseIconPath/star.svg";
@@ -37,9 +37,13 @@ class ImagePath {
   static const String google = "$baseIconPath/google.svg";
 
   static const String logo = "$baseImagePath/logo.png";
-  static const String signIn = "$baseImagePath/signin.svg";
   static const String blankProfile = "$baseImagePath/blank_profile.png";
   static const String noImage = "$baseImagePath/no_image.png";
+  static const String totalProducts = "$baseImagePath/products.png";
+  static const String totalOrders = "$baseImagePath/orders.png";
+  static const String totalEarnings = "$baseImagePath/earnings.png";
+  static const String grossSales = "$baseImagePath/gross_sales.png";
+
   static const String book = "$baseImagePath/book.png";
   static const String clothing = "$baseImagePath/clothing.png";
   static const String food = "$baseImagePath/food.png";

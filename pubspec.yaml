@@ -49,6 +49,8 @@ dependencies:
   flutter_spinkit: ^5.2.1
   open_file: ^3.5.10
   file_picker: ^10.1.9
+  flutter_switch: ^0.3.2
+  fl_chart: ^1.0.0
 
 dev_dependencies:
   flutter_test:
