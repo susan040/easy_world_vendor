@@ -5,6 +5,7 @@ import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:easy_world_vendor/utils/validator.dart';
 import 'package:easy_world_vendor/views/auth/login_screen.dart';
+import 'package:easy_world_vendor/views/dash_screen.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_password_fields.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_textfield.dart';
 import 'package:easy_world_vendor/widgets/custom/elevated_button.dart';
@@ -37,7 +38,7 @@ class RegisterScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Form(
-          key: c.signUpFormKey,
+          // key: c.signUpFormKey,
           child: Padding(
             padding: const EdgeInsets.only(
               left: 16,
@@ -119,8 +120,10 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 CustomElevatedButton(
-                  title: "Send",
-                  onTap: () {},
+                  title: "Submit",
+                  onTap: () {
+                    Get.offAll(() => DashScreen());
+                  },
                   backGroundColor: AppColors.primaryColor,
                 ),
                 SizedBox(height: 14),
@@ -177,7 +180,7 @@ class RegisterScreen extends StatelessWidget {
                 SizedBox(height: 45),
                 InkWell(
                   onTap: () {
-                    Get.to(() => LoginScreen());
+                    Get.offAll(() => LoginScreen());
                   },
                   child: RichText(
                     text: TextSpan(

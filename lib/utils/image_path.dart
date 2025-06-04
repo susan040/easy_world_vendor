@@ -3,11 +3,12 @@ class ImagePath {
   static const String baseIconPath = "assets/icons";
 
   static const String home = "$baseIconPath/home.svg";
-  static const String wishlist = "$baseIconPath/wishlist.svg";
-  static const String cart = "$baseIconPath/cart.svg";
+  static const String orders = "$baseIconPath/order.svg";
+  static const String product = "$baseIconPath/product.svg";
   static const String eye = "$baseIconPath/eye.svg";
   static const String eyeOff = "$baseIconPath/eye_off.svg";
   static const String profile = "$baseIconPath/profile.svg";
+  
   static const String message = "$baseIconPath/chat.svg";
   static const String menu = "$baseIconPath/menu.svg";
   static const String notification = "$baseIconPath/notification.svg";
@@ -17,7 +18,6 @@ class ImagePath {
   static const String robot = "$baseIconPath/robot.svg";
   static const String editProfile = "$baseIconPath/edit.svg";
   static const String myMessages = "$baseIconPath/message.svg";
-  static const String orders = "$baseIconPath/orders.svg";
   static const String paymentOption = "$baseIconPath/payment_option.svg";
   static const String reviews = "$baseIconPath/reviews.svg";
   static const String logOut = "$baseIconPath/log_out.svg";

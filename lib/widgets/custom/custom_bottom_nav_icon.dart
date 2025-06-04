@@ -1,10 +1,12 @@
 import 'package:easy_world_vendor/utils/colors.dart';
+import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CustomBottomBar extends StatelessWidget {
   final String svgPath;
   final bool isActive;
+  final String title;
   final VoidCallback onTap;
 
   const CustomBottomBar({
@@ -12,6 +14,7 @@ class CustomBottomBar extends StatelessWidget {
     required this.svgPath,
     required this.isActive,
     required this.onTap,
+    required this.title,
   });
 
   @override
@@ -26,23 +29,23 @@ class CustomBottomBar extends StatelessWidget {
           children: [
             SvgPicture.asset(
               svgPath,
-              height: 26,
-              width: 26,
+              height: 24,
+              width: 24,
               color:
                   isActive
                       ? AppColors.primaryColor
                       : AppColors.secondaryTextColor,
             ),
-            const SizedBox(height: 4),
-            if (isActive)
-              Container(
-                height: 4,
-                width: 24,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(2),
-                ),
+            const SizedBox(height: 2),
+            Text(
+              title,
+              style: CustomTextStyles.f11W600(
+                color:
+                    isActive
+                        ? AppColors.primaryColor
+                        : AppColors.secondaryTextColor,
               ),
+            ),
           ],
         ),
       ),
