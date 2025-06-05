@@ -1,7 +1,12 @@
 import 'package:easy_world_vendor/controller/theme_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
+import 'package:easy_world_vendor/utils/image_path.dart';
+import 'package:easy_world_vendor/views/auth/login_screen.dart';
+import 'package:easy_world_vendor/widgets/profile_options_widget.dart';
+import 'package:easy_world_vendor/widgets/profile_screen_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 
@@ -17,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
       appBar: AppBar(
         title: Text(
-          "Settings",
+          "Profile",
           style: CustomTextStyles.f16W600(
             color: isDark ? AppColors.extraWhite : AppColors.blackColor,
           ),
@@ -28,39 +33,119 @@ class ProfileScreen extends StatelessWidget {
             isDark ? AppColors.darkModeColor : AppColors.extraWhite,
         elevation: 0,
       ),
-      body: Column(
-        children: [
-          Text("Profile"),
-          Row(
-            children: [
-              Text("Mode"),
-              FlutterSwitch(
-                width: 65,
-                height: 26,
-                value: isDark,
-                borderRadius: 30,
-                activeColor: AppColors.secondaryColor,
-                inactiveColor: AppColors.extraWhite,
-                switchBorder: Border.all(
-                  width: 1,
-                  color:
-                      isDark ? AppColors.blackColor : AppColors.secondaryColor,
-                ),
-                activeText: "ON",
-                inactiveText: "OFF",
-                activeTextColor: AppColors.extraWhite,
-                inactiveTextColor: AppColors.secondaryColor,
-                activeTextFontWeight: FontWeight.normal,
-                inactiveTextFontWeight: FontWeight.normal,
-                valueFontSize: 13,
-                toggleColor:
-                    isDark ? AppColors.extraWhite : AppColors.secondaryColor,
-                showOnOff: true,
-                onToggle: themeController.toggleTheme,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ProfileScreenWidget(isDark: isDark),
+            ProfileOptionTile(
+              iconPath: ImagePath.verified,
+              title: "Verified",
+              onTap: () {},
+              isDark: isDark,
+              isEdit: true,
+              isVerified: true,
+            ),
+            ProfileOptionTile(
+              iconPath: ImagePath.payment,
+              title: "Bank Details",
+              onTap: () {},
+              isDark: isDark,
+            ),
+            ProfileOptionTile(
+              iconPath: ImagePath.history,
+              title: "Request Payout",
+              onTap: () {},
+              isDark: isDark,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 3.5,
               ),
-            ],
-          ),
-        ],
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                height: 59,
+                decoration: BoxDecoration(
+                  color:
+                      isDark
+                          ? AppColors.blackColor.withOpacity(0.3)
+                          : AppColors.lGrey,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          ImagePath.darkMode,
+                          color:
+                              isDark
+                                  ? AppColors.extraWhite
+                                  : AppColors.secondaryColor,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          "Dark Mode",
+                          style: CustomTextStyles.f12W400(
+                            color:
+                                (isDark
+                                    ? AppColors.extraWhite
+                                    : AppColors.blackColor),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    FlutterSwitch(
+                      width: 65,
+                      height: 26,
+                      value: isDark,
+                      borderRadius: 30,
+                      activeColor: AppColors.secondaryColor,
+                      inactiveColor: AppColors.extraWhite,
+                      switchBorder: Border.all(
+                        width: 1,
+                        color:
+                            isDark
+                                ? AppColors.blackColor
+                                : AppColors.secondaryColor,
+                      ),
+                      activeText: "ON",
+                      inactiveText: "OFF",
+                      activeTextColor: AppColors.extraWhite,
+                      inactiveTextColor: AppColors.secondaryColor,
+                      activeTextFontWeight: FontWeight.normal,
+                      inactiveTextFontWeight: FontWeight.normal,
+                      valueFontSize: 13,
+                      toggleColor:
+                          isDark
+                              ? AppColors.extraWhite
+                              : AppColors.secondaryColor,
+                      showOnOff: true,
+                      onToggle: themeController.toggleTheme,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            ProfileOptionTile(
+              iconPath: ImagePath.editProfile,
+              title: "Edit Profile",
+              onTap: () {},
+              isDark: isDark,
+            ),
+
+            ProfileOptionTile(
+              iconPath: ImagePath.logOut,
+              title: "Log Out",
+              onTap: () {
+                Get.to(() => LoginScreen());
+              },
+              isLogout: true,
+              isDark: isDark,
+            ),
+          ],
+        ),
       ),
     );
   }
