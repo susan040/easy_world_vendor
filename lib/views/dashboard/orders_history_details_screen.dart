@@ -1,5 +1,4 @@
 import 'package:easy_world_vendor/utils/colors.dart';
-import 'package:easy_world_vendor/utils/custom_snackbar.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/widgets/custom/elevated_button.dart';
 import 'package:easy_world_vendor/widgets/order_history_details_widget.dart';

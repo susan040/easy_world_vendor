@@ -1,5 +1,7 @@
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
+import 'package:easy_world_vendor/widgets/custom/custom_textfield.dart';
+import 'package:easy_world_vendor/widgets/products_widget.dart';
 import 'package:flutter/material.dart';
 
 class ProductsScreen extends StatelessWidget {
@@ -23,7 +25,37 @@ class ProductsScreen extends StatelessWidget {
             isDark ? AppColors.darkModeColor : AppColors.extraWhite,
         elevation: 0,
       ),
-      body: Column(children: [Text("Products")]),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              child: Container(
+                constraints: BoxConstraints(maxHeight: 47),
+                child: CustomTextField(
+                  fillColor:
+                      isDark ? AppColors.textGreyColor : AppColors.extraWhite,
+                  hint: "Search",
+                  textInputAction: TextInputAction.done,
+                  textInputType: TextInputType.text,
+                  suffixIconPath: Icons.search,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 14),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 9,
+                itemBuilder: (context, index) {
+                  return ProductsWidget(isDark: isDark);
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
