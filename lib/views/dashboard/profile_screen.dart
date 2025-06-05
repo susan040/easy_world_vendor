@@ -27,18 +27,10 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor:
             isDark ? AppColors.darkModeColor : AppColors.extraWhite,
         elevation: 0,
-        leading: InkWell(
-          onTap: () => Get.back(),
-          child: Icon(
-            Icons.arrow_back,
-            color: isDark ? AppColors.extraWhite : AppColors.blackColor,
-          ),
-        ),
       ),
       body: Column(
         children: [
           Text("Profile"),
-
           Row(
             children: [
               Text("Mode"),
