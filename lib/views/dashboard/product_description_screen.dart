@@ -1,9 +1,11 @@
+import 'package:easy_world_vendor/views/dashboard/products_reviews_screen.dart';
 import 'package:easy_world_vendor/widgets/custom_review_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
+import 'package:get/get.dart';
 
 class ProductDescriptionScreen extends StatelessWidget {
   final bool isDark;
@@ -148,7 +150,9 @@ class ProductDescriptionScreen extends StatelessWidget {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => ProductsReviewsScreen());
+                  },
                   child: Text(
                     "View All",
                     style: CustomTextStyles.f12W400(
