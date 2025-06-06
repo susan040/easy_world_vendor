@@ -4,6 +4,7 @@ import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:easy_world_vendor/views/auth/login_screen.dart';
 import 'package:easy_world_vendor/views/profile/bank_details_screen.dart';
+import 'package:easy_world_vendor/views/profile/edit_profile_screen.dart';
 import 'package:easy_world_vendor/views/profile/request_payout_screen.dart';
 import 'package:easy_world_vendor/views/profile/vendor_details_screen.dart';
 import 'package:easy_world_vendor/widgets/profile_options_widget.dart';
@@ -139,7 +140,9 @@ class ProfileScreen extends StatelessWidget {
             ProfileOptionTile(
               iconPath: ImagePath.editProfile,
               title: "Edit Profile",
-              onTap: () {},
+              onTap: () {
+                Get.to(() => EditProfileScreen());
+              },
               isDark: isDark,
             ),
 
