@@ -18,6 +18,8 @@ class ImagePath {
   static const String editProfile = "$baseIconPath/edit_profile.svg";
   static const String history = "$baseIconPath/history.svg";
   static const String verified = "$baseIconPath/verified.svg";
+  static const String products = "$baseIconPath/products.svg";
+  static const String newMessage = "$baseIconPath/new_message.svg";
 
   static const String logo = "$baseImagePath/logo.png";
   static const String blankProfile = "$baseImagePath/blank_profile.png";

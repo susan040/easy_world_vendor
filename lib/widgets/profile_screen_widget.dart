@@ -77,13 +77,13 @@ class ProfileScreenWidget extends StatelessWidget {
           ),
           SizedBox(width: 10),
           Container(
-            width: 3,
+            width: 2,
             height: 130,
             decoration: BoxDecoration(
               color: isDark ? AppColors.extraWhite : AppColors.lGrey,
             ),
           ),
-          SizedBox(width: 8),
+          SizedBox(width: 6),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -98,10 +98,10 @@ class ProfileScreenWidget extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.phone_outlined,
-                    size: 18,
-                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                    size: 16,
+                    color: AppColors.accepted,
                   ),
-                  SizedBox(width: 6),
+                  SizedBox(width: 4),
                   Text(
                     "+61 412 345 678",
                     style: CustomTextStyles.f11W400(
@@ -116,10 +116,10 @@ class ProfileScreenWidget extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.email_outlined,
-                    size: 18,
-                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                    size: 16,
+                    color: AppColors.darkblue,
                   ),
-                  SizedBox(width: 6),
+                  SizedBox(width: 4),
                   Text(
                     "handmadegeneral@gmail.com",
                     style: CustomTextStyles.f11W400(
@@ -134,10 +134,10 @@ class ProfileScreenWidget extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.home_outlined,
-                    size: 18,
-                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                    size: 18.5,
+                    color: AppColors.fieldVist,
                   ),
-                  SizedBox(width: 6),
+                  SizedBox(width: 4),
                   Text(
                     "Kathmandu, Nepal",
                     style: CustomTextStyles.f11W400(
