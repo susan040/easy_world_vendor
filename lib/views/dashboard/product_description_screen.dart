@@ -30,6 +30,13 @@ class ProductDescriptionScreen extends StatelessWidget {
         iconTheme: IconThemeData(
           color: isDark ? AppColors.extraWhite : AppColors.blackColor,
         ),
+        leading: InkWell(
+          onTap: () => Get.back(),
+          child: Icon(
+            Icons.arrow_back,
+            color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+          ),
+        ),
         title: Text(
           "Product Details",
           style: CustomTextStyles.f16W600(

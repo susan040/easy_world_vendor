@@ -3,6 +3,9 @@ import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:easy_world_vendor/views/auth/login_screen.dart';
+import 'package:easy_world_vendor/views/profile/bank_details_screen.dart';
+import 'package:easy_world_vendor/views/profile/request_payout_screen.dart';
+import 'package:easy_world_vendor/views/profile/vendor_details_screen.dart';
 import 'package:easy_world_vendor/widgets/profile_options_widget.dart';
 import 'package:easy_world_vendor/widgets/profile_screen_widget.dart';
 import 'package:flutter/material.dart';
@@ -40,21 +43,26 @@ class ProfileScreen extends StatelessWidget {
             ProfileOptionTile(
               iconPath: ImagePath.verified,
               title: "Verified",
-              onTap: () {},
+              onTap: () {
+                Get.to(() => VendorDetailsScreen());
+              },
               isDark: isDark,
-              isEdit: true,
               isVerified: true,
             ),
             ProfileOptionTile(
               iconPath: ImagePath.payment,
-              title: "Bank Details",
-              onTap: () {},
+              title: "Add Bank Details",
+              onTap: () {
+                Get.to(() => AddBankDetailsScreen());
+              },
               isDark: isDark,
             ),
             ProfileOptionTile(
               iconPath: ImagePath.history,
               title: "Request Payout",
-              onTap: () {},
+              onTap: () {
+                Get.to(() => RequestPayoutScreen());
+              },
               isDark: isDark,
             ),
             Padding(

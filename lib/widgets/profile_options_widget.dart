@@ -81,7 +81,7 @@ class ProfileOptionTile extends StatelessWidget {
                   ),
                 ],
               ),
-              if (!isLogout & !isVerified)
+              if (!isLogout)
                 SvgPicture.asset(
                   ImagePath.arrowRight,
                   color:
