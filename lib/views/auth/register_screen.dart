@@ -5,7 +5,7 @@ import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:easy_world_vendor/utils/validator.dart';
 import 'package:easy_world_vendor/views/auth/login_screen.dart';
-import 'package:easy_world_vendor/views/dash_screen.dart';
+import 'package:easy_world_vendor/views/auth/user_more_details_screen.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_password_fields.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_textfield.dart';
 import 'package:easy_world_vendor/widgets/custom/elevated_button.dart';
@@ -77,23 +77,6 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 Obx(
-                  () => CustomTextField(
-                    readOnly: true,
-                    controller: TextEditingController(
-                      text: c.pdfFileName.value,
-                    ),
-                    validator: Validators.checkFieldEmpty,
-                    suffixIconPath: Icons.attach_file,
-                    hint: "Choose File",
-                    onTap: () {
-                      c.pickFile();
-                    },
-                    textInputAction: TextInputAction.done,
-                    textInputType: TextInputType.text,
-                  ),
-                ),
-                SizedBox(height: 16),
-                Obx(
                   () => CustomPasswordField(
                     validator: Validators.checkPasswordField,
                     hint: "Enter password",
@@ -120,9 +103,9 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 CustomElevatedButton(
-                  title: "Submit",
+                  title: "Next",
                   onTap: () {
-                    Get.offAll(() => DashScreen());
+                    Get.to(() => UserMoreDetailsScreen());
                   },
                   backGroundColor: AppColors.primaryColor,
                 ),
