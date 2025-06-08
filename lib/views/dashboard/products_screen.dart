@@ -34,7 +34,9 @@ class ProductsScreen extends StatelessWidget {
                 constraints: BoxConstraints(maxHeight: 47),
                 child: CustomTextField(
                   fillColor:
-                      isDark ? AppColors.textGreyColor : AppColors.extraWhite,
+                      isDark
+                          ? AppColors.blackColor.withOpacity(0.15)
+                          : AppColors.extraWhite,
                   hint: "Search",
                   textInputAction: TextInputAction.done,
                   textInputType: TextInputType.text,

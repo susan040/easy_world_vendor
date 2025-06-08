@@ -12,7 +12,6 @@ class OrderCardWidget extends StatelessWidget {
   final String orderNo;
   final String status;
   final Color statusColor;
-  final Color statusBgColor;
   final String dateTime;
   final String price;
   final bool isDark;
@@ -23,7 +22,6 @@ class OrderCardWidget extends StatelessWidget {
     required this.orderNo,
     required this.status,
     required this.statusColor,
-    required this.statusBgColor,
     required this.dateTime,
     required this.price,
     required this.isDark,
@@ -85,7 +83,7 @@ class OrderCardWidget extends StatelessWidget {
                           const SizedBox(height: 4),
                           Text(
                             "Order No: $orderNo",
-                            style: CustomTextStyles.f12W400(
+                            style: CustomTextStyles.f11W400(
                               color:
                                   isDark
                                       ? AppColors.extraWhite.withOpacity(0.7)
@@ -96,18 +94,10 @@ class OrderCardWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Container(
-                    width: 72,
-                    height: 19,
-                    decoration: BoxDecoration(
-                      color: statusBgColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Text(
-                        status,
-                        style: CustomTextStyles.f10W600(color: statusColor),
-                      ),
+                  Center(
+                    child: Text(
+                      status,
+                      style: CustomTextStyles.f11W600(color: statusColor),
                     ),
                   ),
                 ],

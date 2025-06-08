@@ -68,9 +68,8 @@ class OrderScreen extends StatelessWidget {
                         "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
                     name: "Sana Afzal",
                     orderNo: "21893242380430",
-                    status: "Processing",
+                    status: "Seller to pack",
                     statusColor: AppColors.primaryColor,
-                    statusBgColor: AppColors.primeYellow.withOpacity(0.5),
                     dateTime:
                         "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
                     price: "\$40.00",
@@ -83,7 +82,6 @@ class OrderScreen extends StatelessWidget {
                     orderNo: "21893242380430",
                     status: "Delivered",
                     statusColor: AppColors.accepted,
-                    statusBgColor: AppColors.green.withOpacity(0.4),
                     dateTime:
                         "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
                     price: "\$40.00",
@@ -95,8 +93,7 @@ class OrderScreen extends StatelessWidget {
                     name: "Sana Afzal",
                     orderNo: "21893242380430",
                     status: "Cancelled",
-                    statusColor: AppColors.redColor,
-                    statusBgColor: AppColors.rejected.withOpacity(0.4),
+                    statusColor: AppColors.rejected,
                     dateTime:
                         "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
                     price: "\$40.00",
@@ -107,9 +104,8 @@ class OrderScreen extends StatelessWidget {
                         "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
                     name: "Sana Afzal",
                     orderNo: "21893242380430",
-                    status: "Shipped",
+                    status: "Packed",
                     statusColor: AppColors.lightblue,
-                    statusBgColor: AppColors.skyBlue.withOpacity(0.4),
                     dateTime:
                         "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
                     price: "\$40.00",
@@ -119,7 +115,34 @@ class OrderScreen extends StatelessWidget {
               ),
 
               Column(children: [Text("To Pay")]),
-              Column(children: [Text("To Ship")]),
+              Column(
+                children: [
+                  OrderCardWidget(
+                    imageUrl:
+                        "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
+                    name: "Sana Afzal",
+                    orderNo: "21893242380430",
+                    status: "Seller to pack",
+                    statusColor: AppColors.primaryColor,
+                    dateTime:
+                        "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
+                    price: "\$40.00",
+                    isDark: isDark,
+                  ),
+                  OrderCardWidget(
+                    imageUrl:
+                        "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
+                    name: "Sana Afzal",
+                    orderNo: "21893242380430",
+                    status: "Packed",
+                    statusColor: AppColors.lightblue,
+                    dateTime:
+                        "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
+                    price: "\$40.00",
+                    isDark: isDark,
+                  ),
+                ],
+              ),
               Column(
                 children: [
                   OrderCardWidget(
@@ -129,7 +152,6 @@ class OrderScreen extends StatelessWidget {
                     orderNo: "21893242380430",
                     status: "Delivered",
                     statusColor: AppColors.accepted,
-                    statusBgColor: AppColors.green.withOpacity(0.4),
                     dateTime:
                         "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
                     price: "\$40.00",
@@ -146,7 +168,6 @@ class OrderScreen extends StatelessWidget {
                     orderNo: "21893242380430",
                     status: "Cancelled",
                     statusColor: AppColors.redColor,
-                    statusBgColor: AppColors.rejected.withOpacity(0.4),
                     dateTime:
                         "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
                     price: "\$40.00",
