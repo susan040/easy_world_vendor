@@ -5,7 +5,6 @@ import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:easy_world_vendor/utils/validator.dart';
 import 'package:easy_world_vendor/views/auth/register_screen.dart';
-import 'package:easy_world_vendor/views/dash_screen.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_password_fields.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_textfield.dart';
 import 'package:easy_world_vendor/widgets/custom/elevated_button.dart';
@@ -37,7 +36,7 @@ class LoginScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: Form(
-        // key: c.loginFormKey,
+        key: c.loginFormKey,
         child: Padding(
           padding: const EdgeInsets.only(
             left: 16,
@@ -55,8 +54,10 @@ class LoginScreen extends StatelessWidget {
 
                 CustomTextField(
                   hint: "Enter your email",
+                  controller: c.emailController,
                   textInputAction: TextInputAction.next,
-                  textInputType: TextInputType.text,
+                  textCapitalization: TextCapitalization.none,
+                  textInputType: TextInputType.emailAddress,
                 ),
                 SizedBox(height: 16),
                 Obx(
@@ -93,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                 CustomElevatedButton(
                   title: "Login",
                   onTap: () {
-                    Get.offAll(() => DashScreen());
+                    c.onSubmit();
                   },
                   backGroundColor: AppColors.primaryColor,
                 ),

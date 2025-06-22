@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_world_vendor/controller/core_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 class ProfileScreenWidget extends StatelessWidget {
-  const ProfileScreenWidget({super.key, required this.isDark});
+  final coreController = Get.put(CoreController());
+  ProfileScreenWidget({super.key, required this.isDark});
 
   final bool isDark;
 
@@ -44,7 +47,8 @@ class ProfileScreenWidget extends StatelessWidget {
                   height: 100,
                   width: 100,
                   imageUrl:
-                      "https://i.pinimg.com/736x/ee/4f/e4/ee4fe4570751606a4d4e6339193814b8.jpg",
+                      coreController.currentUser.value!.data!.profileImage ??
+                      "",
                   errorWidget:
                       (context, url, error) => Image.asset(
                         ImagePath.blankProfile,
@@ -88,7 +92,7 @@ class ProfileScreenWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Hand Made General Store",
+                coreController.currentUser.value!.data!.storeName ?? "",
                 style: CustomTextStyles.f14W700(
                   color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                 ),
@@ -103,7 +107,7 @@ class ProfileScreenWidget extends StatelessWidget {
                   ),
                   SizedBox(width: 4),
                   Text(
-                    "+61 412 345 678",
+                    coreController.currentUser.value!.data!.phone ?? "",
                     style: CustomTextStyles.f11W400(
                       color:
                           isDark ? AppColors.extraWhite : AppColors.blackColor,
@@ -121,7 +125,7 @@ class ProfileScreenWidget extends StatelessWidget {
                   ),
                   SizedBox(width: 4),
                   Text(
-                    "handmadegeneral@gmail.com",
+                    coreController.currentUser.value!.data!.email ?? "",
                     style: CustomTextStyles.f11W400(
                       color:
                           isDark ? AppColors.extraWhite : AppColors.blackColor,
@@ -133,13 +137,16 @@ class ProfileScreenWidget extends StatelessWidget {
               Row(
                 children: [
                   Icon(
-                    Icons.home_outlined,
+                    Icons.description,
                     size: 18.5,
                     color: AppColors.fieldVist,
                   ),
                   SizedBox(width: 4),
                   Text(
-                    "Kathmandu, Nepal",
+                    coreController.currentUser.value!.data!.storeDescription ??
+                        "",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: CustomTextStyles.f11W400(
                       color:
                           isDark ? AppColors.extraWhite : AppColors.blackColor,

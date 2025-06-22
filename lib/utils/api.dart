@@ -1,6 +1,6 @@
 class Api {
-  static const String baseUrl = "https://appdevelopernepal.com/api";
-  static const String registerUrl = "$baseUrl/auth/register";
-  static const String loginUrl = "$baseUrl/auth/login";
-  
+  static const String baseUrl =
+      "https://easyworldonline.ableinnovation.com.np/api/vendor";
+  static const String registerUrl = "$baseUrl/register";
+  static const String loginUrl = "$baseUrl/login";
 }

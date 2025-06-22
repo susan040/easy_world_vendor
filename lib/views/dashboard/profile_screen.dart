@@ -1,8 +1,8 @@
+import 'package:easy_world_vendor/controller/core_controller.dart';
 import 'package:easy_world_vendor/controller/theme_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
-import 'package:easy_world_vendor/views/auth/login_screen.dart';
 import 'package:easy_world_vendor/views/profile/bank_details_screen.dart';
 import 'package:easy_world_vendor/views/profile/edit_profile_screen.dart';
 import 'package:easy_world_vendor/views/profile/request_payout_screen.dart';
@@ -16,7 +16,7 @@ import 'package:get/get.dart';
 
 class ProfileScreen extends StatelessWidget {
   final themeController = Get.put(ThemeController());
-
+  final coreController = Get.put(CoreController());
   ProfileScreen({super.key});
 
   @override
@@ -49,6 +49,14 @@ class ProfileScreen extends StatelessWidget {
               },
               isDark: isDark,
               isVerified: true,
+            ),
+            ProfileOptionTile(
+              iconPath: ImagePath.editProfile,
+              title: "Edit Profile",
+              onTap: () {
+                Get.to(() => EditProfileScreen());
+              },
+              isDark: isDark,
             ),
             ProfileOptionTile(
               iconPath: ImagePath.payment,
@@ -138,19 +146,10 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             ProfileOptionTile(
-              iconPath: ImagePath.editProfile,
-              title: "Edit Profile",
-              onTap: () {
-                Get.to(() => EditProfileScreen());
-              },
-              isDark: isDark,
-            ),
-
-            ProfileOptionTile(
               iconPath: ImagePath.logOut,
               title: "Log Out",
               onTap: () {
-                Get.to(() => LoginScreen());
+                coreController.logOut();
               },
               isLogout: true,
               isDark: isDark,
