@@ -38,7 +38,7 @@ class RegisterScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Form(
-          // key: c.signUpFormKey,
+          key: c.signUpFormKey,
           child: Padding(
             padding: const EdgeInsets.only(
               left: 16,
@@ -65,6 +65,7 @@ class RegisterScreen extends StatelessWidget {
                   validator: Validators.checkEmailField,
                   hint: "Enter your email",
                   textInputAction: TextInputAction.next,
+                  textCapitalization: TextCapitalization.none,
                   textInputType: TextInputType.emailAddress,
                 ),
                 SizedBox(height: 16),
@@ -101,11 +102,59 @@ class RegisterScreen extends StatelessWidget {
                     textInputAction: TextInputAction.done,
                   ),
                 ),
+                SizedBox(height: 16),
+                TextFormField(
+                  style: CustomTextStyles.f12W400(
+                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  ),
+
+                  maxLines: 4,
+                  textInputAction: TextInputAction.next,
+                  textCapitalization: TextCapitalization.sentences,
+                  decoration: InputDecoration(
+                    hintText: "Store Description..",
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: AppColors.borderColor,
+                      ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: AppColors.errorColor,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: AppColors.errorColor,
+                      ),
+                    ),
+                    hintStyle: CustomTextStyles.f12W400(
+                      color: AppColors.secondaryTextColor,
+                    ),
+                  ),
+                  controller: c.storeDescController,
+                ),
+
                 SizedBox(height: 20),
                 CustomElevatedButton(
                   title: "Next",
                   onTap: () {
-                    Get.to(() => UserMoreDetailsScreen());
+                    if (c.signUpFormKey.currentState!.validate()) {
+                      Get.to(() => UserMoreDetailsScreen());
+                    }
                   },
                   backGroundColor: AppColors.primaryColor,
                 ),

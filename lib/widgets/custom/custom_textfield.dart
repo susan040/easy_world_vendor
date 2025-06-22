@@ -133,7 +133,7 @@ class CustomTextField extends StatelessWidget {
                 : const TextStyle(fontSize: 0),
         hintText: hint,
         hintStyle: CustomTextStyles.f12W400(
-          color: isDark ? AppColors.extraWhite : AppColors.secondaryTextColor,
+          color: AppColors.secondaryTextColor,
         ),
       ),
       style: CustomTextStyles.f12W400(
