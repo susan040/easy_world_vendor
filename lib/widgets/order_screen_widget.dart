@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
@@ -5,28 +7,54 @@ import 'package:easy_world_vendor/views/dashboard/orders_history_details_screen.
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class OrderCardWidget extends StatelessWidget {
-  final String imageUrl;
-  final String name;
-  final String orderNo;
-  final String status;
-  final Color statusColor;
-  final String dateTime;
-  final String price;
   final bool isDark;
-
+  final Orders orders;
   const OrderCardWidget({
-    required this.imageUrl,
-    required this.name,
-    required this.orderNo,
-    required this.status,
-    required this.statusColor,
-    required this.dateTime,
-    required this.price,
     required this.isDark,
     super.key,
+    required this.orders,
   });
+  Color getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return AppColors.yellow;
+      case 'seller to pack':
+        return AppColors.primaryColor;
+      case 'packed':
+        return AppColors.lightblue;
+      case 'delivered':
+        return AppColors.accepted;
+      case 'cancelled':
+        return AppColors.redColor;
+      case 'to pay':
+        return Colors.brown;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  String getOrderStatusText(String status) {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return "Order is placed on";
+      case 'delivered':
+      case 'completed':
+        return "Order is completed on";
+      case 'cancelled':
+        return "Order is cancelled on";
+      case 'to pay':
+        return "Payment pending on";
+      case 'packed':
+        return "Order is packed on";
+      case 'seller to pack':
+        return "Seller will pack by";
+      default:
+        return "Order status updated on";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +62,7 @@ class OrderCardWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
       child: InkWell(
         onTap: () {
-          Get.to(() => OrderHistoryDetailScreen());
+          Get.to(() => OrderHistoryDetailScreen(orders: orders));
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -63,16 +91,30 @@ class OrderCardWidget extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CircleAvatar(
-                        minRadius: 23,
-                        backgroundImage: NetworkImage(imageUrl),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: CachedNetworkImage(
+                          imageUrl: orders.customer!.profileImage ?? "",
+                          fit: BoxFit.cover,
+                          height: 48,
+                          width: 48,
+                          placeholder:
+                              (context, url) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                          errorWidget:
+                              (context, url, error) => Image.asset(
+                                ImagePath.noImage,
+                                fit: BoxFit.cover,
+                              ),
+                        ),
                       ),
                       const SizedBox(width: 6),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            name,
+                            orders.customer!.fullName ?? "",
                             style: CustomTextStyles.f14W600(
                               color:
                                   isDark
@@ -82,7 +124,7 @@ class OrderCardWidget extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            "Order No: $orderNo",
+                            "Order No: ${orders.orderNo ?? ""}",
                             style: CustomTextStyles.f11W400(
                               color:
                                   isDark
@@ -96,28 +138,48 @@ class OrderCardWidget extends StatelessWidget {
                   ),
                   Center(
                     child: Text(
-                      status,
-                      style: CustomTextStyles.f11W600(color: statusColor),
+                      orders.status ?? "",
+                      style: CustomTextStyles.f11W600(
+                        color: getStatusColor(orders.status ?? ""),
+                      ),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 8),
-              Text(
-                dateTime,
-                style: CustomTextStyles.f12W400(
-                  color:
-                      isDark
-                          ? AppColors.extraWhite.withOpacity(0.7)
-                          : AppColors.secondaryTextColor,
-                ),
+              Row(
+                children: [
+                  Text(
+                    getOrderStatusText(orders.status ?? ""),
+                    style: CustomTextStyles.f12W400(
+                      color:
+                          isDark
+                              ? AppColors.extraWhite.withOpacity(0.7)
+                              : AppColors.secondaryTextColor,
+                    ),
+                  ),
+
+                  Text(
+                    orders.createdAt != null && orders.createdAt!.isNotEmpty
+                        ? DateFormat(
+                          'd MMM yyyy hh:mm a',
+                        ).format(DateTime.parse(orders.createdAt!).toLocal())
+                        : '',
+                    style: CustomTextStyles.f12W400(
+                      color:
+                          isDark
+                              ? AppColors.extraWhite.withOpacity(0.7)
+                              : AppColors.secondaryTextColor,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 8),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    price,
+                    orders.totalAmount ?? "",
                     style: CustomTextStyles.f18W700(
                       color:
                           isDark

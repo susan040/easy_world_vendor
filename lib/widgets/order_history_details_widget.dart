@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
@@ -6,12 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrderHistoryDetailsWidget extends StatelessWidget {
-  const OrderHistoryDetailsWidget({super.key, required this.isDark});
+  const OrderHistoryDetailsWidget({
+    super.key,
+    required this.isDark,
+    required this.orders,
+  });
 
   final bool isDark;
-
+  final Orders orders;
   @override
   Widget build(BuildContext context) {
+    double getDiscountAmount(Voucher? voucher) {
+      if (voucher == null) return 0.0;
+
+      final minPrice = double.tryParse(voucher.minPurchase ?? "0") ?? 0.0;
+      final value = double.tryParse(voucher.value.toString()) ?? 0.0;
+
+      return voucher.type == "percentage"
+          ? (minPrice * value) / 100
+          : (voucher.type == "fixed" ? value : 0.0);
+    }
+
     return Container(
       margin: EdgeInsets.only(left: 16, right: 16, top: 6),
       padding: EdgeInsets.only(left: 14, right: 14, top: 14, bottom: 12),
@@ -37,8 +53,7 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(4),
                 child: CachedNetworkImage(
-                  imageUrl:
-                      "https://i.pinimg.com/736x/1b/5d/9a/1b5d9a5bbe847751e8c3add0162f106f.jpg",
+                  imageUrl: orders.items!.first.product!.productImages!.first,
                   fit: BoxFit.fill,
                   height: 65,
                   width: 60,
@@ -57,7 +72,7 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
                   SizedBox(
                     width: Get.width / 1.56,
                     child: Text(
-                      "Buy Lay's India's Magic Masala Potato Chips Combo -50gm Pack of 5",
+                      orders.items!.first.product!.name ?? "",
                       style: CustomTextStyles.f11W600(
                         color:
                             isDark
@@ -70,7 +85,7 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "No Brand",
+                        orders.items!.first.product!.brand ?? "No Brand",
                         style: CustomTextStyles.f10W400(
                           color:
                               isDark
@@ -78,9 +93,9 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
                                   : AppColors.secondaryTextColor,
                         ),
                       ),
-                      const SizedBox(width: 157),
+                      const SizedBox(width: 115),
                       Text(
-                        "Qty:1",
+                        "Qty: ${orders.items!.first.quantity ?? ""}",
                         style: CustomTextStyles.f11W400(
                           color:
                               isDark
@@ -95,7 +110,7 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "\$10.00",
+                        "\$${orders.items!.first.price ?? ""}",
                         style: CustomTextStyles.f16W600(
                           color: AppColors.primaryColor,
                         ),
@@ -110,19 +125,21 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
           Divider(),
           SizedBox(height: 6),
 
-          OrderRowItem("Order No:", "21893242380430", isBold: true),
+          OrderRowItem("Order No:", "${orders.orderNo ?? ""}", isBold: true),
           SizedBox(height: 12),
           OrderRowItem("Subtotal (1 items)", "\$20.00"),
           SizedBox(height: 12),
-          OrderRowItem("Shipping Fee", "\$10.00"),
+          OrderRowItem("Shipping Fee", "\$20.00"),
           SizedBox(height: 12),
-          OrderRowItem("App Voucher", "-\$4.00", isRejected: true),
+          OrderRowItem(
+            "App Voucher",
+            "-\$${getDiscountAmount(orders.voucher)}",
+            isRejected: true,
+          ),
           SizedBox(height: 12),
           OrderRowItem("Shipping Fee Voucher", "-\$4.00", isRejected: true),
           SizedBox(height: 12),
-          OrderRowItem("Shop Voucher", "-\$4.00", isRejected: true),
-          SizedBox(height: 12),
-          OrderRowItem("Total", "\$18.00", isBold: true),
+          OrderRowItem("Total", "\$${orders.totalAmount ?? ""}", isBold: true),
 
           SizedBox(height: 12),
           Divider(),
@@ -172,12 +189,18 @@ class OrderRowItem extends StatelessWidget {
     // Determine rightText color based on status
     Color getRightTextColor() {
       switch (rightText.toLowerCase()) {
-        case 'processing':
+        case 'pending':
+          return AppColors.yellow;
+        case 'seller to pack':
           return AppColors.primaryColor;
-        case 'cancelled':
-          return AppColors.rejected;
+        case 'packed':
+          return AppColors.lightblue;
         case 'delivered':
-          return AppColors.green;
+          return AppColors.accepted;
+        case 'cancelled':
+          return AppColors.redColor;
+        case 'to pay':
+          return Colors.brown;
         default:
           return isRejected
               ? AppColors.rejected

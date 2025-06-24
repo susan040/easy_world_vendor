@@ -1,3 +1,4 @@
+import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/widgets/custom/elevated_button.dart';
@@ -6,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrderHistoryDetailScreen extends StatelessWidget {
-  const OrderHistoryDetailScreen({super.key});
-
+  OrderHistoryDetailScreen({super.key, required this.orders});
+  final Orders orders;
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -60,7 +61,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Deliver to: San Afzark",
+                        "Deliver to: ${orders.customer!.fullName ?? ""}",
                         style: CustomTextStyles.f12W700(
                           color:
                               isDark
@@ -77,7 +78,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                         ),
                         child: Center(
                           child: Text(
-                            "Home",
+                            orders.billingAddress!.type!.capitalizeFirst ?? "",
                             style: CustomTextStyles.f11W400(
                               color: AppColors.extraWhite,
                             ),
@@ -88,7 +89,13 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    "123 George Street, Sydney NSW 2000, Australia",
+                    [
+                      orders.billingAddress?.street,
+                      orders.billingAddress?.addressLine1,
+                      orders.billingAddress?.city,
+                      orders.billingAddress?.province,
+                      orders.billingAddress?.country,
+                    ].where((e) => e != null && e.trim().isNotEmpty).join(', '),
                     style: CustomTextStyles.f11W400(
                       color:
                           isDark
@@ -98,7 +105,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 2),
                   Text(
-                    "+61 412 345 678",
+                    orders.customer!.phone ?? "",
                     style: CustomTextStyles.f11W300(
                       color:
                           isDark
@@ -109,7 +116,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                 ],
               ),
             ),
-            OrderHistoryDetailsWidget(isDark: isDark),
+            OrderHistoryDetailsWidget(isDark: isDark, orders: orders),
             Container(
               margin: EdgeInsets.only(left: 16, right: 16, top: 6, bottom: 20),
               padding: EdgeInsets.only(
@@ -139,7 +146,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                   SizedBox(height: 12),
                   OrderRowItem("Paid on", "2025 May 01 09:02:00"),
                   SizedBox(height: 12),
-                  OrderRowItem("Order Status", "Processing"),
+                  OrderRowItem("Order Status", "${orders.status ?? ""}"),
                 ],
               ),
             ),
