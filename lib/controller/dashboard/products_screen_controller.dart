@@ -1,6 +1,31 @@
+import 'package:easy_world_vendor/models/products.dart';
+import 'package:easy_world_vendor/repo/get_products_repo.dart';
 import 'package:get/get.dart';
 
 class ProductsScreenController extends GetxController {
+  RxList<Data> allProductLists = <Data>[].obs;
+  var isLoading = true.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getAllProducts();
+  }
+
+  getAllProducts() async {
+    isLoading.value = true;
+    await GetProductsRepo.getProductsRepo(
+      onSuccess: (Products productModel) {
+        allProductLists.assignAll(productModel.data ?? []);
+        isLoading.value = false;
+      },
+      onError: (msg) {
+        isLoading.value = false;
+        print("Error: $msg");
+      },
+    );
+  }
+
   final RxList<Map<String, dynamic>> reviews =
       <Map<String, dynamic>>[
         {

@@ -1,3 +1,4 @@
+import 'package:easy_world_vendor/models/products.dart';
 import 'package:easy_world_vendor/views/dashboard/products_reviews_screen.dart';
 import 'package:easy_world_vendor/widgets/custom_review_widget.dart';
 import 'package:flutter/material.dart';
@@ -6,22 +7,20 @@ import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ProductDescriptionScreen extends StatelessWidget {
   final bool isDark;
-  const ProductDescriptionScreen({super.key, required this.isDark});
-
-  final List<String> imageUrls = const [
-    "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-    "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-    "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-    "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-    "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-    "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-  ];
+  final Data products;
+  ProductDescriptionScreen({
+    super.key,
+    required this.isDark,
+    required this.products,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final List<String> imageUrls = products.productImages ?? [];
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
       appBar: AppBar(
@@ -45,56 +44,59 @@ class ProductDescriptionScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Big main image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: CachedNetworkImage(
-                imageUrl: imageUrls[0],
-                width: double.infinity,
-                height: 200,
-                fit: BoxFit.cover,
-                placeholder:
-                    (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
-                errorWidget:
-                    (context, url, error) => Image.asset(ImagePath.noImage),
+            if (imageUrls.isNotEmpty) ...[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: CachedNetworkImage(
+                  imageUrl: imageUrls[0],
+                  width: double.infinity,
+                  height: 220,
+                  fit: BoxFit.cover,
+                  placeholder:
+                      (context, url) =>
+                          const Center(child: CircularProgressIndicator()),
+                  errorWidget:
+                      (context, url, error) => Image.asset(ImagePath.noImage),
+                ),
               ),
-            ),
-            const SizedBox(height: 12),
-            GridView.builder(
-              itemCount: imageUrls.length - 1,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: EdgeInsets.zero,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                childAspectRatio: 1,
+              const SizedBox(height: 12),
+              GridView.builder(
+                itemCount: imageUrls.length - 1,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.zero,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 1,
+                ),
+                itemBuilder: (context, index) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrls[index + 1],
+                      fit: BoxFit.cover,
+                      placeholder:
+                          (context, url) =>
+                              const Center(child: CircularProgressIndicator()),
+                      errorWidget:
+                          (context, url, error) =>
+                              Image.asset(ImagePath.noImage),
+                    ),
+                  );
+                },
               ),
-              itemBuilder: (context, index) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedNetworkImage(
-                    imageUrl: imageUrls[index + 1],
-                    fit: BoxFit.cover,
-                    placeholder:
-                        (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
-                    errorWidget:
-                        (context, url, error) => Image.asset(ImagePath.noImage),
-                  ),
-                );
-              },
-            ),
-
+            ] else ...[
+              Image.asset(ImagePath.noImage, height: 220, fit: BoxFit.cover),
+            ],
             const SizedBox(height: 16),
             Text(
-              "Crochet Bear Keychain",
+              products.name ?? "",
               style: CustomTextStyles.f18W700(
                 color: isDark ? AppColors.extraWhite : AppColors.blackColor,
               ),
@@ -103,20 +105,31 @@ class ProductDescriptionScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                priceInfo("Unit Price", "\$10.00", isDark),
-                priceInfo("Purchase Price", "\$12.00", isDark),
+                priceInfo(
+                  "Unit Price",
+                  "\$${products.costPrice ?? ""}",
+                  isDark,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: priceInfo(
+                    "Purchase Price",
+                    "\$${products.price ?? ""}",
+                    isDark,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 14),
             Text(
               "Description",
-              style: CustomTextStyles.f16W600(
+              style: CustomTextStyles.f14W600(
                 color: isDark ? AppColors.extraWhite : AppColors.blackColor,
               ),
             ),
             const SizedBox(height: 6),
             Text(
-              "This handmade crochet bear keychain is the perfect accessory for your keys, bags, or as a heartfelt gift. Lovingly crafted with premium cotton yarn, it features a soft texture, charming design, and lasting durability. Each bear is carefully stitched to ensure quality and uniqueness, making it a thoughtful keepsake for any occasion.",
+              products.description ?? "",
               style: CustomTextStyles.f12W400(
                 color:
                     isDark
@@ -127,8 +140,8 @@ class ProductDescriptionScreen extends StatelessWidget {
             ),
             const SizedBox(height: 14),
             Text(
-              "Brand: CozyLoops",
-              style: CustomTextStyles.f14W400(
+              "Brand: ${products.brand ?? ""}",
+              style: CustomTextStyles.f12W400(
                 color:
                     isDark
                         ? AppColors.extraWhite.withOpacity(0.7)
@@ -137,8 +150,8 @@ class ProductDescriptionScreen extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(
-              "SKU: BEAR-2025",
-              style: CustomTextStyles.f14W400(
+              "SKU: ${products.sku ?? ""}",
+              style: CustomTextStyles.f12W400(
                 color:
                     isDark
                         ? AppColors.extraWhite.withOpacity(0.7)
@@ -172,7 +185,7 @@ class ProductDescriptionScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 10),
             ReviewBox(
               name: "Emily",
               review:
@@ -212,7 +225,13 @@ class ProductDescriptionScreen extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: "8 May 2025 08:44 PM",
+                      text:
+                          products.createdAt != null &&
+                                  products.createdAt!.isNotEmpty
+                              ? DateFormat('d MMM yyyy hh:mm a').format(
+                                DateTime.parse(products.createdAt!).toLocal(),
+                              )
+                              : '',
                       style: CustomTextStyles.f12W400(
                         color:
                             isDark
@@ -236,7 +255,7 @@ class ProductDescriptionScreen extends StatelessWidget {
       children: [
         Text(
           label,
-          style: CustomTextStyles.f14W400(
+          style: CustomTextStyles.f12W400(
             color:
                 isDark
                     ? AppColors.extraWhite.withOpacity(0.7)
@@ -245,7 +264,7 @@ class ProductDescriptionScreen extends StatelessWidget {
         ),
         Text(
           price,
-          style: CustomTextStyles.f16W700(
+          style: CustomTextStyles.f14W700(
             color: isDark ? AppColors.primaryColor : AppColors.secondaryColor,
           ),
         ),

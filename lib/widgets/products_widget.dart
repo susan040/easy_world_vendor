@@ -1,21 +1,30 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_world_vendor/models/products.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:easy_world_vendor/views/dashboard/product_description_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ProductsWidget extends StatelessWidget {
-  const ProductsWidget({super.key, required this.isDark});
+  const ProductsWidget({
+    super.key,
+    required this.isDark,
+    required this.products,
+  });
   final bool isDark;
+  final Data products;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 8),
       child: InkWell(
         onTap: () {
-          Get.to(() => ProductDescriptionScreen(isDark: isDark));
+          Get.to(
+            () => ProductDescriptionScreen(isDark: isDark, products: products),
+          );
         },
         child: Container(
           padding: EdgeInsets.only(left: 10, right: 10, top: 12, bottom: 12),
@@ -40,7 +49,7 @@ class ProductsWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(5),
                 child: Container(
-                  height: 111,
+                  height: 115,
                   width: 103,
                   decoration: BoxDecoration(
                     color: AppColors.extraWhite,
@@ -56,8 +65,7 @@ class ProductsWidget extends StatelessWidget {
                   child: Stack(
                     children: [
                       CachedNetworkImage(
-                        imageUrl:
-                            "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
+                        imageUrl: products.productImages!.first,
                         fit: BoxFit.fill,
                         height: double.infinity,
                         width: double.infinity,
@@ -78,17 +86,24 @@ class ProductsWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Crochet Bear Keychain ",
-                    style: CustomTextStyles.f14W600(
-                      color:
-                          isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  SizedBox(
+                    width: 190,
+                    child: Text(
+                      products.name ?? "",
+                      style: CustomTextStyles.f12W600(
+                        color:
+                            isDark
+                                ? AppColors.extraWhite
+                                : AppColors.blackColor,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   SizedBox(height: 2),
                   Text(
-                    "Hand made > Key chain",
-                    style: CustomTextStyles.f12W400(
+                    "Brand: ${products.brand ?? ""}",
+                    style: CustomTextStyles.f11W400(
                       color:
                           isDark
                               ? AppColors.extraWhite.withOpacity(0.7)
@@ -103,7 +118,7 @@ class ProductsWidget extends StatelessWidget {
                         children: [
                           Text(
                             "Unit Price",
-                            style: CustomTextStyles.f12W400(
+                            style: CustomTextStyles.f11W400(
                               color:
                                   isDark
                                       ? AppColors.extraWhite.withOpacity(0.7)
@@ -111,8 +126,8 @@ class ProductsWidget extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "\$10.00",
-                            style: CustomTextStyles.f16W700(
+                            "\$${products.costPrice ?? ""}",
+                            style: CustomTextStyles.f12W700(
                               color:
                                   isDark
                                       ? AppColors.primaryColor
@@ -127,7 +142,7 @@ class ProductsWidget extends StatelessWidget {
                         children: [
                           Text(
                             "Purchase Price",
-                            style: CustomTextStyles.f12W400(
+                            style: CustomTextStyles.f11W400(
                               color:
                                   isDark
                                       ? AppColors.extraWhite.withOpacity(0.7)
@@ -135,8 +150,8 @@ class ProductsWidget extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "\$12.00",
-                            style: CustomTextStyles.f16W700(
+                            "\$${products.price ?? ""}",
+                            style: CustomTextStyles.f12W700(
                               color:
                                   isDark
                                       ? AppColors.primaryColor
@@ -158,7 +173,7 @@ class ProductsWidget extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: "Created at: ",
-                                style: CustomTextStyles.f12W400(
+                                style: CustomTextStyles.f11W400(
                                   color:
                                       isDark
                                           ? AppColors.extraWhite.withOpacity(
@@ -168,7 +183,17 @@ class ProductsWidget extends StatelessWidget {
                                 ),
                               ),
                               TextSpan(
-                                text: "8 May 2025 08:44 PM",
+                                text:
+                                    products.createdAt != null &&
+                                            products.createdAt!.isNotEmpty
+                                        ? DateFormat(
+                                          'd MMM yyyy hh:mm a',
+                                        ).format(
+                                          DateTime.parse(
+                                            products.createdAt!,
+                                          ).toLocal(),
+                                        )
+                                        : '',
                                 style: CustomTextStyles.f11W400(
                                   color:
                                       isDark

@@ -1,11 +1,15 @@
+import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
+import 'package:easy_world_vendor/models/products.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_textfield.dart';
 import 'package:easy_world_vendor/widgets/products_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ProductsScreen extends StatelessWidget {
-  const ProductsScreen({super.key});
+  final c = Get.put(ProductsScreenController());
+  ProductsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,13 +50,36 @@ class ProductsScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 16, right: 16, top: 14),
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 9,
-                itemBuilder: (context, index) {
-                  return ProductsWidget(isDark: isDark);
-                },
+              child: Obx(
+                () =>
+                    (c.isLoading.value)
+                        ? SizedBox(
+                          height: 100,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                        : c.allProductLists.isEmpty
+                        ? SizedBox(
+                          height: 100,
+                          child: Center(
+                            child: Text(
+                              "No Products",
+                              style: CustomTextStyles.f14W400(
+                                color: AppColors.textGreyColor,
+                              ),
+                            ),
+                          ),
+                        )
+                        : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: c.allProductLists.length,
+                          itemBuilder: (context, index) {
+                            final Data product = c.allProductLists[index];
+                            return ProductsWidget(isDark: isDark, products: product,);
+                          },
+                        ),
               ),
             ),
           ],
