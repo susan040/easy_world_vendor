@@ -65,54 +65,6 @@ class OrderScreen extends StatelessWidget {
         body: SafeArea(
           child: TabBarView(
             children: [
-              // OrderCardWidget(
-              //   imageUrl:
-              //       "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
-              //   name: "Sana Afzal",
-              //   orderNo: "21893242380430",
-              //   status: "Seller to pack",
-              //   statusColor: AppColors.primaryColor,
-              //   dateTime:
-              //       "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
-              //   price: "\$40.00",
-              //   isDark: isDark,
-              // ),
-              // OrderCardWidget(
-              //   imageUrl:
-              //       "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
-              //   name: "Sana Afzal",
-              //   orderNo: "21893242380430",
-              //   status: "Delivered",
-              //   statusColor: AppColors.accepted,
-              //   dateTime:
-              //       "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
-              //   price: "\$40.00",
-              //   isDark: isDark,
-              // ),
-              // OrderCardWidget(
-              //   imageUrl:
-              //       "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
-              //   name: "Sana Afzal",
-              //   orderNo: "21893242380430",
-              //   status: "Cancelled",
-              //   statusColor: AppColors.rejected,
-              //   dateTime:
-              //       "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
-              //   price: "\$40.00",
-              //   isDark: isDark,
-              // ),
-              // OrderCardWidget(
-              //   imageUrl:
-              //       "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
-              //   name: "Sana Afzal",
-              //   orderNo: "21893242380430",
-              //   status: "Packed",
-              //   statusColor: AppColors.lightblue,
-              //   dateTime:
-              //       "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
-              //   price: "\$40.00",
-              //   isDark: isDark,
-              // ),
               Obx(
                 () =>
                     (c.isLoading.value)
@@ -147,67 +99,159 @@ class OrderScreen extends StatelessWidget {
                           },
                         ),
               ),
-              Column(children: [Text("To Pay")]),
-              // Column(
-              //   children: [
-              //     OrderCardWidget(
-              //       imageUrl:
-              //           "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
-              //       name: "Sana Afzal",
-              //       orderNo: "21893242380430",
-              //       status: "Seller to pack",
-              //       statusColor: AppColors.primaryColor,
-              //       dateTime:
-              //           "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
-              //       price: "\$40.00",
-              //       isDark: isDark,
-              //     ),
-              //     OrderCardWidget(
-              //       imageUrl:
-              //           "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
-              //       name: "Sana Afzal",
-              //       orderNo: "21893242380430",
-              //       status: "Packed",
-              //       statusColor: AppColors.lightblue,
-              //       dateTime:
-              //           "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
-              //       price: "\$40.00",
-              //       isDark: isDark,
-              //     ),
-              //   ],
-              // ),
-              // Column(
-              //   children: [
-              //     OrderCardWidget(
-              //       imageUrl:
-              //           "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
-              //       name: "Sana Afzal",
-              //       orderNo: "21893242380430",
-              //       status: "Delivered",
-              //       statusColor: AppColors.accepted,
-              //       dateTime:
-              //           "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
-              //       price: "\$40.00",
-              //       isDark: isDark,
-              //     ),
-              //   ],
-              // ),
-              // Column(
-              //   children: [
-              //     OrderCardWidget(
-              //       imageUrl:
-              //           "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
-              //       name: "Sana Afzal",
-              //       orderNo: "21893242380430",
-              //       status: "Cancelled",
-              //       statusColor: AppColors.redColor,
-              //       dateTime:
-              //           "Order placed on Wednesday, 21 May 2025 at 2:30 PM",
-              //       price: "\$40.00",
-              //       isDark: isDark,
-              //     ),
-              //   ],
-              // ),
+              Obx(() {
+                if (c.isLoading.value) {
+                  return SizedBox(
+                    height: 100,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+
+                // Filter orders with status "pending"
+                final pendingOrders =
+                    c.allOrderLists
+                        .where(
+                          (order) =>
+                              (order.status ?? "").toLowerCase() == "pending",
+                        )
+                        .toList();
+
+                if (pendingOrders.isEmpty) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        "No pending orders",
+                        style: CustomTextStyles.f14W400(
+                          color: AppColors.textGreyColor,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: pendingOrders.length,
+                  itemBuilder: (context, index) {
+                    final Orders orders = pendingOrders[index];
+                    return OrderCardWidget(isDark: isDark, orders: orders);
+                  },
+                );
+              }),
+
+              Obx(() {
+                if (c.isLoading.value) {
+                  return SizedBox(
+                    height: 100,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                final filteredOrders =
+                    c.allOrderLists.where((order) {
+                      final status = (order.status ?? "").toLowerCase();
+                      return status == "seller to pack" || status == "packed";
+                    }).toList();
+
+                if (filteredOrders.isEmpty) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        "No shipping orders",
+                        style: CustomTextStyles.f14W400(
+                          color: AppColors.textGreyColor,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: filteredOrders.length,
+                  itemBuilder: (context, index) {
+                    final Orders orders = filteredOrders[index];
+                    return OrderCardWidget(isDark: isDark, orders: orders);
+                  },
+                );
+              }),
+              Obx(() {
+                if (c.isLoading.value) {
+                  return SizedBox(
+                    height: 100,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                final filteredOrders =
+                    c.allOrderLists.where((order) {
+                      final status = (order.status ?? "").toLowerCase();
+                      return status == "in transit" || status == "to receive";
+                    }).toList();
+
+                if (filteredOrders.isEmpty) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        "No orders to receive",
+                        style: CustomTextStyles.f14W400(
+                          color: AppColors.textGreyColor,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: filteredOrders.length,
+                  itemBuilder: (context, index) {
+                    final Orders orders = filteredOrders[index];
+                    return OrderCardWidget(isDark: isDark, orders: orders);
+                  },
+                );
+              }),
+              Obx(() {
+                if (c.isLoading.value) {
+                  return SizedBox(
+                    height: 100,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                final filteredOrders =
+                    c.allOrderLists.where((order) {
+                      final status = (order.status ?? "").toLowerCase();
+                      return status == "cancelled";
+                    }).toList();
+
+                if (filteredOrders.isEmpty) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        "No cancelled orders",
+                        style: CustomTextStyles.f14W400(
+                          color: AppColors.textGreyColor,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: filteredOrders.length,
+                  itemBuilder: (context, index) {
+                    final Orders orders = filteredOrders[index];
+                    return OrderCardWidget(isDark: isDark, orders: orders);
+                  },
+                );
+              }),
             ],
           ),
         ),
