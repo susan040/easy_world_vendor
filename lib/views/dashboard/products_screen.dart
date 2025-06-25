@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
 import 'package:easy_world_vendor/models/products.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_textfield.dart';
 import 'package:easy_world_vendor/widgets/products_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ProductsScreen extends StatelessWidget {
   final c = Get.put(ProductsScreenController());
@@ -45,6 +45,14 @@ class ProductsScreen extends StatelessWidget {
                   textInputAction: TextInputAction.done,
                   textInputType: TextInputType.text,
                   suffixIconPath: Icons.search,
+                  onValueChange: (value) {
+                    c.searchText.value = value;
+                    c.applyFilters();
+                    if (value.isEmpty) {
+                      // Reset to full list when search is cleared
+                      c.allProductLists.assignAll(c.allProductsFullList);
+                    }
+                  },
                 ),
               ),
             ),
@@ -52,7 +60,7 @@ class ProductsScreen extends StatelessWidget {
               padding: const EdgeInsets.only(left: 16, right: 16, top: 14),
               child: Obx(
                 () =>
-                    (c.isLoading.value)
+                    c.isLoading.value
                         ? SizedBox(
                           height: 100,
                           child: const Center(
@@ -77,7 +85,10 @@ class ProductsScreen extends StatelessWidget {
                           itemCount: c.allProductLists.length,
                           itemBuilder: (context, index) {
                             final Data product = c.allProductLists[index];
-                            return ProductsWidget(isDark: isDark, products: product,);
+                            return ProductsWidget(
+                              isDark: isDark,
+                              products: product,
+                            );
                           },
                         ),
               ),

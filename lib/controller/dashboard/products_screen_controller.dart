@@ -3,8 +3,10 @@ import 'package:easy_world_vendor/repo/get_products_repo.dart';
 import 'package:get/get.dart';
 
 class ProductsScreenController extends GetxController {
-  RxList<Data> allProductLists = <Data>[].obs;
+  RxList<Data> allProductsFullList = <Data>[].obs; // full original list
+  RxList<Data> allProductLists = <Data>[].obs; // filtered list shown on UI
   var isLoading = true.obs;
+  RxString searchText = ''.obs;
 
   @override
   void onInit() {
@@ -16,7 +18,8 @@ class ProductsScreenController extends GetxController {
     isLoading.value = true;
     await GetProductsRepo.getProductsRepo(
       onSuccess: (Products productModel) {
-        allProductLists.assignAll(productModel.data ?? []);
+        allProductsFullList.assignAll(productModel.data ?? []);
+        allProductLists.assignAll(allProductsFullList);
         isLoading.value = false;
       },
       onError: (msg) {
@@ -24,6 +27,29 @@ class ProductsScreenController extends GetxController {
         print("Error: $msg");
       },
     );
+  }
+
+  void applyFilters() {
+    List<Data> filtered = allProductsFullList.toList();
+
+    if (searchText.value.isNotEmpty) {
+      final query = searchText.value.toLowerCase();
+      filtered =
+          filtered.where((product) {
+            final nameMatch =
+                product.name?.toLowerCase().contains(query) ?? false;
+            final categoryMatch =
+                (product.category?.categoryName?.toLowerCase() ?? '').contains(
+                  query,
+                );
+            final tagsMatch =
+                product.tags?.any((tag) => tag.toLowerCase().contains(query)) ??
+                false;
+            return nameMatch || categoryMatch || tagsMatch;
+          }).toList();
+    }
+
+    allProductLists.assignAll(filtered);
   }
 
   final RxList<Map<String, dynamic>> reviews =
