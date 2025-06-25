@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.dart';
 import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
@@ -12,11 +13,8 @@ import 'package:intl/intl.dart';
 class OrderCardWidget extends StatelessWidget {
   final bool isDark;
   final Orders orders;
-  const OrderCardWidget({
-    required this.isDark,
-    super.key,
-    required this.orders,
-  });
+  final c = Get.put(OrderScreenController());
+  OrderCardWidget({required this.isDark, super.key, required this.orders});
   Color getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
@@ -179,8 +177,8 @@ class OrderCardWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    orders.totalAmount ?? "",
-                    style: CustomTextStyles.f18W700(
+                    "\$${orders.totalAmount ?? ""}",
+                    style: CustomTextStyles.f16W600(
                       color:
                           isDark
                               ? AppColors.primaryColor
@@ -188,7 +186,62 @@ class OrderCardWidget extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            backgroundColor:
+                                isDark
+                                    ? AppColors.darkModeColor
+                                    : AppColors.extraWhite,
+                            title: Text(
+                              "Confirm Delete",
+                              style: CustomTextStyles.f16W700(
+                                color:
+                                    isDark
+                                        ? AppColors.extraWhite
+                                        : AppColors.blackColor,
+                              ),
+                            ),
+                            content: Text(
+                              "Are you sure you want to delete this order?",
+                              style: CustomTextStyles.f14W400(
+                                color:
+                                    isDark
+                                        ? AppColors.extraWhite
+                                        : AppColors.textGreyColor,
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: Text(
+                                  "Cancel",
+                                  style: CustomTextStyles.f12W400(
+                                    color: AppColors.lightblue,
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  c.deleteOrder(
+                                    int.parse(orders.id.toString()),
+                                  );
+                                },
+                                child: Text(
+                                  "Delete",
+                                  style: CustomTextStyles.f12W400(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                     child: SvgPicture.asset(ImagePath.delete),
                   ),
                 ],
