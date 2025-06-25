@@ -28,8 +28,10 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
           : (voucher.type == "fixed" ? value : 0.0);
     }
 
+    double subtotal = double.parse(orders.items!.first.price ?? "") + 20;
+    double totalAmount = subtotal - getDiscountAmount(orders.voucher);
     return Container(
-      margin: EdgeInsets.only(left: 16, right: 16, top: 6),
+      margin: EdgeInsets.only(left: 16, right: 16, top: 6, bottom: 6),
       padding: EdgeInsets.only(left: 14, right: 14, top: 14, bottom: 12),
       width: double.infinity,
       decoration: BoxDecoration(
@@ -74,11 +76,14 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
                     child: Text(
                       orders.items!.first.product!.name ?? "",
                       style: CustomTextStyles.f11W600(
+                        height: 1.2,
                         color:
                             isDark
                                 ? AppColors.extraWhite
                                 : AppColors.blackColor,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Row(
@@ -127,7 +132,7 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
 
           OrderRowItem("Order No:", "${orders.orderNo ?? ""}", isBold: true),
           SizedBox(height: 12),
-          OrderRowItem("Subtotal (1 items)", "\$20.00"),
+          OrderRowItem("Subtotal (1 items)", "\$$subtotal"),
           SizedBox(height: 12),
           OrderRowItem("Shipping Fee", "\$20.00"),
           SizedBox(height: 12),
@@ -139,7 +144,7 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
           SizedBox(height: 12),
           OrderRowItem("Shipping Fee Voucher", "-\$4.00", isRejected: true),
           SizedBox(height: 12),
-          OrderRowItem("Total", "\$${orders.totalAmount ?? ""}", isBold: true),
+          OrderRowItem("Total", "\$$totalAmount", isBold: true),
 
           SizedBox(height: 12),
           Divider(),
@@ -182,15 +187,13 @@ class OrderRowItem extends StatelessWidget {
     final Color textColor =
         isDark ? AppColors.extraWhite : AppColors.blackColor;
     final Color secondaryColor =
-        isDark
-            ? AppColors.extraWhite.withOpacity(0.7)
-            : AppColors.secondaryTextColor;
-
-    // Determine rightText color based on status
+        isDark ? AppColors.extraWhite.withOpacity(0.7) : AppColors.blackColor;
     Color getRightTextColor() {
       switch (rightText.toLowerCase()) {
         case 'pending':
           return AppColors.yellow;
+        case 'confirmed':
+          return AppColors.darkblue;
         case 'seller to pack':
           return AppColors.primaryColor;
         case 'packed':

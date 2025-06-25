@@ -21,14 +21,14 @@ class OrderCardWidget extends StatelessWidget {
         return AppColors.yellow;
       case 'seller to pack':
         return AppColors.primaryColor;
+      case 'confirmed':
+        return AppColors.darkblue;
       case 'packed':
         return AppColors.lightblue;
       case 'delivered':
         return AppColors.accepted;
       case 'cancelled':
         return AppColors.redColor;
-      case 'to pay':
-        return Colors.brown;
       default:
         return Colors.grey;
     }
@@ -37,18 +37,18 @@ class OrderCardWidget extends StatelessWidget {
   String getOrderStatusText(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
-        return "Order is placed on";
+        return "Payment pending on";
+      case 'confirmed':
+        return "Order is confirmed on";
+      case 'seller to pack':
+        return "Seller will pack by";
+      case 'packed':
+        return "Order is packed on";
       case 'delivered':
       case 'completed':
         return "Order is completed on";
       case 'cancelled':
         return "Order is cancelled on";
-      case 'to pay':
-        return "Payment pending on";
-      case 'packed':
-        return "Order is packed on";
-      case 'seller to pack':
-        return "Seller will pack by";
       default:
         return "Order status updated on";
     }
@@ -60,7 +60,11 @@ class OrderCardWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
       child: InkWell(
         onTap: () {
-          Get.to(() => OrderHistoryDetailScreen(orders: orders));
+          Get.to(
+            () => OrderHistoryDetailScreen(
+              orderId: int.parse(orders.id.toString()),
+            ),
+          );
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -156,7 +160,7 @@ class OrderCardWidget extends StatelessWidget {
                               : AppColors.secondaryTextColor,
                     ),
                   ),
-
+                  SizedBox(width: 4),
                   Text(
                     orders.createdAt != null && orders.createdAt!.isNotEmpty
                         ? DateFormat(

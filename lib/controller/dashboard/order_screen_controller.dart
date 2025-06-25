@@ -1,8 +1,10 @@
 import 'package:easy_world_vendor/models/orders.dart';
+import 'package:easy_world_vendor/repo/change_order_status_repo.dart';
 import 'package:easy_world_vendor/repo/delete_order_repo.dart';
 import 'package:easy_world_vendor/repo/get_order_repo.dart';
 import 'package:easy_world_vendor/utils/custom_snackbar.dart';
 import 'package:get/get.dart';
+import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 class OrderScreenController extends GetxController {
   RxList<Orders> allOrderLists = <Orders>[].obs;
@@ -28,6 +30,10 @@ class OrderScreenController extends GetxController {
     );
   }
 
+  final loading = SimpleFontelicoProgressDialog(
+    context: Get.context!,
+    barrierDimisable: false,
+  );
   deleteOrder(int orderId) async {
     isLoading.value = true;
     await DeleteOrderRepo.deleteOrderRepo(
@@ -40,6 +46,32 @@ class OrderScreenController extends GetxController {
       },
       onError: ((message) {
         isLoading.value = false;
+        CustomSnackBar.error(title: "Order", message: message);
+      }),
+    );
+  }
+
+  void changeStatus(String orderId, String status) async {
+    loading.show(message: 'Loading...');
+    await ChangeOrderStatusRepo.changeOrderStatusRepo(
+      orderId: orderId,
+      status: status,
+      onSuccess: (message) {
+        loading.hide();
+
+        int index = allOrderLists.indexWhere((o) => o.id.toString() == orderId);
+        if (index != -1) {
+          // Clone the order to create a new instance with updated status
+          final updatedOrder = Orders.fromJson(allOrderLists[index].toJson());
+          updatedOrder.status = status;
+          allOrderLists[index] = updatedOrder;
+          allOrderLists.refresh();
+        }
+
+        CustomSnackBar.success(title: "Order", message: message);
+      },
+      onError: ((message) {
+        loading.hide();
         CustomSnackBar.error(title: "Order", message: message);
       }),
     );
