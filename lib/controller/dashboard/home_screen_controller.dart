@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 
 class HomeScreenController extends GetxController {
   var selectedTabIndex = 0.obs;
-
   final List<String> tabs = ["Weekly", "Monthly", "Yearly"];
 
   final List<List<double>> chartData = [

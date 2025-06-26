@@ -1,4 +1,6 @@
 import 'package:easy_world_vendor/controller/dashboard/home_screen_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
@@ -13,6 +15,8 @@ import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
   final c = Get.put(HomeScreenController());
+  final orderController = Get.put(OrderScreenController());
+  final productController = Get.put(ProductsScreenController());
   HomeScreen({super.key});
 
   @override
@@ -130,21 +134,25 @@ class HomeScreen extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 childAspectRatio: 170 / 73,
                 children: [
-                  CategoryCard(
-                    title: "Products",
-                    count: "1000",
-                    imagePath: ImagePath.totalProducts,
-                    imageHeight: 51,
-                    imageWidth: 51,
-                    isDark: isDark,
+                  Obx(
+                    () => CategoryCard(
+                      title: "Products",
+                      count: "${productController.allProductLists.length}",
+                      imagePath: ImagePath.totalProducts,
+                      imageHeight: 51,
+                      imageWidth: 51,
+                      isDark: isDark,
+                    ),
                   ),
-                  CategoryCard(
-                    title: "Orders",
-                    count: "50",
-                    imagePath: ImagePath.totalOrders,
-                    imageHeight: 45,
-                    imageWidth: 45,
-                    isDark: isDark,
+                  Obx(
+                    () => CategoryCard(
+                      title: "Orders",
+                      count: "${orderController.allOrderLists.length}",
+                      imagePath: ImagePath.totalOrders,
+                      imageHeight: 45,
+                      imageWidth: 45,
+                      isDark: isDark,
+                    ),
                   ),
                   CategoryCard(
                     title: "Total Earning",

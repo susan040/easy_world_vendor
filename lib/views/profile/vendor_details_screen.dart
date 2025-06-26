@@ -1,9 +1,12 @@
+import 'package:easy_world_vendor/controller/core_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
+import 'package:easy_world_vendor/views/profile/pdf_view_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class VendorDetailsScreen extends StatelessWidget {
+  final coreController = Get.put(CoreController());
   VendorDetailsScreen({super.key});
 
   @override
@@ -45,7 +48,7 @@ class VendorDetailsScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Center(
               child: Text(
-                "Hand Made General Store",
+                coreController.currentUser.value!.data!.storeName ?? "",
                 style: CustomTextStyles.f18W700(color: textColor),
                 textAlign: TextAlign.center,
               ),
@@ -53,7 +56,7 @@ class VendorDetailsScreen extends StatelessWidget {
             const SizedBox(height: 6),
             Center(
               child: Text(
-                "Kathmandu, Nepal",
+                coreController.currentUser.value!.data!.storeDescription ?? "",
                 style: CustomTextStyles.f14W400(
                   color: textColor.withOpacity(0.7),
                 ),
@@ -64,7 +67,7 @@ class VendorDetailsScreen extends StatelessWidget {
             InfoCard(
               icon: Icons.email,
               label: "Email",
-              title: "handmadegeneral@gmail.com",
+              title: coreController.currentUser.value!.data!.email ?? "",
               textColor: textColor,
               isDark: isDark,
             ),
@@ -72,24 +75,33 @@ class VendorDetailsScreen extends StatelessWidget {
             InfoCard(
               icon: Icons.phone,
               label: "Phone",
-              title: "+61 412 345 678",
+              title: coreController.currentUser.value!.data!.phone ?? "",
               textColor: textColor,
               isDark: isDark,
             ),
             const SizedBox(height: 8),
             InfoCard(
-              icon: Icons.location_on,
-              label: "Address",
-              title: "Kathmandu, Nepal",
+              icon: Icons.flag,
+              label: "Country Code",
+              title: coreController.currentUser.value!.data!.countryCode ?? "",
               textColor: textColor,
               isDark: isDark,
             ),
             const SizedBox(height: 8),
             GestureDetector(
               onTap: () {
-                // if (controller.pathPDF.isNotEmpty) {
-                //   Get.to(() => PdfViewer(path: controller.pathPDF.value));
-                // }
+                final pdfUrl =
+                    coreController
+                        .currentUser
+                        .value!
+                        .data!
+                        .documentRegistration ??
+                    "";
+                if (pdfUrl.isNotEmpty) {
+                  Get.to(() => PdfViewScreen(pdfUrl: pdfUrl));
+                } else {
+                  Get.snackbar("Error", "No document found");
+                }
               },
               child: Container(
                 width: double.infinity,
@@ -114,7 +126,7 @@ class VendorDetailsScreen extends StatelessWidget {
                     Icon(Icons.picture_as_pdf, color: Colors.redAccent),
                     const SizedBox(width: 12),
                     Text(
-                      "Open Vendor.pdf",
+                      "Open Document.pdf",
                       style: CustomTextStyles.f14W500(color: textColor),
                     ),
                     const SizedBox(width: 8),

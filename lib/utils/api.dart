@@ -5,4 +5,5 @@ class Api {
   static const String loginUrl = "$baseUrl/login";
   static const String getProductsUrl = "$baseUrl/products";
   static const String ordersUrl = "$baseUrl/orders";
+  static const String editProfileUrl = "$baseUrl/profile";
 }
