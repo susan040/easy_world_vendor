@@ -1,4 +1,5 @@
 import 'package:easy_world_vendor/controller/core_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/country_controller.dart';
 import 'package:easy_world_vendor/controller/theme_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
@@ -17,6 +18,7 @@ import 'package:get/get.dart';
 class ProfileScreen extends StatelessWidget {
   final themeController = Get.put(ThemeController());
   final coreController = Get.put(CoreController());
+  final countryController = Get.put(CountryController());
   ProfileScreen({super.key});
 
   @override
@@ -145,6 +147,63 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
             ),
+            Obx(() {
+              final country = countryController.selectedCountryData;
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 3.5,
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Get.bottomSheet(CountryBottomSheet());
+                  },
+                  child: Container(
+                    height: 59,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      color:
+                          isDark
+                              ? AppColors.blackColor.withOpacity(0.3)
+                              : AppColors.lGrey,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Image.asset(
+                              country['flag']!,
+                              width: 24,
+                              height: 24,
+                              fit: BoxFit.cover,
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              "${country['name']} (${country['code']})",
+                              style: CustomTextStyles.f12W400(
+                                color:
+                                    isDark
+                                        ? AppColors.extraWhite
+                                        : AppColors.blackColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SvgPicture.asset(
+                          ImagePath.arrowRight,
+                          color:
+                              isDark
+                                  ? AppColors.extraWhite
+                                  : AppColors.secondaryColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
             ProfileOptionTile(
               iconPath: ImagePath.logOut,
               title: "Log Out",

@@ -4,6 +4,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_world_vendor/controller/dashboard/profile_screen_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
+import 'package:easy_world_vendor/views/profile/pdf_view_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -70,19 +71,35 @@ class EditDocumentWidget extends StatelessWidget {
                 ),
                 child:
                     isPdf
-                        ? const Center(
-                          child: Icon(
-                            Icons.picture_as_pdf,
-                            color: Colors.red,
-                            size: 60,
+                        ? GestureDetector(
+                          onTap: () {
+                            final pdfUrl = c.selectedFilePath.value;
+                            if (pdfUrl.isNotEmpty) {
+                              Get.to(() => PdfViewScreen(pdfUrl: pdfUrl));
+                            } else {
+                              Get.snackbar("Error", "No document found");
+                            }
+                          },
+                          child: const Center(
+                            child: Icon(
+                              Icons.picture_as_pdf,
+                              color: Colors.red,
+                              size: 60,
+                            ),
                           ),
                         )
                         : ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: Image.file(
-                            File(c.selectedFilePath.value),
-                            fit: BoxFit.cover,
-                          ),
+                          child:
+                              c.selectedFilePath.value.startsWith('http')
+                                  ? Image.network(
+                                    c.selectedFilePath.value,
+                                    fit: BoxFit.cover,
+                                  )
+                                  : Image.file(
+                                    File(c.selectedFilePath.value),
+                                    fit: BoxFit.cover,
+                                  ),
                         ),
               ),
             ],

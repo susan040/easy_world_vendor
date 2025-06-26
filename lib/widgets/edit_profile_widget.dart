@@ -20,7 +20,7 @@ class EditProfileBottomSheetWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: Column(

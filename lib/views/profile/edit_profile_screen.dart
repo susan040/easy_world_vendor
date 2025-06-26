@@ -3,7 +3,6 @@ import 'package:easy_world_vendor/controller/dashboard/profile_screen_controller
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
-import 'package:easy_world_vendor/utils/validator.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_textfield.dart';
 import 'package:easy_world_vendor/widgets/custom/elevated_button.dart';
 import 'package:easy_world_vendor/widgets/edit_document_widget.dart';
@@ -42,6 +41,7 @@ class EditProfileScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Form(
+          key: c.editProfileFormKey,
           child: Padding(
             padding: const EdgeInsets.only(
               left: 16,
@@ -67,7 +67,8 @@ class EditProfileScreen extends StatelessWidget {
                                     width: 120,
                                   )
                                   : CachedNetworkImage(
-                                    imageUrl: c.selectedImage.value.toString(),
+                                    imageUrl:
+                                        c.profileImageUrl.value.toString(),
                                     placeholder:
                                         (context, url) => const Center(
                                           child: CircularProgressIndicator(),
@@ -129,7 +130,7 @@ class EditProfileScreen extends StatelessWidget {
                 SizedBox(height: 8),
                 CustomTextField(
                   hint: "Store Name",
-                  controller: c.fullNameController,
+                  controller: c.storeNameController,
                   textInputAction: TextInputAction.next,
                   textInputType: TextInputType.text,
                 ),
@@ -149,99 +150,57 @@ class EditProfileScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  "Select Gender",
+                  "Description",
                   style: CustomTextStyles.f12W500(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   ),
                 ),
                 SizedBox(height: 8),
-                Obx(
-                  () => Container(
-                    constraints: BoxConstraints(minHeight: 50),
-                    child: DropdownButtonFormField<String>(
-                      menuMaxHeight: 350,
-                      dropdownColor: AppColors.extraWhite,
-                      focusColor: AppColors.extraWhite,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'This field is required';
-                        }
-                        return null;
-                      },
-                      value:
-                          c.selectGender.value.isEmpty
-                              ? null
-                              : c.selectGender.value,
-                      hint: Text(
-                        "Select Gender",
-                        style: CustomTextStyles.f12W400(
-                          color:
-                              isDark
-                                  ? AppColors.extraWhite
-                                  : AppColors.secondaryTextColor,
-                        ),
+                TextFormField(
+                  style: CustomTextStyles.f12W400(
+                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  ),
+
+                  maxLines: 4,
+                  textInputAction: TextInputAction.next,
+                  textCapitalization: TextCapitalization.sentences,
+                  decoration: InputDecoration(
+                    hintText: "Store Description..",
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: AppColors.borderColor,
                       ),
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.only(
-                          bottom: 10,
-                          left: 14,
-                          right: 14,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.borderColor,
-                            width: 1,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.primaryColor,
-                            width: 1,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red, width: 1),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red, width: 1),
-                        ),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: AppColors.errorColor,
                       ),
-                      items:
-                          c.genderList
-                              .map(
-                                (option) => DropdownMenuItem<String>(
-                                  value: option,
-                                  child: Text(
-                                    option,
-                                    style: CustomTextStyles.f12W400(),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                      onChanged: (value) {
-                        c.updateSelectedGender(value!);
-                      },
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        width: 1,
+                        color: AppColors.errorColor,
+                      ),
+                    ),
+                    hintStyle: CustomTextStyles.f12W400(
+                      color: AppColors.secondaryTextColor,
                     ),
                   ),
+                  controller: c.storeDescriptionController,
                 ),
-                SizedBox(height: 16),
-                Text(
-                  "Birthday",
-                  style: CustomTextStyles.f12W500(
-                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
-                  ),
-                ),
-                SizedBox(height: 8),
-                CustomTextField(
-                  readOnly: true,
-                  onTap: () => c.chooseDate(context),
-                  controller: c.selectBirthdayController,
-                  validator: Validators.checkFieldEmpty,
-                  suffixIconPath: Icons.calendar_month,
-                  hint: "yyyy-mm-dd",
-                  textInputAction: TextInputAction.done,
-                  textInputType: TextInputType.none,
-                ),
+
                 SizedBox(height: 16),
                 Text(
                   "Document/Image",
@@ -254,7 +213,9 @@ class EditProfileScreen extends StatelessWidget {
                 SizedBox(height: 25),
                 CustomElevatedButton(
                   title: "Update Details",
-                  onTap: () {},
+                  onTap: () {
+                    c.editProfile();
+                  },
                   backGroundColor: AppColors.primaryColor,
                 ),
               ],

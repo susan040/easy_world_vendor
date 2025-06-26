@@ -55,12 +55,16 @@ class VendorDetailsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Center(
-              child: Text(
-                coreController.currentUser.value!.data!.storeDescription ?? "",
-                style: CustomTextStyles.f14W400(
-                  color: textColor.withOpacity(0.7),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 14, right: 14),
+                child: Text(
+                  coreController.currentUser.value!.data!.storeDescription ??
+                      "",
+                  style: CustomTextStyles.f11W400(
+                    color: textColor.withOpacity(0.7),
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
             ),
             const SizedBox(height: 30),

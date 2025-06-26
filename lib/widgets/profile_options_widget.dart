@@ -1,8 +1,10 @@
+import 'package:easy_world_vendor/controller/dashboard/country_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 
 class ProfileOptionTile extends StatelessWidget {
   final String iconPath;
@@ -90,6 +92,50 @@ class ProfileOptionTile extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CountryBottomSheet extends StatelessWidget {
+  final countryController = Get.put(CountryController());
+
+  CountryBottomSheet({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            'Choose Country',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          const SizedBox(height: 12),
+          ...countryController.countries.map((country) {
+            return ListTile(
+              leading: Image.asset(
+                country['flag']!,
+                width: 24,
+                height: 24,
+                fit: BoxFit.cover,
+              ),
+              title: Text("${country['name']} (${country['code']})"),
+              onTap: () {
+                countryController.chooseCountry(country['name']!);
+                Get.back(); // dismiss bottom sheet
+              },
+            );
+          }).toList(),
+        ],
       ),
     );
   }

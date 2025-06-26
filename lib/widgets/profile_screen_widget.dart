@@ -37,25 +37,27 @@ class ProfileScreenWidget extends StatelessWidget {
           SizedBox(width: 12),
           Stack(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: CachedNetworkImage(
-                  placeholder:
-                      (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
-                  fit: BoxFit.cover,
-                  height: 100,
-                  width: 100,
-                  imageUrl:
-                      coreController.currentUser.value!.data!.profileImage ??
-                      "",
-                  errorWidget:
-                      (context, url, error) => Image.asset(
-                        ImagePath.blankProfile,
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.cover,
-                      ),
+              Obx(
+                () => ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: CachedNetworkImage(
+                    placeholder:
+                        (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                    fit: BoxFit.cover,
+                    height: 100,
+                    width: 100,
+                    imageUrl:
+                        coreController.currentUser.value!.data!.profileImage ??
+                        "",
+                    errorWidget:
+                        (context, url, error) => Image.asset(
+                          ImagePath.blankProfile,
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.cover,
+                        ),
+                  ),
                 ),
               ),
               Positioned(
@@ -91,10 +93,12 @@ class ProfileScreenWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                coreController.currentUser.value!.data!.storeName ?? "",
-                style: CustomTextStyles.f14W700(
-                  color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+              Obx(
+                () => Text(
+                  coreController.currentUser.value!.data!.storeName ?? "",
+                  style: CustomTextStyles.f14W700(
+                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  ),
                 ),
               ),
               SizedBox(height: 8),
@@ -106,11 +110,15 @@ class ProfileScreenWidget extends StatelessWidget {
                     color: AppColors.accepted,
                   ),
                   SizedBox(width: 4),
-                  Text(
-                    coreController.currentUser.value!.data!.phone ?? "",
-                    style: CustomTextStyles.f11W400(
-                      color:
-                          isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  Obx(
+                    () => Text(
+                      coreController.currentUser.value!.data!.phone ?? "",
+                      style: CustomTextStyles.f11W400(
+                        color:
+                            isDark
+                                ? AppColors.extraWhite
+                                : AppColors.blackColor,
+                      ),
                     ),
                   ),
                 ],
@@ -124,11 +132,15 @@ class ProfileScreenWidget extends StatelessWidget {
                     color: AppColors.darkblue,
                   ),
                   SizedBox(width: 4),
-                  Text(
-                    coreController.currentUser.value!.data!.email ?? "",
-                    style: CustomTextStyles.f11W400(
-                      color:
-                          isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  Obx(
+                    () => Text(
+                      coreController.currentUser.value!.data!.email ?? "",
+                      style: CustomTextStyles.f11W400(
+                        color:
+                            isDark
+                                ? AppColors.extraWhite
+                                : AppColors.blackColor,
+                      ),
                     ),
                   ),
                 ],
@@ -142,14 +154,25 @@ class ProfileScreenWidget extends StatelessWidget {
                     color: AppColors.fieldVist,
                   ),
                   SizedBox(width: 4),
-                  Text(
-                    coreController.currentUser.value!.data!.storeDescription ??
-                        "",
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: CustomTextStyles.f11W400(
-                      color:
-                          isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  Obx(
+                    () => SizedBox(
+                      width: 160,
+                      child: Text(
+                        coreController
+                                .currentUser
+                                .value!
+                                .data!
+                                .storeDescription ??
+                            "",
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: CustomTextStyles.f11W400(
+                          color:
+                              isDark
+                                  ? AppColors.extraWhite
+                                  : AppColors.blackColor,
+                        ),
+                      ),
                     ),
                   ),
                 ],
