@@ -1,10 +1,13 @@
 import 'package:easy_world_vendor/models/products.dart';
+import 'package:easy_world_vendor/models/reviews.dart';
 import 'package:easy_world_vendor/repo/get_products_repo.dart';
+import 'package:easy_world_vendor/repo/get_reviews_repo.dart';
 import 'package:get/get.dart';
 
 class ProductsScreenController extends GetxController {
-  RxList<Data> allProductsFullList = <Data>[].obs; // full original list
-  RxList<Data> allProductLists = <Data>[].obs; // filtered list shown on UI
+  RxList<Data> allProductsFullList = <Data>[].obs;
+  RxList<Data> allProductLists = <Data>[].obs;
+  RxList<Reviews> allReviewsLists = <Reviews>[].obs;
   var isLoading = true.obs;
   RxString searchText = ''.obs;
 
@@ -12,6 +15,7 @@ class ProductsScreenController extends GetxController {
   void onInit() {
     super.onInit();
     getAllProducts();
+    getAllReviews();
   }
 
   getAllProducts() async {
@@ -21,6 +25,20 @@ class ProductsScreenController extends GetxController {
         allProductsFullList.assignAll(productModel.data ?? []);
         allProductLists.assignAll(allProductsFullList);
         isLoading.value = false;
+      },
+      onError: (msg) {
+        isLoading.value = false;
+        print("Error: $msg");
+      },
+    );
+  }
+
+  getAllReviews() async {
+    isLoading.value = true;
+    await GetReviewsRepo.getReviewsRepo(
+      onSuccess: (reviews) {
+        isLoading.value = false;
+        allReviewsLists.assignAll(reviews);
       },
       onError: (msg) {
         isLoading.value = false;
@@ -52,41 +70,22 @@ class ProductsScreenController extends GetxController {
     allProductLists.assignAll(filtered);
   }
 
-  final RxList<Map<String, dynamic>> reviews =
-      <Map<String, dynamic>>[
-        {
-          'name': 'Emily',
-          'review': 'Very cute! The quality is amazing and it arrived quickly.',
-          'rating': 5,
-          'photos': [
-            "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-            "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-          ],
-        },
-        {
-          'name': 'Liam',
-          'review': 'Bought this as a gift for my sister and she loved it!',
-          'rating': 4,
-          'photos': [
-            "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-            "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-          ],
-        },
-        {
-          'name': 'Sophia',
-          'review': 'Nicely made and looks even better in real life!',
-          'rating': 5,
-          'photos': [],
-        },
-      ].obs;
+  double calculateAverageRating(List<Reviews> reviews) {
+    if (reviews.isEmpty) return 0.0;
 
-  double get averageRating {
-    final totalRating = reviews.fold<double>(
-      0,
-      (sum, item) => sum + (item['rating'] as int),
-    );
-    return totalRating / reviews.length;
+    double total = 0;
+    int count = 0;
+
+    for (var review in reviews) {
+      if (review.rating != null && review.rating!.isNotEmpty) {
+        double? rating = double.tryParse(review.rating!);
+        if (rating != null) {
+          total += rating;
+          count++;
+        }
+      }
+    }
+
+    return count > 0 ? total / count : 0.0;
   }
-
-  int get totalReviews => reviews.length;
 }

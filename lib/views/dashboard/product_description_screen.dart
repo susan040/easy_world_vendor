@@ -1,4 +1,7 @@
+import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
 import 'package:easy_world_vendor/models/products.dart';
+import 'package:easy_world_vendor/models/reviews.dart';
+import 'package:easy_world_vendor/views/dashboard/full_image_view_screen.dart';
 import 'package:easy_world_vendor/views/dashboard/products_reviews_screen.dart';
 import 'package:easy_world_vendor/widgets/custom_review_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +20,7 @@ class ProductDescriptionScreen extends StatelessWidget {
     required this.isDark,
     required this.products,
   });
-
+  final c = Get.put(ProductsScreenController());
   @override
   Widget build(BuildContext context) {
     final List<String> imageUrls = products.productImages ?? [];
@@ -76,17 +79,26 @@ class ProductDescriptionScreen extends StatelessWidget {
                   childAspectRatio: 1,
                 ),
                 itemBuilder: (context, index) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: CachedNetworkImage(
-                      imageUrl: imageUrls[index + 1],
-                      fit: BoxFit.cover,
-                      placeholder:
-                          (context, url) =>
-                              const Center(child: CircularProgressIndicator()),
-                      errorWidget:
-                          (context, url, error) =>
-                              Image.asset(ImagePath.noImage),
+                  return InkWell(
+                    onTap: () {
+                      Get.to(
+                        () =>
+                            FullImageViewScreen(imageUrl: imageUrls[index + 1]),
+                      );
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrls[index + 1],
+                        fit: BoxFit.cover,
+                        placeholder:
+                            (context, url) => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                        errorWidget:
+                            (context, url, error) =>
+                                Image.asset(ImagePath.noImage),
+                      ),
                     ),
                   );
                 },
@@ -186,29 +198,35 @@ class ProductDescriptionScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            ReviewBox(
-              name: "Emily",
-              review:
-                  "Very cute! The quality is amazing and it arrived quickly.",
-              isDark: isDark,
-              rating: 5,
-              photos: [
-                "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-                "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-              ],
+            Obx(
+              () =>
+                  c.isLoading.value
+                      ? SizedBox(
+                        height: 100,
+                        child: const Center(child: CircularProgressIndicator()),
+                      )
+                      : c.allProductLists.isEmpty
+                      ? SizedBox(
+                        height: 100,
+                        child: Center(
+                          child: Text(
+                            "No reviews",
+                            style: CustomTextStyles.f14W400(
+                              color: AppColors.textGreyColor,
+                            ),
+                          ),
+                        ),
+                      )
+                      : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: c.allReviewsLists.length,
+                        itemBuilder: (context, index) {
+                          final Reviews reviews = c.allReviewsLists[index];
+                          return ReviewBox(isDark: isDark, reviews: reviews);
+                        },
+                      ),
             ),
-            ReviewBox(
-              name: "Liam",
-              review: "Bought this as a gift for my sister and she loved it!",
-              isDark: isDark,
-              rating: 4,
-              photos: [
-                "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-                "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-                "https://mindy.hu/pictures_en/3883_little-amigurumi-bear-keychain-free-crochet-pattern.jpg",
-              ],
-            ),
-
             const SizedBox(height: 20),
             Align(
               alignment: Alignment.centerRight,

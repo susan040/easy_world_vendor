@@ -1,4 +1,5 @@
 import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
+import 'package:easy_world_vendor/models/reviews.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/widgets/custom_review_widget.dart';
@@ -12,6 +13,9 @@ class ProductsReviewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final avgRating = controller.calculateAverageRating(
+      controller.allReviewsLists,
+    );
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
@@ -50,33 +54,28 @@ class ProductsReviewsScreen extends StatelessWidget {
                             : AppColors.secondaryTextColor,
                   ),
                 ),
-                Obx(() {
-                  return Text(
-                    controller.averageRating.toStringAsFixed(1),
-                    style: CustomTextStyles.f32W600(
-                      color:
-                          isDark
-                              ? AppColors.primaryColor
-                              : AppColors.secondaryColor,
-                    ),
-                  );
-                }),
-                Obx(() {
-                  int roundedRating = controller.averageRating.round();
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(5, (index) {
-                      return Icon(
-                        index < roundedRating ? Icons.star : Icons.star_border,
-                        color: Colors.amber.shade700,
-                        size: 24,
-                      );
-                    }),
-                  );
-                }),
+                Text(
+                  avgRating.toStringAsFixed(1),
+                  style: CustomTextStyles.f32W600(
+                    color:
+                        isDark
+                            ? AppColors.primaryColor
+                            : AppColors.secondaryColor,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(5, (index) {
+                    return Icon(
+                      index < avgRating ? Icons.star : Icons.star_border,
+                      color: Colors.amber.shade700,
+                      size: 24,
+                    );
+                  }),
+                ),
                 const SizedBox(height: 6),
                 Text(
-                  'Total Review: ${controller.totalReviews} reviews',
+                  'Total Review: ${controller.allReviewsLists.length} reviews',
                   style: CustomTextStyles.f14W400(
                     color:
                         isDark
@@ -87,14 +86,35 @@ class ProductsReviewsScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            ...controller.reviews.map(
-              (review) => ReviewBox(
-                name: review['name'],
-                review: review['review'],
-                rating: review['rating'],
-                photos: List<String>.from(review['photos']),
-                isDark: isDark,
-              ),
+            Obx(
+              () =>
+                  controller.isLoading.value
+                      ? SizedBox(
+                        height: 100,
+                        child: const Center(child: CircularProgressIndicator()),
+                      )
+                      : controller.allProductLists.isEmpty
+                      ? SizedBox(
+                        height: 100,
+                        child: Center(
+                          child: Text(
+                            "No reviews",
+                            style: CustomTextStyles.f14W400(
+                              color: AppColors.textGreyColor,
+                            ),
+                          ),
+                        ),
+                      )
+                      : ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: controller.allReviewsLists.length,
+                        itemBuilder: (context, index) {
+                          final Reviews reviews =
+                              controller.allReviewsLists[index];
+                          return ReviewBox(isDark: isDark, reviews: reviews);
+                        },
+                      ),
             ),
           ],
         ),
