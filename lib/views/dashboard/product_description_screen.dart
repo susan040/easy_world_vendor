@@ -183,7 +183,11 @@ class ProductDescriptionScreen extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Get.to(() => ProductsReviewsScreen());
+                    Get.to(
+                      () => ProductsReviewsScreen(
+                        productId: products.id.toString(),
+                      ),
+                    );
                   },
                   child: Text(
                     "View All",
@@ -198,34 +202,35 @@ class ProductDescriptionScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            Obx(
-              () =>
-                  c.isLoading.value
-                      ? SizedBox(
-                        height: 100,
-                        child: const Center(child: CircularProgressIndicator()),
-                      )
-                      : c.allProductLists.isEmpty
-                      ? SizedBox(
-                        height: 100,
-                        child: Center(
-                          child: Text(
-                            "No reviews",
-                            style: CustomTextStyles.f14W400(
-                              color: AppColors.textGreyColor,
-                            ),
-                          ),
+            FutureBuilder<List<Reviews>>(
+              future: c.getAllReviewsByProductId(products.id.toString()),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError ||
+                    snapshot.data == null ||
+                    snapshot.data!.isEmpty) {
+                  return SizedBox(
+                    height: 60,
+                    child: Center(
+                      child: Text(
+                        "No review",
+                        style: CustomTextStyles.f12W400(
+                          color: AppColors.secondaryTextColor,
                         ),
-                      )
-                      : ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: c.allReviewsLists.length,
-                        itemBuilder: (context, index) {
-                          final Reviews reviews = c.allReviewsLists[index];
-                          return ReviewBox(isDark: isDark, reviews: reviews);
-                        },
                       ),
+                    ),
+                  );
+                } else {
+                  final List<Reviews> reviews = snapshot.data!;
+                  return Column(
+                    children:
+                        reviews.map((review) {
+                          return ReviewBox(isDark: isDark, reviews: review);
+                        }).toList(),
+                  );
+                }
+              },
             ),
             const SizedBox(height: 20),
             Align(

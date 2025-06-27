@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_world_vendor/models/products.dart';
 import 'package:easy_world_vendor/models/reviews.dart';
 import 'package:easy_world_vendor/repo/get_products_repo.dart';
@@ -15,7 +17,6 @@ class ProductsScreenController extends GetxController {
   void onInit() {
     super.onInit();
     getAllProducts();
-    getAllReviews();
   }
 
   getAllProducts() async {
@@ -33,18 +34,34 @@ class ProductsScreenController extends GetxController {
     );
   }
 
-  getAllReviews() async {
-    isLoading.value = true;
-    await GetReviewsRepo.getReviewsRepo(
-      onSuccess: (reviews) {
-        isLoading.value = false;
-        allReviewsLists.assignAll(reviews);
-      },
-      onError: (msg) {
-        isLoading.value = false;
-        print("Error: $msg");
-      },
+  Future<List<Reviews>> getAllReviewsByProductId(String productId) async {
+    try {
+      final completer = Completer<List<Reviews>>();
+
+      await GetReviewsRepo.getReviewsRepo(
+        productId: productId,
+        onSuccess: (reviews) {
+          completer.complete(reviews);
+        },
+        onError: (msg) {
+          completer.completeError(msg);
+        },
+      );
+
+      return completer.future;
+    } catch (e) {
+      return Future.error("Something went wrong");
+    }
+  }
+
+  double calculateAverageRating(List<Reviews> reviewsList) {
+    if (reviewsList.isEmpty) return 0.0;
+
+    double total = reviewsList.fold(
+      0.0,
+      (sum, item) => sum + double.parse((item.rating.toString())),
     );
+    return total / reviewsList.length;
   }
 
   void applyFilters() {
@@ -68,24 +85,5 @@ class ProductsScreenController extends GetxController {
     }
 
     allProductLists.assignAll(filtered);
-  }
-
-  double calculateAverageRating(List<Reviews> reviews) {
-    if (reviews.isEmpty) return 0.0;
-
-    double total = 0;
-    int count = 0;
-
-    for (var review in reviews) {
-      if (review.rating != null && review.rating!.isNotEmpty) {
-        double? rating = double.tryParse(review.rating!);
-        if (rating != null) {
-          total += rating;
-          count++;
-        }
-      }
-    }
-
-    return count > 0 ? total / count : 0.0;
   }
 }

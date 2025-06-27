@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 class GetReviewsRepo {
   static Future<void> getReviewsRepo({
+    required String productId,
     required Function(List<Reviews> reviews) onSuccess,
     required Function(String message) onError,
   }) async {
@@ -19,7 +20,7 @@ class GetReviewsRepo {
         'Authorization': 'Bearer $token',
       };
 
-      var url = Uri.parse(Api.reviewsUrl);
+      var url = Uri.parse("${Api.reviewsUrl}/$productId");
       http.Response response = await http.get(url, headers: headers);
       dynamic data = json.decode(response.body);
       if (response.statusCode >= 200 && response.statusCode < 300) {
