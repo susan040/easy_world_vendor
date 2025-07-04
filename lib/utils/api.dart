@@ -7,4 +7,9 @@ class Api {
   static const String ordersUrl = "$baseUrl/orders";
   static const String editProfileUrl = "$baseUrl/profile";
   static const String reviewsUrl = "$baseUrl/reviews/all";
+  static const String forgotPasswordRequestUrl =
+      "$baseUrl/forgot-password/request";
+  static const String forgotPassOtpVerifyUrl =
+      "$baseUrl/forgot-password/verify-otp";
+  static const String resetPasswordUrl = "$baseUrl/forgot-password/reset";
 }

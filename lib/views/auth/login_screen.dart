@@ -5,6 +5,7 @@ import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:easy_world_vendor/utils/validator.dart';
 import 'package:easy_world_vendor/views/auth/register_screen.dart';
+import 'package:easy_world_vendor/views/forgot_password/add_email_screen.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_password_fields.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_textfield.dart';
 import 'package:easy_world_vendor/widgets/custom/elevated_button.dart';
@@ -76,7 +77,7 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        // Get.to(() => AddEmailScreen());
+                        Get.to(() => AddEmailScreen());
                       },
                       child: Text(
                         "Forgot password?",

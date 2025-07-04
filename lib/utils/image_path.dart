@@ -8,7 +8,7 @@ class ImagePath {
   static const String eye = "$baseIconPath/eye.svg";
   static const String eyeOff = "$baseIconPath/eye_off.svg";
   static const String profile = "$baseIconPath/profile.svg";
-  static const String notification = "$baseIconPath/notification.svg";
+  static const String notification = "$baseIconPath/notifications_icon.svg";
   static const String google = "$baseIconPath/google.svg";
   static const String delete = "$baseIconPath/delete.svg";
   static const String arrowRight = "$baseIconPath/arrow_right.svg";
