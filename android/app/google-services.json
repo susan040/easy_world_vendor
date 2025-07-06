@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "587120596505",
+    "project_id": "easyworldvendor",
+    "storage_bucket": "easyworldvendor.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587120596505:android:63bf8ed84ee745e1e1bc88",
+        "android_client_info": {
+          "package_name": "com.example.easy_world_vendor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587120596505-7d0q28pfiem78csc4chhhnm4gvhpmoe9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.easy_world_vendor",
+            "certificate_hash": "d312b076dfbaaf939e37ce9d966d62755d9bfa7a"
+          }
+        },
+        {
+          "client_id": "587120596505-5ineoam5llfm3tfjhh76brshd4956afj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfsglq2qN6yC-2U-BJOVN1puwAM9VZpUk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587120596505-5ineoam5llfm3tfjhh76brshd4956afj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

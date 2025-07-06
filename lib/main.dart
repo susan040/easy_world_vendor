@@ -1,12 +1,14 @@
 import 'package:easy_world_vendor/controller/core_controller.dart';
 import 'package:easy_world_vendor/controller/theme_controller.dart';
 import 'package:easy_world_vendor/views/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await GetStorage.init();
   runApp(MyApp());
 }

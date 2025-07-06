@@ -95,7 +95,8 @@ class ProfileScreenWidget extends StatelessWidget {
             children: [
               Obx(
                 () => Text(
-                  coreController.currentUser.value!.data!.storeName ?? "",
+                  coreController.currentUser.value!.data!.storeName ??
+                      "no name",
                   style: CustomTextStyles.f14W700(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   ),
@@ -112,7 +113,8 @@ class ProfileScreenWidget extends StatelessWidget {
                   SizedBox(width: 4),
                   Obx(
                     () => Text(
-                      coreController.currentUser.value!.data!.phone ?? "",
+                      coreController.currentUser.value!.data!.phone ??
+                          "no phone number",
                       style: CustomTextStyles.f11W400(
                         color:
                             isDark
@@ -134,7 +136,8 @@ class ProfileScreenWidget extends StatelessWidget {
                   SizedBox(width: 4),
                   Obx(
                     () => Text(
-                      coreController.currentUser.value!.data!.email ?? "",
+                      coreController.currentUser.value!.data!.email ??
+                          "no email",
                       style: CustomTextStyles.f11W400(
                         color:
                             isDark
@@ -163,7 +166,7 @@ class ProfileScreenWidget extends StatelessWidget {
                                 .value!
                                 .data!
                                 .storeDescription ??
-                            "",
+                            "no description",
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: CustomTextStyles.f11W400(
