@@ -1,3 +1,4 @@
+import 'package:easy_world_vendor/controller/core_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/home_screen_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
@@ -12,11 +13,13 @@ import 'package:easy_world_vendor/widgets/home_category_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatelessWidget {
   final c = Get.put(HomeScreenController());
   final orderController = Get.put(OrderScreenController());
   final productController = Get.put(ProductsScreenController());
+  final coreController = Get.put(CoreController());
   HomeScreen({super.key});
 
   @override
@@ -32,14 +35,14 @@ class HomeScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "Hi, Handmade General Store",
+              "Hi, ${coreController.currentUser.value!.data!.storeName}",
               style: CustomTextStyles.f16W600(
                 color: isDark ? AppColors.extraWhite : AppColors.blackColor,
               ),
             ),
             const SizedBox(height: 4),
             Text(
-              "23 May, 2025",
+              DateFormat('d MMMM, yyyy').format(DateTime.now()),
               style: CustomTextStyles.f12W400(
                 color:
                     isDark

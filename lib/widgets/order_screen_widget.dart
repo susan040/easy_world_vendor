@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.dart';
 import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
@@ -57,7 +56,7 @@ class OrderCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 6, bottom: 6),
       child: InkWell(
         onTap: () {
           Get.to(
@@ -93,31 +92,31 @@ class OrderCardWidget extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: CachedNetworkImage(
-                          imageUrl: orders.customer!.profileImage ?? "",
-                          fit: BoxFit.cover,
-                          height: 48,
-                          width: 48,
-                          placeholder:
-                              (context, url) => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                          errorWidget:
-                              (context, url, error) => Image.asset(
-                                ImagePath.noImage,
-                                fit: BoxFit.cover,
-                              ),
-                        ),
-                      ),
-                      const SizedBox(width: 6),
+                      // ClipRRect(
+                      //   borderRadius: BorderRadius.circular(100),
+                      //   child: CachedNetworkImage(
+                      //     imageUrl: orders.customer!.profileImage ?? "",
+                      //     fit: BoxFit.cover,
+                      //     height: 48,
+                      //     width: 48,
+                      //     placeholder:
+                      //         (context, url) => const Center(
+                      //           child: CircularProgressIndicator(),
+                      //         ),
+                      //     errorWidget:
+                      //         (context, url, error) => Image.asset(
+                      //           ImagePath.noImage,
+                      //           fit: BoxFit.cover,
+                      //         ),
+                      //   ),
+                      // ),
+                      // const SizedBox(width: 6),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             orders.customer!.fullName ?? "",
-                            style: CustomTextStyles.f14W600(
+                            style: CustomTextStyles.f16W600(
                               color:
                                   isDark
                                       ? AppColors.extraWhite

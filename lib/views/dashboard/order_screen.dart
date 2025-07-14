@@ -88,7 +88,6 @@ class OrderScreen extends StatelessWidget {
                         )
                         : ListView.builder(
                           shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: c.allOrderLists.length,
                           itemBuilder: (context, index) {
                             final Orders orders = c.allOrderLists[index];
@@ -106,8 +105,6 @@ class OrderScreen extends StatelessWidget {
                     child: const Center(child: CircularProgressIndicator()),
                   );
                 }
-
-                // Filter orders with status "pending"
                 final pendingOrders =
                     c.allOrderLists
                         .where(
@@ -129,10 +126,8 @@ class OrderScreen extends StatelessWidget {
                     ),
                   );
                 }
-
                 return ListView.builder(
                   shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: pendingOrders.length,
                   itemBuilder: (context, index) {
                     final Orders orders = pendingOrders[index];
@@ -170,7 +165,6 @@ class OrderScreen extends StatelessWidget {
 
                 return ListView.builder(
                   shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: filteredOrders.length,
                   itemBuilder: (context, index) {
                     final Orders orders = filteredOrders[index];
@@ -204,10 +198,8 @@ class OrderScreen extends StatelessWidget {
                     ),
                   );
                 }
-
                 return ListView.builder(
                   shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: filteredOrders.length,
                   itemBuilder: (context, index) {
                     final Orders orders = filteredOrders[index];
@@ -241,10 +233,8 @@ class OrderScreen extends StatelessWidget {
                     ),
                   );
                 }
-
                 return ListView.builder(
                   shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: filteredOrders.length,
                   itemBuilder: (context, index) {
                     final Orders orders = filteredOrders[index];

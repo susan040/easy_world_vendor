@@ -110,7 +110,6 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 6),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

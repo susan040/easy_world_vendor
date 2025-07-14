@@ -3,6 +3,7 @@ import 'package:easy_world_vendor/controller/core_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
+import 'package:easy_world_vendor/views/profile/edit_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -65,7 +66,7 @@ class ProfileScreenWidget extends StatelessWidget {
                 right: 3,
                 child: InkWell(
                   onTap: () {
-                    // Get.to(() => EditProfileScreen());
+                    Get.to(() => EditProfileScreen());
                   },
                   child: CircleAvatar(
                     radius: 13,
