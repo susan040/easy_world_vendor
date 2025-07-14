@@ -4,12 +4,16 @@ import 'package:easy_world_vendor/models/products.dart';
 import 'package:easy_world_vendor/models/reviews.dart';
 import 'package:easy_world_vendor/repo/get_products_repo.dart';
 import 'package:easy_world_vendor/repo/get_reviews_repo.dart';
+import 'package:easy_world_vendor/repo/reply_review_repo.dart';
+import 'package:easy_world_vendor/utils/custom_snackbar.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ProductsScreenController extends GetxController {
   RxList<Data> allProductsFullList = <Data>[].obs;
   RxList<Data> allProductLists = <Data>[].obs;
   RxList<Reviews> allReviewsLists = <Reviews>[].obs;
+  final commentReplyController = TextEditingController();
   var isLoading = true.obs;
   RxString searchText = ''.obs;
 
@@ -85,5 +89,29 @@ class ProductsScreenController extends GetxController {
     }
 
     allProductLists.assignAll(filtered);
+  }
+
+  void replyReview(String reviewId) async {
+    if (commentReplyController.text.trim().isEmpty) return;
+
+    // Save & clear immediately to improve responsiveness
+    final replyText = commentReplyController.text.trim();
+    commentReplyController.clear();
+    FocusManager.instance.primaryFocus?.unfocus(); // Dismiss keyboard
+
+    isLoading.value = true;
+
+    await ReplyReviewRepo.replyReviewRepo(
+      reviewId: reviewId,
+      reply: replyText,
+      onSuccess: (message) {
+        isLoading.value = false;
+        CustomSnackBar.success(title: "Reply", message: message);
+      },
+      onError: ((message) {
+        isLoading.value = false;
+        CustomSnackBar.error(title: "Reply", message: message);
+      }),
+    );
   }
 }

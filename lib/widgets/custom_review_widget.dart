@@ -92,6 +92,7 @@ class ReviewBox extends StatelessWidget {
             children: [
               Expanded(
                 child: TextField(
+                  controller: controller.commentReplyController,
                   decoration: InputDecoration(
                     hintText: "Write a reply...",
                     isDense: true,
@@ -119,15 +120,22 @@ class ReviewBox extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4),
-              IconButton(
-                icon: Icon(
-                  Icons.send,
-                  color:
-                      isDark
-                          ? AppColors.primaryColor
-                          : AppColors.secondaryColor,
+              Obx(
+                () => IconButton(
+                  icon: Icon(
+                    Icons.send,
+                    color:
+                        isDark
+                            ? AppColors.primaryColor
+                            : AppColors.secondaryColor,
+                  ),
+                  onPressed:
+                      controller.isLoading.value
+                          ? null
+                          : () {
+                            controller.replyReview(reviews.id.toString());
+                          },
                 ),
-                onPressed: () {},
               ),
             ],
           ),

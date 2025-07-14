@@ -13,4 +13,5 @@ class Api {
       "$baseUrl/forgot-password/verify-otp";
   static const String resetPasswordUrl = "$baseUrl/forgot-password/reset";
   static const String googleSignInUrl = "$baseUrl/auth/google/login";
+  static const String replyReviewUrl = "$baseUrl/reviews";
 }

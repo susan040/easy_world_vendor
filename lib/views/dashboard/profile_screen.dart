@@ -208,7 +208,100 @@ class ProfileScreen extends StatelessWidget {
               iconPath: ImagePath.logOut,
               title: "Log Out",
               onTap: () {
-                coreController.logOut();
+                Get.dialog(
+                  AlertDialog(
+                    backgroundColor:
+                        isDark ? AppColors.darkModeColor : AppColors.extraWhite,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    title: Center(
+                      child: Text(
+                        "Confirm Logout",
+                        style: CustomTextStyles.f14W600(
+                          color:
+                              isDark
+                                  ? AppColors.extraWhite
+                                  : AppColors.blackColor,
+                        ),
+                      ),
+                    ),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Are you sure you want to log out?",
+                          style: CustomTextStyles.f12W400(
+                            color:
+                                isDark
+                                    ? AppColors.extraWhite
+                                    : AppColors.secondaryTextColor,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 100,
+                              height: 40,
+                              child: OutlinedButton(
+                                onPressed: () => Get.back(),
+                                style: OutlinedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  side: BorderSide(
+                                    color:
+                                        isDark
+                                            ? AppColors.extraWhite
+                                            : AppColors.primaryColor,
+                                  ),
+                                ),
+                                child: Text(
+                                  "Cancel",
+                                  style: CustomTextStyles.f12W500(
+                                    color:
+                                        isDark
+                                            ? AppColors.extraWhite
+                                            : AppColors.primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            SizedBox(
+                              width: 100,
+                              height: 40,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Get.back();
+                                  coreController.logOut();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      isDark
+                                          ? AppColors.primaryColor
+                                          : AppColors.secondaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                ),
+                                child: Text(
+                                  "Logout",
+                                  style: CustomTextStyles.f12W600(
+                                    color: AppColors.extraWhite,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
               },
               isLogout: true,
               isDark: isDark,
