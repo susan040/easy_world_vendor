@@ -10,6 +10,7 @@ class ReviewBox extends StatelessWidget {
   final bool isDark;
   final Reviews reviews;
   final controller = Get.put(ProductsScreenController());
+
   ReviewBox({Key? key, required this.isDark, required this.reviews})
     : super(key: key);
 
@@ -38,7 +39,7 @@ class ReviewBox extends StatelessWidget {
               Row(
                 children: List.generate(5, (index) {
                   return Icon(
-                    index < int.parse(reviews.rating ?? "")
+                    index < int.parse(reviews.rating ?? "0")
                         ? Icons.star
                         : Icons.star_border,
                     size: 16,
@@ -48,7 +49,10 @@ class ReviewBox extends StatelessWidget {
               ),
             ],
           ),
+
           const SizedBox(height: 8),
+
+          /// Customer comment
           Text(
             reviews.comment ?? "",
             style: CustomTextStyles.f12W400(
@@ -58,7 +62,10 @@ class ReviewBox extends StatelessWidget {
                       : AppColors.secondaryTextColor,
             ),
           ),
+
           const SizedBox(height: 10),
+
+          /// Images shown in review
           (imageUrls.isNotEmpty)
               ? SizedBox(
                 height: 50,
@@ -87,7 +94,111 @@ class ReviewBox extends StatelessWidget {
                 ),
               )
               : const SizedBox.shrink(),
-          const SizedBox(height: 14),
+
+          const SizedBox(height: 6),
+
+          Obx(() {
+            final replies = controller.getRepliesForReview(
+              reviews.id.toString(),
+            );
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Divider(),
+                Text(
+                  "Your Replies",
+                  style: CustomTextStyles.f12W500(
+                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                if (replies.isEmpty)
+                  Text(
+                    "No reply yet.",
+                    style: CustomTextStyles.f12W400(
+                      color:
+                          isDark
+                              ? AppColors.extraWhite.withOpacity(0.8)
+                              : AppColors.secondaryTextColor,
+                    ),
+                  )
+                else
+                  ...replies.map(
+                    (re) => Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color:
+                            isDark
+                                ? AppColors.blackColor.withOpacity(0.4)
+                                : Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          /// Seller name (with fallback if null)
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.storefront,
+                                size: 14,
+                                color: AppColors.primaryColor,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                re.vendor?.storeName ?? "Seller",
+                                style: CustomTextStyles.f12W500(
+                                  color:
+                                      isDark
+                                          ? AppColors.primaryColor
+                                          : Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const SizedBox(height: 6),
+
+                          /// Reply message
+                          Text(
+                            re.reply ?? '',
+                            style: CustomTextStyles.f12W400(
+                              color:
+                                  isDark
+                                      ? AppColors.extraWhite
+                                      : AppColors.blackColor,
+                            ),
+                          ),
+
+                          /// Timestamp
+                          if (re.createdAt != null) ...[
+                            const SizedBox(height: 6),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Text(
+                                re.createdAt!.split("T").first, // just the date
+                                style: CustomTextStyles.f10W400(
+                                  color:
+                                      isDark
+                                          ? AppColors.extraWhite.withOpacity(
+                                            0.5,
+                                          )
+                                          : Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          }),
+          const Divider(),
           Row(
             children: [
               Expanded(

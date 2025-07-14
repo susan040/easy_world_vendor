@@ -23,7 +23,10 @@ class ProductsWidget extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Get.to(
-            () => ProductDescriptionScreen(isDark: isDark, products: products),
+            () => ProductDescriptionScreen(
+              isDark: isDark,
+              productId: products.id.toString(),
+            ),
           );
         },
         child: Container(

@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:easy_world_vendor/models/products.dart';
+import 'package:easy_world_vendor/models/review_replies.dart';
 import 'package:easy_world_vendor/models/reviews.dart';
+import 'package:easy_world_vendor/repo/get_product_by_id_repo.dart';
 import 'package:easy_world_vendor/repo/get_products_repo.dart';
+import 'package:easy_world_vendor/repo/get_review_replies_repo.dart';
 import 'package:easy_world_vendor/repo/get_reviews_repo.dart';
 import 'package:easy_world_vendor/repo/reply_review_repo.dart';
 import 'package:easy_world_vendor/utils/custom_snackbar.dart';
@@ -13,14 +16,16 @@ class ProductsScreenController extends GetxController {
   RxList<Data> allProductsFullList = <Data>[].obs;
   RxList<Data> allProductLists = <Data>[].obs;
   RxList<Reviews> allReviewsLists = <Reviews>[].obs;
+  RxList<ReviewReplies> allReviewsRepliedLists = <ReviewReplies>[].obs;
   final commentReplyController = TextEditingController();
   var isLoading = true.obs;
   RxString searchText = ''.obs;
-
+  var product = Rxn<Data>();
   @override
   void onInit() {
     super.onInit();
     getAllProducts();
+    getAllReviewsReplied();
   }
 
   getAllProducts() async {
@@ -29,6 +34,35 @@ class ProductsScreenController extends GetxController {
       onSuccess: (Products productModel) {
         allProductsFullList.assignAll(productModel.data ?? []);
         allProductLists.assignAll(allProductsFullList);
+        isLoading.value = false;
+      },
+      onError: (msg) {
+        isLoading.value = false;
+        print("Error: $msg");
+      },
+    );
+  }
+
+  void fetchProductById(String id) {
+    isLoading.value = true;
+    GetProductByIdRepo.getProductByIdRepo(
+      productId: id,
+      onSuccess: (data) {
+        product.value = data;
+        isLoading.value = false;
+      },
+      onError: (msg) {
+        isLoading.value = false;
+        Get.snackbar("Error", msg);
+      },
+    );
+  }
+
+  getAllReviewsReplied() async {
+    isLoading.value = true;
+    await GetReviewRepliesRepo.getReviewRepliesRepo(
+      onSuccess: (replies) {
+        allReviewsRepliedLists.assignAll(replies);
         isLoading.value = false;
       },
       onError: (msg) {
@@ -56,6 +90,12 @@ class ProductsScreenController extends GetxController {
     } catch (e) {
       return Future.error("Something went wrong");
     }
+  }
+
+  List<ReviewReplies> getRepliesForReview(String reviewId) {
+    return allReviewsRepliedLists
+        .where((e) => e.review?.id.toString() == reviewId)
+        .toList();
   }
 
   double calculateAverageRating(List<Reviews> reviewsList) {
@@ -93,19 +133,16 @@ class ProductsScreenController extends GetxController {
 
   void replyReview(String reviewId) async {
     if (commentReplyController.text.trim().isEmpty) return;
-
-    // Save & clear immediately to improve responsiveness
     final replyText = commentReplyController.text.trim();
     commentReplyController.clear();
-    FocusManager.instance.primaryFocus?.unfocus(); // Dismiss keyboard
-
+    FocusManager.instance.primaryFocus?.unfocus();
     isLoading.value = true;
-
     await ReplyReviewRepo.replyReviewRepo(
       reviewId: reviewId,
       reply: replyText,
-      onSuccess: (message) {
+      onSuccess: (message) async {
         isLoading.value = false;
+        await getAllReviewsReplied();
         CustomSnackBar.success(title: "Reply", message: message);
       },
       onError: ((message) {
