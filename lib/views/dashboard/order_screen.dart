@@ -2,9 +2,11 @@ import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.d
 import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
+import 'package:easy_world_vendor/widgets/order_filter_widget.dart';
 import 'package:easy_world_vendor/widgets/order_screen_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class OrderScreen extends StatelessWidget {
   final c = Get.put(OrderScreenController());
@@ -30,6 +32,45 @@ class OrderScreen extends StatelessWidget {
           backgroundColor:
               isDark ? AppColors.darkModeColor : AppColors.extraWhite,
           elevation: 0,
+          actions: [
+            InkWell(
+              onTap: () {
+                Get.bottomSheet(
+                  OrderFilterSheet(
+                    onFilterSelected: (start, end) {
+                      if (start.year <= 2000) {
+                        c.clearDateFilter();
+                      } else {
+                        c.filterOrdersByDate(start, end);
+                      }
+                    },
+                  ),
+                  isScrollControlled: true,
+                );
+              },
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.filter_list,
+                    size: 20,
+                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4, right: 18),
+                    child: Text(
+                      "Filter",
+                      style: CustomTextStyles.f12W600(
+                        color:
+                            isDark
+                                ? AppColors.extraWhite
+                                : AppColors.blackColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
           bottom: TabBar(
             labelPadding: EdgeInsets.symmetric(horizontal: 12),
             labelColor: AppColors.primaryColor,
@@ -65,39 +106,60 @@ class OrderScreen extends StatelessWidget {
         body: SafeArea(
           child: TabBarView(
             children: [
-              Obx(
-                () =>
-                    (c.isLoading.value)
-                        ? SizedBox(
-                          height: 100,
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
-                        : c.allOrderLists.isEmpty
-                        ? SizedBox(
-                          height: 100,
-                          child: Center(
-                            child: Text(
-                              "No orders",
-                              style: CustomTextStyles.f14W400(
-                                color: AppColors.textGreyColor,
+              Obx(() {
+                if (c.isLoading.value) {
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 14,
+                        right: 14,
+                        top: 10,
+                      ),
+                      child: Shimmer.fromColors(
+                        baseColor:
+                            isDark ? Colors.grey[800]! : Colors.grey[300]!,
+                        highlightColor:
+                            isDark ? Colors.grey[700]! : Colors.grey[100]!,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: List.generate(5, (index) {
+                            return Container(
+                              width: double.infinity,
+                              margin: const EdgeInsets.only(bottom: 10),
+                              height: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                            ),
-                          ),
-                        )
-                        : ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: c.allOrderLists.length,
-                          itemBuilder: (context, index) {
-                            final Orders orders = c.allOrderLists[index];
-                            return OrderCardWidget(
-                              isDark: isDark,
-                              orders: orders,
                             );
-                          },
+                          }),
                         ),
-              ),
+                      ),
+                    ),
+                  );
+                } else if (c.filteredOrderLists.isEmpty) {
+                  return SizedBox(
+                    height: 100,
+                    child: Center(
+                      child: Text(
+                        "No orders",
+                        style: CustomTextStyles.f14W400(
+                          color: AppColors.textGreyColor,
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: c.filteredOrderLists.length,
+                    itemBuilder: (context, index) {
+                      final Orders orders = c.filteredOrderLists[index];
+                      return OrderCardWidget(isDark: isDark, orders: orders);
+                    },
+                  );
+                }
+              }),
               Obx(() {
                 if (c.isLoading.value) {
                   return SizedBox(

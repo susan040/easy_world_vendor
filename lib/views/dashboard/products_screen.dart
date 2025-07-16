@@ -6,6 +6,7 @@ import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_textfield.dart';
 import 'package:easy_world_vendor/widgets/products_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductsScreen extends StatelessWidget {
   final c = Get.put(ProductsScreenController());
@@ -61,10 +62,25 @@ class ProductsScreen extends StatelessWidget {
               child: Obx(
                 () =>
                     c.isLoading.value
-                        ? SizedBox(
-                          height: 100,
-                          child: const Center(
-                            child: CircularProgressIndicator(),
+                        ? SingleChildScrollView(
+                          child: Shimmer.fromColors(
+                            baseColor:
+                                isDark ? Colors.grey[800]! : Colors.grey[300]!,
+                            highlightColor:
+                                isDark ? Colors.grey[700]! : Colors.grey[100]!,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: List.generate(5, (index) {
+                                return Container(
+                                  width: double.infinity,
+                                  margin: const EdgeInsets.only(bottom: 12),
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                );
+                              }),
+                            ),
                           ),
                         )
                         : c.allProductLists.isEmpty

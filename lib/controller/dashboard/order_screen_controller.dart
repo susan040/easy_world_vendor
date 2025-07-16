@@ -8,8 +8,10 @@ import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 
 class OrderScreenController extends GetxController {
   RxList<Orders> allOrderLists = <Orders>[].obs;
+  RxList<Orders> filteredOrderLists = <Orders>[].obs;
   var isLoading = true.obs;
-
+  DateTime? filterStartDate;
+  DateTime? filterEndDate;
   @override
   void onInit() {
     super.onInit();
@@ -21,6 +23,7 @@ class OrderScreenController extends GetxController {
     await GetOrdersRepo.getOrdersRepo(
       onSuccess: (order) {
         allOrderLists.assignAll(order);
+        applyCurrentFilter();
         isLoading.value = false;
       },
       onError: (msg) {
@@ -61,7 +64,6 @@ class OrderScreenController extends GetxController {
 
         int index = allOrderLists.indexWhere((o) => o.id.toString() == orderId);
         if (index != -1) {
-          // Clone the order to create a new instance with updated status
           final updatedOrder = Orders.fromJson(allOrderLists[index].toJson());
           updatedOrder.status = status;
           allOrderLists[index] = updatedOrder;
@@ -75,5 +77,35 @@ class OrderScreenController extends GetxController {
         CustomSnackBar.error(title: "Order", message: message);
       }),
     );
+  }
+
+  void applyCurrentFilter() {
+    if (filterStartDate == null || filterEndDate == null) {
+      filteredOrderLists.assignAll(allOrderLists);
+      return;
+    }
+
+    filteredOrderLists.assignAll(
+      allOrderLists.where((order) {
+        final createdAt = DateTime.tryParse(order.createdAt ?? '');
+        if (createdAt == null) return false;
+        return createdAt.isAfter(
+              filterStartDate!.subtract(const Duration(days: 1)),
+            ) &&
+            createdAt.isBefore(filterEndDate!.add(const Duration(days: 1)));
+      }).toList(),
+    );
+  }
+
+  void filterOrdersByDate(DateTime start, DateTime end) {
+    filterStartDate = start;
+    filterEndDate = end;
+    applyCurrentFilter();
+  }
+
+  void clearDateFilter() {
+    filterStartDate = null;
+    filterEndDate = null;
+    applyCurrentFilter();
   }
 }
