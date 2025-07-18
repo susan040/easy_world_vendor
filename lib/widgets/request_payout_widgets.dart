@@ -1,6 +1,8 @@
+import 'package:easy_world_vendor/controller/dashboard/exchange_rate_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class WalletWidget extends StatelessWidget {
   const WalletWidget({super.key, required this.isDark});
@@ -72,10 +74,18 @@ class WalletWidget extends StatelessWidget {
             style: CustomTextStyles.f14W400(color: Colors.white70),
           ),
           const SizedBox(height: 2),
-          Text(
-            "\$320.00",
-            style: CustomTextStyles.f32W700(color: AppColors.extraWhite),
-          ),
+          Obx(() {
+            final exchangeRateController = Get.put(ExchangeRateController());
+            final convertedPrice = exchangeRateController
+                .convertPriceFromAUD(320.00.toString())
+                .toStringAsFixed(2);
+            final code = exchangeRateController.selectedCountryData['code'];
+            final symbol = code == 'NPR' ? 'Rs.' : '\$';
+            return Text(
+              "$symbol$convertedPrice",
+              style: CustomTextStyles.f32W700(color: AppColors.extraWhite),
+            );
+          }),
           const SizedBox(height: 6),
           const Text(
             "Available for withdrawal",
@@ -189,12 +199,25 @@ class HistoryRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "\$$amount",
-                  style: CustomTextStyles.f14W600(
-                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
-                  ),
-                ),
+                Obx(() {
+                  final exchangeRateController = Get.put(
+                    ExchangeRateController(),
+                  );
+                  final convertedPrice = exchangeRateController
+                      .convertPriceFromAUD(amount.toString())
+                      .toStringAsFixed(2);
+                  final code =
+                      exchangeRateController.selectedCountryData['code'];
+                  final symbol = code == 'NPR' ? 'Rs.' : '\$';
+                  return Text(
+                    "$symbol$convertedPrice",
+                    style: CustomTextStyles.f14W600(
+                      color:
+                          isDark ? AppColors.extraWhite : AppColors.blackColor,
+                    ),
+                  );
+                }),
+
                 Text(
                   date,
                   style: CustomTextStyles.f12W400(
