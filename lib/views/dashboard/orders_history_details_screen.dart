@@ -4,6 +4,7 @@ import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/widgets/custom/elevated_button.dart';
 import 'package:easy_world_vendor/widgets/order_history_details_widget.dart';
+import 'package:easy_world_vendor/widgets/order_payment_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -40,7 +41,6 @@ class OrderHistoryDetailScreen extends StatelessWidget {
         ),
       ),
       body: Obx(() {
-        // Get the latest order from controller by id reactively
         final orders = controller.allOrderLists.firstWhereOrNull(
           (o) => o.id == orderId,
         );
@@ -52,9 +52,8 @@ class OrderHistoryDetailScreen extends StatelessWidget {
         return SingleChildScrollView(
           child: Column(
             children: [
-              // Your existing UI here, but replace 'orders' with this reactive one
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                margin: EdgeInsets.symmetric(horizontal: 16),
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 width: double.infinity,
                 decoration: BoxDecoration(
@@ -139,7 +138,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
               OrderHistoryDetailsWidget(isDark: isDark, orders: orders),
 
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                margin: EdgeInsets.symmetric(horizontal: 16),
                 padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                 width: double.infinity,
                 decoration: BoxDecoration(

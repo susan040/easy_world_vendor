@@ -86,6 +86,7 @@ class Customer {
   int? userId;
   String? fullName;
   String? email;
+  String? country;
   String? countryCode;
   String? phone;
   String? currencyPreference;
@@ -101,6 +102,7 @@ class Customer {
     this.userId,
     this.fullName,
     this.email,
+    this.country,
     this.countryCode,
     this.phone,
     this.currencyPreference,
@@ -117,6 +119,7 @@ class Customer {
     userId = json['user_id'];
     fullName = json['full_name'];
     email = json['email'];
+    country = json['country'];
     countryCode = json['country_code'];
     phone = json['phone'];
     currencyPreference = json['currency_preference'];
@@ -134,6 +137,7 @@ class Customer {
     data['user_id'] = this.userId;
     data['full_name'] = this.fullName;
     data['email'] = this.email;
+    data['country'] = this.country;
     data['country_code'] = this.countryCode;
     data['phone'] = this.phone;
     data['currency_preference'] = this.currencyPreference;
@@ -332,14 +336,22 @@ class Product {
   String? name;
   String? brand;
   String? sku;
+  String? priceSymbol;
   List<String>? productImages;
 
-  Product({this.name, this.brand, this.sku, this.productImages});
+  Product({
+    this.name,
+    this.brand,
+    this.sku,
+    this.priceSymbol,
+    this.productImages,
+  });
 
   Product.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     brand = json['brand'];
     sku = json['sku'];
+    priceSymbol = json['price_symbol'];
     productImages = json['product_images'].cast<String>();
   }
 
@@ -348,6 +360,7 @@ class Product {
     data['name'] = this.name;
     data['brand'] = this.brand;
     data['sku'] = this.sku;
+    data['price_symbol'] = this.priceSymbol;
     data['product_images'] = this.productImages;
     return data;
   }

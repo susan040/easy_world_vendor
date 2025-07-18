@@ -80,3 +80,36 @@ class EditProfileRepo {
     }
   }
 }
+
+class EditCountryPreferenceRepo {
+  static Future<void> editCountryPreferenceRepo({
+    required String countryPreference,
+    required Function(UsersDetails user, String token, String message)
+    onSuccess,
+    required Function(String message) onError,
+  }) async {
+    var coreController = Get.find<CoreController>();
+    var token = coreController.currentUser.value!.token.toString();
+    var headers = {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    };
+    var body = {"currency_preference": countryPreference};
+    log("Body $body");
+    http.Response response = await http.post(
+      Uri.parse(Api.editProfileUrl),
+      headers: headers,
+      body: body,
+    );
+    dynamic data = jsonDecode(response.body);
+    log("data $data");
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      String accessToken = data["token"].toString();
+      UsersDetails user = UsersDetails.fromJson(data);
+      log(UsersDetails.fromJson(data["data"]).toString());
+      onSuccess(user, accessToken, data['message']);
+    } else {
+      onError(data['message']);
+    }
+  }
+}

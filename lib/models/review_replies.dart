@@ -1,9 +1,11 @@
 List<ReviewReplies> reviewRepliesFromJson(List<dynamic> reviewRepliesJson) =>
     List<ReviewReplies>.from(
       reviewRepliesJson.map(
-        (reviewRepliesListJson) => ReviewReplies.fromJson(reviewRepliesListJson),
+        (reviewRepliesListJson) =>
+            ReviewReplies.fromJson(reviewRepliesListJson),
       ),
     );
+
 class ReviewReplies {
   int? id;
   Review? review;
@@ -121,6 +123,7 @@ class Product {
   int? id;
   String? name;
   String? brand;
+  String? priceSymbol;
   String? price;
   String? description;
   List<String>? productImages;
@@ -129,6 +132,7 @@ class Product {
     this.id,
     this.name,
     this.brand,
+    this.priceSymbol,
     this.price,
     this.description,
     this.productImages,
@@ -138,6 +142,7 @@ class Product {
     id = json['id'];
     name = json['name'];
     brand = json['brand'];
+    priceSymbol = json['price_symbol'];
     price = json['price'];
     description = json['description'];
     productImages = json['product_images'].cast<String>();
@@ -148,6 +153,7 @@ class Product {
     data['id'] = this.id;
     data['name'] = this.name;
     data['brand'] = this.brand;
+    data['price_symbol'] = this.priceSymbol;
     data['price'] = this.price;
     data['description'] = this.description;
     data['product_images'] = this.productImages;

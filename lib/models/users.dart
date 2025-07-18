@@ -27,7 +27,9 @@ class Data {
   String? storeName;
   String? storeDescription;
   String? email;
+  String? country;
   String? countryCode;
+  String? currencyPreference;
   String? phone;
   bool? approved;
   String? approvedAt;
@@ -40,7 +42,9 @@ class Data {
     this.storeName,
     this.storeDescription,
     this.email,
+    this.country,
     this.countryCode,
+    this.currencyPreference,
     this.phone,
     this.approved,
     this.approvedAt,
@@ -54,7 +58,9 @@ class Data {
     storeName = json['store_name'];
     storeDescription = json['store_description'];
     email = json['email'];
+    country = json['country'];
     countryCode = json['country_code'];
+    currencyPreference = json['currency_preference'];
     phone = json['phone'];
     approved = json['approved'];
     approvedAt = json['approved_at'];
@@ -69,7 +75,9 @@ class Data {
     data['store_name'] = this.storeName;
     data['store_description'] = this.storeDescription;
     data['email'] = this.email;
+    data['country'] = this.country;
     data['country_code'] = this.countryCode;
+    data['currency_preference'] = this.currencyPreference;
     data['phone'] = this.phone;
     data['approved'] = this.approved;
     data['approved_at'] = this.approvedAt;

@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_world_vendor/controller/dashboard/exchange_rate_controller.dart';
 import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
+import 'package:easy_world_vendor/widgets/order_payment_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -28,10 +30,13 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
           : (voucher.type == "fixed" ? value : 0.0);
     }
 
-    double subtotal = double.parse(orders.items!.first.price ?? "") + 20;
-    double totalAmount = subtotal - getDiscountAmount(orders.voucher);
+    double subtotal =
+        double.parse(orders.items!.first.price ?? "") *
+        (double.parse(orders.items!.first.quantity ?? "1"));
+    double total = subtotal + 20.00;
+    double totalAmount = total - getDiscountAmount(orders.voucher);
     return Container(
-      margin: EdgeInsets.only(left: 16, right: 16, top: 6, bottom: 6),
+      margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
       padding: EdgeInsets.only(left: 14, right: 14, top: 14, bottom: 12),
       width: double.infinity,
       decoration: BoxDecoration(
@@ -98,7 +103,7 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
                                   : AppColors.secondaryTextColor,
                         ),
                       ),
-                      const SizedBox(width: 115),
+                      const SizedBox(width: 110),
                       Text(
                         "Qty: ${orders.items!.first.quantity ?? ""}",
                         style: CustomTextStyles.f11W400(
@@ -113,12 +118,23 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "\$${orders.items!.first.price ?? ""}",
-                        style: CustomTextStyles.f16W600(
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
+                      Obx(() {
+                        final exchangeRateController = Get.put(
+                          ExchangeRateController(),
+                        );
+                        final convertedPrice = exchangeRateController
+                            .convertPriceFromAUD(orders.items!.first.price)
+                            .toStringAsFixed(2);
+                        final code =
+                            exchangeRateController.selectedCountryData['code'];
+                        final symbol = code == 'NPR' ? 'Rs.' : '\$';
+                        return Text(
+                          "$symbol$convertedPrice",
+                          style: CustomTextStyles.f14W600(
+                            color: AppColors.primaryColor,
+                          ),
+                        );
+                      }),
                     ],
                   ),
                 ],
@@ -128,23 +144,36 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
           SizedBox(height: 6),
           Divider(),
           SizedBox(height: 6),
-
           OrderRowItem("Order No:", "${orders.orderNo ?? ""}", isBold: true),
           SizedBox(height: 12),
-          OrderRowItem("Subtotal (1 items)", "\$$subtotal"),
-          SizedBox(height: 12),
-          OrderRowItem("Shipping Fee", "\$20.00"),
-          SizedBox(height: 12),
-          OrderRowItem(
-            "App Voucher",
-            "-\$${getDiscountAmount(orders.voucher)}",
-            isRejected: true,
+          AmountRow(
+            title: "Subtotal (${orders.items?.first.quantity ?? 0} items)",
+            amount: subtotal,
+            isDark: isDark,
           ),
           SizedBox(height: 12),
-          OrderRowItem("Shipping Fee Voucher", "-\$4.00", isRejected: true),
+          AmountRow(title: "Shipping Fee", amount: 20.00, isDark: isDark),
           SizedBox(height: 12),
-          OrderRowItem("Total", "\$$totalAmount", isBold: true),
-
+          AmountRow(
+            title: "App Voucher",
+            amount: getDiscountAmount(orders.voucher),
+            isDiscount: true,
+            isDark: isDark,
+          ),
+          SizedBox(height: 12),
+          AmountRow(
+            title: "Shipping Voucher",
+            amount: getDiscountAmount(orders.voucher),
+            isDiscount: true,
+            isDark: isDark,
+          ),
+          SizedBox(height: 12),
+          AmountRow(
+            title: "Total",
+            amount: totalAmount,
+            isBold: true,
+            isDark: isDark,
+          ),
           SizedBox(height: 12),
           Divider(),
           SizedBox(height: 8),
@@ -159,72 +188,6 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
           Divider(),
         ],
       ),
-    );
-  }
-}
-
-class OrderRowItem extends StatelessWidget {
-  final String leftText;
-  final String rightText;
-  final bool isBold;
-  final bool isRejected;
-  final bool rightBold;
-
-  const OrderRowItem(
-    this.leftText,
-    this.rightText, {
-    super.key,
-    this.isBold = false,
-    this.isRejected = false,
-    this.rightBold = true,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
-
-    final Color textColor =
-        isDark ? AppColors.extraWhite : AppColors.blackColor;
-    final Color secondaryColor =
-        isDark ? AppColors.extraWhite.withOpacity(0.7) : AppColors.blackColor;
-    Color getRightTextColor() {
-      switch (rightText.toLowerCase()) {
-        case 'pending':
-          return AppColors.yellow;
-        case 'confirmed':
-          return AppColors.darkblue;
-        case 'seller to pack':
-          return AppColors.primaryColor;
-        case 'packed':
-          return AppColors.lightblue;
-        case 'delivered':
-          return AppColors.accepted;
-        case 'cancelled':
-          return AppColors.redColor;
-        case 'to pay':
-          return Colors.brown;
-        default:
-          return isRejected
-              ? AppColors.rejected
-              : (rightBold && isBold ? textColor : secondaryColor);
-      }
-    }
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          leftText,
-          style:
-              isBold
-                  ? CustomTextStyles.f12W600(color: textColor)
-                  : CustomTextStyles.f12W400(color: textColor),
-        ),
-        Text(
-          rightText,
-          style: CustomTextStyles.f12W400(color: getRightTextColor()),
-        ),
-      ],
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/views/dashboard/full_image_view_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class ReviewBox extends StatelessWidget {
   final bool isDark;
@@ -21,8 +22,18 @@ class ReviewBox extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.only(right: 10, left: 10, top: 10, bottom: 14),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.blackColor.withOpacity(0.3) : AppColors.lGrey,
+        color:
+            isDark
+                ? AppColors.blackColor.withOpacity(0.3)
+                : AppColors.extraWhite,
         borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: isDark ? Colors.transparent : AppColors.lGrey,
+            blurRadius: 1,
+            spreadRadius: 2,
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,12 +60,10 @@ class ReviewBox extends StatelessWidget {
               ),
             ],
           ),
-
-          const SizedBox(height: 8),
-
-          /// Customer comment
+          const SizedBox(height: 6),
           Text(
             reviews.comment ?? "",
+            textAlign: TextAlign.justify,
             style: CustomTextStyles.f12W400(
               color:
                   isDark
@@ -62,10 +71,7 @@ class ReviewBox extends StatelessWidget {
                       : AppColors.secondaryTextColor,
             ),
           ),
-
-          const SizedBox(height: 10),
-
-          /// Images shown in review
+          const SizedBox(height: 6),
           (imageUrls.isNotEmpty)
               ? SizedBox(
                 height: 50,
@@ -94,111 +100,104 @@ class ReviewBox extends StatelessWidget {
                 ),
               )
               : const SizedBox.shrink(),
-
           const SizedBox(height: 6),
-
+          Text(
+            "Reviewed on ${reviews.createdAt != null ? DateFormat('MMM dd, yyyy, hh:mm a').format(DateTime.parse(reviews.createdAt!)) : ""}",
+            style: CustomTextStyles.f11W400(
+              color:
+                  isDark
+                      ? AppColors.extraWhite.withOpacity(0.5)
+                      : AppColors.secondaryTextColor,
+            ),
+          ),
+          const SizedBox(height: 6),
           Obx(() {
             final replies = controller.getRepliesForReview(
               reviews.id.toString(),
             );
 
+            if (replies.isEmpty) return SizedBox();
+
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Divider(),
-                Text(
-                  "Your Replies",
-                  style: CustomTextStyles.f12W500(
-                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
-                  ),
-                ),
-                const SizedBox(height: 8),
-
-                if (replies.isEmpty)
-                  Text(
-                    "No reply yet.",
-                    style: CustomTextStyles.f12W400(
-                      color:
-                          isDark
-                              ? AppColors.extraWhite.withOpacity(0.8)
-                              : AppColors.secondaryTextColor,
-                    ),
-                  )
-                else
-                  ...replies.map(
-                    (re) => Container(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color:
-                            isDark
-                                ? AppColors.blackColor.withOpacity(0.4)
-                                : Colors.grey.shade200,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          /// Seller name (with fallback if null)
-                          Row(
+              children:
+                  replies
+                      .map(
+                        (re) => Container(
+                          margin: const EdgeInsets.only(bottom: 10, top: 4),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color:
+                                isDark
+                                    ? AppColors.blackColor.withOpacity(0.4)
+                                    : Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Icon(
-                                Icons.storefront,
-                                size: 14,
-                                color: AppColors.primaryColor,
+                              /// Seller name
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.storefront,
+                                    size: 14,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    re.vendor?.storeName ?? "Seller",
+                                    style: CustomTextStyles.f12W500(
+                                      color:
+                                          isDark
+                                              ? AppColors.primaryColor
+                                              : Colors.black87,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 4),
+
+                              const SizedBox(height: 6),
+
+                              /// Reply message
                               Text(
-                                re.vendor?.storeName ?? "Seller",
-                                style: CustomTextStyles.f12W500(
+                                re.reply ?? '',
+                                style: CustomTextStyles.f12W400(
                                   color:
                                       isDark
-                                          ? AppColors.primaryColor
-                                          : Colors.black87,
+                                          ? AppColors.extraWhite
+                                          : AppColors.blackColor,
                                 ),
                               ),
+
+                              /// Timestamp
+                              if (re.createdAt != null) ...[
+                                const SizedBox(height: 6),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    re.createdAt != null
+                                        ? DateFormat(
+                                          'MMM dd, yyyy, hh:mm a',
+                                        ).format(DateTime.parse(re.createdAt!))
+                                        : "",
+                                    style: CustomTextStyles.f10W400(
+                                      color:
+                                          isDark
+                                              ? AppColors.extraWhite
+                                                  .withOpacity(0.5)
+                                              : AppColors.secondaryTextColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ],
                           ),
-
-                          const SizedBox(height: 6),
-
-                          /// Reply message
-                          Text(
-                            re.reply ?? '',
-                            style: CustomTextStyles.f12W400(
-                              color:
-                                  isDark
-                                      ? AppColors.extraWhite
-                                      : AppColors.blackColor,
-                            ),
-                          ),
-
-                          /// Timestamp
-                          if (re.createdAt != null) ...[
-                            const SizedBox(height: 6),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Text(
-                                re.createdAt!.split("T").first, // just the date
-                                style: CustomTextStyles.f10W400(
-                                  color:
-                                      isDark
-                                          ? AppColors.extraWhite.withOpacity(
-                                            0.5,
-                                          )
-                                          : Colors.grey,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
+                        ),
+                      )
+                      .toList(),
             );
           }),
-          const Divider(),
           Row(
             children: [
               Expanded(

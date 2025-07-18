@@ -1,9 +1,7 @@
-List<Reviews> reviewsFromJson(List<dynamic> reviewsJson) =>
-    List<Reviews>.from(
-      reviewsJson.map(
-        (reviewsListJson) => Reviews.fromJson(reviewsListJson),
-      ),
-    );
+List<Reviews> reviewsFromJson(List<dynamic> reviewsJson) => List<Reviews>.from(
+  reviewsJson.map((reviewsListJson) => Reviews.fromJson(reviewsListJson)),
+);
+
 class Reviews {
   int? id;
   Customer? customer;
@@ -13,20 +11,22 @@ class Reviews {
   List<String>? reviewImages;
   String? createdAt;
 
-  Reviews(
-      {this.id,
-      this.customer,
-      this.product,
-      this.rating,
-      this.comment,
-      this.reviewImages,
-      this.createdAt});
+  Reviews({
+    this.id,
+    this.customer,
+    this.product,
+    this.rating,
+    this.comment,
+    this.reviewImages,
+    this.createdAt,
+  });
 
   Reviews.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    customer = json['customer'] != null
-        ? new Customer.fromJson(json['customer'])
-        : null;
+    customer =
+        json['customer'] != null
+            ? new Customer.fromJson(json['customer'])
+            : null;
     product =
         json['product'] != null ? new Product.fromJson(json['product']) : null;
     rating = json['rating'];
@@ -75,22 +75,26 @@ class Product {
   int? id;
   String? name;
   String? brand;
+  String? priceSymbol;
   String? price;
   String? description;
   List<String>? productImages;
 
-  Product(
-      {this.id,
-      this.name,
-      this.brand,
-      this.price,
-      this.description,
-      this.productImages});
+  Product({
+    this.id,
+    this.name,
+    this.brand,
+    this.priceSymbol,
+    this.price,
+    this.description,
+    this.productImages,
+  });
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     brand = json['brand'];
+    priceSymbol = json['price_symbol'];
     price = json['price'];
     description = json['description'];
     productImages = json['product_images'].cast<String>();
@@ -101,6 +105,7 @@ class Product {
     data['id'] = this.id;
     data['name'] = this.name;
     data['brand'] = this.brand;
+    data['price_symbol'] = this.priceSymbol;
     data['price'] = this.price;
     data['description'] = this.description;
     data['product_images'] = this.productImages;

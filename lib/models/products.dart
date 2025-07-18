@@ -41,6 +41,7 @@ class Data {
   String? sku;
   String? barcode;
   String? brand;
+  String? priceSymbol;
   String? price;
   String? costPrice;
   String? discount;
@@ -53,30 +54,36 @@ class Data {
   String? status;
   bool? isActive;
   String? description;
+  String? averageRating;
+  int? totalReviews;
   List<String>? productImages;
   String? createdAt;
 
-  Data(
-      {this.id,
-      this.name,
-      this.slug,
-      this.sku,
-      this.barcode,
-      this.brand,
-      this.price,
-      this.costPrice,
-      this.discount,
-      this.discountType,
-      this.quantity,
-      this.category,
-      this.tags,
-      this.color,
-      this.size,
-      this.status,
-      this.isActive,
-      this.description,
-      this.productImages,
-      this.createdAt});
+  Data({
+    this.id,
+    this.name,
+    this.slug,
+    this.sku,
+    this.barcode,
+    this.brand,
+    this.priceSymbol,
+    this.price,
+    this.costPrice,
+    this.discount,
+    this.discountType,
+    this.quantity,
+    this.category,
+    this.tags,
+    this.color,
+    this.size,
+    this.status,
+    this.isActive,
+    this.description,
+    this.averageRating,
+    this.totalReviews,
+    this.productImages,
+    this.createdAt,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -85,20 +92,24 @@ class Data {
     sku = json['sku'];
     barcode = json['barcode'];
     brand = json['brand'];
+    priceSymbol = json['price_symbol'];
     price = json['price'];
     costPrice = json['cost_price'];
     discount = json['discount'];
     discountType = json['discount_type'];
     quantity = json['quantity'];
-    category = json['category'] != null
-        ? new Category.fromJson(json['category'])
-        : null;
+    category =
+        json['category'] != null
+            ? new Category.fromJson(json['category'])
+            : null;
     tags = json['tags'].cast<String>();
     color = json['color'].cast<String>();
     size = json['size'].cast<String>();
     status = json['status'];
     isActive = json['is_active'];
     description = json['description'];
+    averageRating = json['average_rating'];
+    totalReviews = json['total_reviews'];
     productImages = json['product_images'].cast<String>();
     createdAt = json['created_at'];
   }
@@ -111,6 +122,7 @@ class Data {
     data['sku'] = this.sku;
     data['barcode'] = this.barcode;
     data['brand'] = this.brand;
+    data['price_symbol'] = this.priceSymbol;
     data['price'] = this.price;
     data['cost_price'] = this.costPrice;
     data['discount'] = this.discount;
@@ -125,6 +137,8 @@ class Data {
     data['status'] = this.status;
     data['is_active'] = this.isActive;
     data['description'] = this.description;
+    data['average_rating'] = this.averageRating;
+    data['total_reviews'] = this.totalReviews;
     data['product_images'] = this.productImages;
     data['created_at'] = this.createdAt;
     return data;

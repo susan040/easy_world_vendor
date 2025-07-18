@@ -1,4 +1,4 @@
-import 'package:easy_world_vendor/controller/dashboard/country_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/exchange_rate_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
@@ -98,7 +98,7 @@ class ProfileOptionTile extends StatelessWidget {
 }
 
 class CountryBottomSheet extends StatelessWidget {
-  final countryController = Get.put(CountryController());
+  final countryController = Get.put(ExchangeRateController());
 
   CountryBottomSheet({super.key});
 
@@ -115,12 +115,14 @@ class CountryBottomSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
+          Text(
             'Choose Country',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: CustomTextStyles.f14W600(
+              color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+            ),
           ),
           const SizedBox(height: 12),
-          ...countryController.countries.map((country) {
+          ...countryController.allCountries.map((country) {
             return ListTile(
               leading: Image.asset(
                 country['flag']!,
@@ -128,10 +130,16 @@ class CountryBottomSheet extends StatelessWidget {
                 height: 24,
                 fit: BoxFit.cover,
               ),
-              title: Text("${country['name']} (${country['code']})"),
+              title: Text(
+                "${country['name']} (${country['code']})",
+                style: CustomTextStyles.f12W400(
+                  color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                ),
+              ),
               onTap: () {
-                countryController.chooseCountry(country['name']!);
-                Get.back(); // dismiss bottom sheet
+                countryController.updateSelectedCountry(country);
+                countryController.editCurrencyPreference();
+                Get.back();
               },
             );
           }).toList(),

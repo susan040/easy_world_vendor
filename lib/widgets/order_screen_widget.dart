@@ -1,3 +1,4 @@
+import 'package:easy_world_vendor/controller/dashboard/exchange_rate_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.dart';
 import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
@@ -17,7 +18,7 @@ class OrderCardWidget extends StatelessWidget {
   Color getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
-        return AppColors.yellow;
+        return AppColors.skyBlue;
       case 'seller to pack':
         return AppColors.primaryColor;
       case 'confirmed':
@@ -56,7 +57,7 @@ class OrderCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 6, bottom: 6),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
       child: InkWell(
         onTap: () {
           Get.to(
@@ -179,15 +180,27 @@ class OrderCardWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "\$${orders.totalAmount ?? ""}",
-                    style: CustomTextStyles.f16W600(
-                      color:
-                          isDark
-                              ? AppColors.primaryColor
-                              : AppColors.secondaryColor,
-                    ),
-                  ),
+                  Obx(() {
+                    final exchangeRateController = Get.put(
+                      ExchangeRateController(),
+                    );
+                    final convertedPrice = exchangeRateController
+                        .convertPriceFromAUD(orders.totalAmount)
+                        .toStringAsFixed(2);
+                    final code =
+                        exchangeRateController.selectedCountryData['code'];
+                    final symbol = code == 'NPR' ? 'Rs.' : '\$';
+                    return Text(
+                      "$symbol$convertedPrice",
+                      style: CustomTextStyles.f16W600(
+                        color:
+                            isDark
+                                ? AppColors.primaryColor
+                                : AppColors.secondaryColor,
+                      ),
+                    );
+                  }),
+
                   InkWell(
                     onTap: () {
                       showDialog(

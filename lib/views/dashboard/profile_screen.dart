@@ -1,5 +1,5 @@
 import 'package:easy_world_vendor/controller/core_controller.dart';
-import 'package:easy_world_vendor/controller/dashboard/country_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/exchange_rate_controller.dart';
 import 'package:easy_world_vendor/controller/theme_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
@@ -18,7 +18,7 @@ import 'package:get/get.dart';
 class ProfileScreen extends StatelessWidget {
   final themeController = Get.put(ThemeController());
   final coreController = Get.put(CoreController());
-  final countryController = Get.put(CountryController());
+  final exchangeRateController = Get.put(ExchangeRateController());
   ProfileScreen({super.key});
 
   @override
@@ -148,7 +148,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             Obx(() {
-              final country = countryController.selectedCountryData;
+              final country = exchangeRateController.selectedCountryData;
 
               return Padding(
                 padding: const EdgeInsets.symmetric(

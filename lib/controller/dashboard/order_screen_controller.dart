@@ -44,7 +44,8 @@ class OrderScreenController extends GetxController {
       onSuccess: (message) {
         isLoading.value = false;
         allOrderLists.removeWhere((order) => order.id == orderId);
-        update();
+        filteredOrderLists.removeWhere((order) => order.id == orderId);
+        getAllOrders();
         CustomSnackBar.success(title: "Order", message: message);
       },
       onError: ((message) {

@@ -4,6 +4,7 @@ import 'package:easy_world_vendor/views/dashboard/full_image_view_screen.dart';
 import 'package:easy_world_vendor/views/dashboard/products_reviews_screen.dart';
 import 'package:easy_world_vendor/widgets/custom_review_widget.dart';
 import 'package:easy_world_vendor/widgets/product_dec_shimmer_widget.dart';
+import 'package:easy_world_vendor/widgets/product_desc_price_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
@@ -134,24 +135,7 @@ class ProductDescriptionScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  priceInfo(
-                    "Unit Price",
-                    "\$${products.costPrice ?? ""}",
-                    isDark,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: priceInfo(
-                      "Purchase Price",
-                      "\$${products.price ?? ""}",
-                      isDark,
-                    ),
-                  ),
-                ],
-              ),
+              PriceWidget(isDark: isDark, products: products),
               const SizedBox(height: 14),
               Text(
                 "Description",
@@ -293,29 +277,6 @@ class ProductDescriptionScreen extends StatelessWidget {
           ),
         );
       }),
-    );
-  }
-
-  Widget priceInfo(String label, String price, bool isDark) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: CustomTextStyles.f12W400(
-            color:
-                isDark
-                    ? AppColors.extraWhite.withOpacity(0.7)
-                    : AppColors.secondaryTextColor,
-          ),
-        ),
-        Text(
-          price,
-          style: CustomTextStyles.f14W700(
-            color: isDark ? AppColors.primaryColor : AppColors.secondaryColor,
-          ),
-        ),
-      ],
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_world_vendor/controller/dashboard/exchange_rate_controller.dart';
 import 'package:easy_world_vendor/models/products.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
@@ -9,13 +10,10 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class ProductsWidget extends StatelessWidget {
-  const ProductsWidget({
-    super.key,
-    required this.isDark,
-    required this.products,
-  });
+  ProductsWidget({super.key, required this.isDark, required this.products});
   final bool isDark;
   final Data products;
+  final exchangeRateController = Get.put(ExchangeRateController());
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -128,15 +126,24 @@ class ProductsWidget extends StatelessWidget {
                                       : AppColors.secondaryTextColor,
                             ),
                           ),
-                          Text(
-                            "\$${products.costPrice ?? ""}",
-                            style: CustomTextStyles.f12W700(
-                              color:
-                                  isDark
-                                      ? AppColors.primaryColor
-                                      : AppColors.secondaryColor,
-                            ),
-                          ),
+                          Obx(() {
+                            final convertedPrice = exchangeRateController
+                                .convertPriceFromAUD(products.costPrice)
+                                .toStringAsFixed(2);
+                            final code =
+                                exchangeRateController
+                                    .selectedCountryData['code'];
+                            final symbol = code == 'NPR' ? 'Rs.' : '\$';
+                            return Text(
+                              "$symbol$convertedPrice",
+                              style: CustomTextStyles.f12W700(
+                                color:
+                                    isDark
+                                        ? AppColors.primaryColor
+                                        : AppColors.secondaryColor,
+                              ),
+                            );
+                          }),
                         ],
                       ),
                       SizedBox(width: 30),
@@ -152,15 +159,24 @@ class ProductsWidget extends StatelessWidget {
                                       : AppColors.secondaryTextColor,
                             ),
                           ),
-                          Text(
-                            "\$${products.price ?? ""}",
-                            style: CustomTextStyles.f12W700(
-                              color:
-                                  isDark
-                                      ? AppColors.primaryColor
-                                      : AppColors.secondaryColor,
-                            ),
-                          ),
+                          Obx(() {
+                            final convertedPrice = exchangeRateController
+                                .convertPriceFromAUD(products.price)
+                                .toStringAsFixed(2);
+                            final code =
+                                exchangeRateController
+                                    .selectedCountryData['code'];
+                            final symbol = code == 'NPR' ? 'Rs.' : '\$';
+                            return Text(
+                              "$symbol$convertedPrice",
+                              style: CustomTextStyles.f12W700(
+                                color:
+                                    isDark
+                                        ? AppColors.primaryColor
+                                        : AppColors.secondaryColor,
+                              ),
+                            );
+                          }),
                         ],
                       ),
                     ],
