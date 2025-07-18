@@ -20,7 +20,7 @@ class ReviewBox extends StatelessWidget {
     final List<String> imageUrls = reviews.reviewImages ?? [];
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.only(right: 10, left: 10, top: 10, bottom: 14),
+      padding: const EdgeInsets.only(right: 10, left: 10, top: 8, bottom: 14),
       decoration: BoxDecoration(
         color:
             isDark
@@ -40,31 +40,48 @@ class ReviewBox extends StatelessWidget {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                reviews.customer!.name ?? "",
-                style: CustomTextStyles.f14W600(
-                  color: isDark ? AppColors.extraWhite : AppColors.blackColor,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    reviews.customer!.name ?? "",
+                    style: CustomTextStyles.f14W600(
+                      color:
+                          isDark ? AppColors.extraWhite : AppColors.blackColor,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      ...List.generate(5, (index) {
+                        return Icon(
+                          index < int.parse(reviews.rating ?? "0")
+                              ? Icons.star
+                              : Icons.star_border,
+                          size: 16,
+                          color: Colors.amber,
+                        );
+                      }),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ],
               ),
-              Row(
-                children: List.generate(5, (index) {
-                  return Icon(
-                    index < int.parse(reviews.rating ?? "0")
-                        ? Icons.star
-                        : Icons.star_border,
-                    size: 16,
-                    color: Colors.amber,
-                  );
-                }),
+              GestureDetector(
+                onTap: () {
+                  controller.deleteProductReview(reviews.id!);
+                },
+                child: Icon(Icons.delete, size: 22, color: AppColors.rejected),
               ),
             ],
           ),
+
           const SizedBox(height: 6),
           Text(
             reviews.comment ?? "",
             textAlign: TextAlign.justify,
-            style: CustomTextStyles.f12W400(
+            style: CustomTextStyles.f11W400(
               color:
                   isDark
                       ? AppColors.extraWhite.withOpacity(0.8)
@@ -136,22 +153,41 @@ class ReviewBox extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              /// Seller name
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Icon(
-                                    Icons.storefront,
-                                    size: 14,
-                                    color: AppColors.primaryColor,
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.storefront,
+                                        size: 14,
+                                        color: AppColors.primaryColor,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        re.vendor?.storeName ?? "Seller",
+                                        style: CustomTextStyles.f12W500(
+                                          color:
+                                              isDark
+                                                  ? AppColors.primaryColor
+                                                  : Colors.black87,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    re.vendor?.storeName ?? "Seller",
-                                    style: CustomTextStyles.f12W500(
-                                      color:
-                                          isDark
-                                              ? AppColors.primaryColor
-                                              : Colors.black87,
+                                  GestureDetector(
+                                    onTap: () {
+                                      controller.deleteReviewReply(re.id!);
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 8),
+                                      child: Icon(
+                                        Icons.delete_outline,
+                                        size: 18,
+                                        color: AppColors.rejected,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -203,9 +239,11 @@ class ReviewBox extends StatelessWidget {
               Expanded(
                 child: TextField(
                   controller: controller.commentReplyController,
+                  textCapitalization: TextCapitalization.sentences,
                   decoration: InputDecoration(
                     hintText: "Write a reply...",
                     isDense: true,
+
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 12,
                       horizontal: 16,

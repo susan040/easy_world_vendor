@@ -14,4 +14,6 @@ class Api {
   static const String resetPasswordUrl = "$baseUrl/forgot-password/reset";
   static const String googleSignInUrl = "$baseUrl/auth/google/login";
   static const String replyReviewUrl = "$baseUrl/reviews";
+  static const String deleteReviewUrl = "$baseUrl/review";
+  static const String deleteReplyUrl = "$baseUrl/reply";
 }

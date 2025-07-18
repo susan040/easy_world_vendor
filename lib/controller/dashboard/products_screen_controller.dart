@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:easy_world_vendor/models/products.dart';
 import 'package:easy_world_vendor/models/review_replies.dart';
 import 'package:easy_world_vendor/models/reviews.dart';
+import 'package:easy_world_vendor/repo/delete_product_review_repo.dart';
+import 'package:easy_world_vendor/repo/delete_review_reply_repo.dart';
 import 'package:easy_world_vendor/repo/get_product_by_id_repo.dart';
 import 'package:easy_world_vendor/repo/get_products_repo.dart';
 import 'package:easy_world_vendor/repo/get_review_replies_repo.dart';
@@ -148,6 +150,44 @@ class ProductsScreenController extends GetxController {
       onError: ((message) {
         isLoading.value = false;
         CustomSnackBar.error(title: "Reply", message: message);
+      }),
+    );
+  }
+
+  deleteProductReview(int reviewId) async {
+    isLoading.value = true;
+    await DeleteProductReviewRepo.deleteProductReviewRepo(
+      reviewId: reviewId,
+      onSuccess: (message) {
+        isLoading.value = false;
+        allReviewsLists.removeWhere((review) => review.id == reviewId);
+        getAllReviewsByProductId(product.value?.id.toString() ?? "").then((
+          reviews,
+        ) {
+          allReviewsLists.assignAll(reviews);
+        });
+        CustomSnackBar.success(title: "Review", message: message);
+      },
+      onError: ((message) {
+        isLoading.value = false;
+        CustomSnackBar.error(title: "Review", message: message);
+      }),
+    );
+  }
+
+  deleteReviewReply(int replyId) async {
+    isLoading.value = true;
+    await DeleteReviewReplyRepo.deleteReviewReplyRepo(
+      replyId: replyId,
+      onSuccess: (message) {
+        isLoading.value = false;
+        allReviewsLists.removeWhere((reply) => reply.id == replyId);
+        getAllReviewsReplied();
+        CustomSnackBar.success(title: "Review", message: message);
+      },
+      onError: ((message) {
+        isLoading.value = false;
+        CustomSnackBar.error(title: "Review", message: message);
       }),
     );
   }
