@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_world_vendor/controller/auth/register_screen_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
+import 'package:easy_world_vendor/utils/custom_snackbar.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/widgets/custom/elevated_button.dart';
 import 'package:flutter/material.dart';
@@ -323,7 +324,15 @@ class UserMoreDetailsScreen extends StatelessWidget {
               CustomElevatedButton(
                 title: "Submit",
                 onTap: () {
-                  c.onSubmit();
+                  if (c.selectedDocFile.value != null &&
+                      c.selectedImage.value != null) {
+                    c.onSubmit();
+                  } else {
+                    CustomSnackBar.error(
+                      title: "Register",
+                      message: "Please provide document and image.",
+                    );
+                  }
                 },
                 backGroundColor: AppColors.primaryColor,
               ),
