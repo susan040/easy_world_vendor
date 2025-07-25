@@ -29,6 +29,13 @@ class RegisterScreenController extends GetxController {
     confirmObscure.value = !confirmObscure.value;
   }
 
+  RxString selectCountryCode = ''.obs;
+  final List<String> countryCodeList = ['+977', '+61'];
+
+  void updateSelectedCountryCode(String value) {
+    selectCountryCode.value = value;
+  }
+
   final pdfFileName = ''.obs;
   final Rx<File?> selectedDocFile = Rx<File?>(null);
 
@@ -80,9 +87,10 @@ class RegisterScreenController extends GetxController {
       password: passwordController.text,
       confirmPassword: confirmPasswordController.text,
       avatar: selectedImage.value,
+      countryCode: selectCountryCode.value,
       onSuccess: (message) {
         loading.hide();
-        Get.offAll(LoginScreen());
+        Get.offAll(() => LoginScreen());
         CustomSnackBar.success(title: "Register", message: message);
       },
       onError: (message) {

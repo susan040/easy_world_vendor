@@ -15,6 +15,7 @@ class RegisterRepo {
     required File? registrationDoc,
     required String password,
     required String confirmPassword,
+    required String countryCode,
     File? avatar,
     required Function(String message) onSuccess,
     required Function(String message) onError,

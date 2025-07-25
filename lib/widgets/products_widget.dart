@@ -67,7 +67,7 @@ class ProductsWidget extends StatelessWidget {
                     children: [
                       CachedNetworkImage(
                         imageUrl: products.productImages!.first,
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                         height: double.infinity,
                         width: double.infinity,
                         placeholder:
