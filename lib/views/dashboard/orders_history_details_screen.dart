@@ -212,7 +212,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
       return Padding(padding: padding, child: buildCancelButton());
     }
 
-    if (lowerStatus == 'confirmed') {
+    if (lowerStatus == 'paid') {
       return Padding(
         padding: padding,
         child: Column(

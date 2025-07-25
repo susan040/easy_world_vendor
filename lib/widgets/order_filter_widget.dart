@@ -290,6 +290,8 @@ class OrderFilterSheet extends StatelessWidget {
             color:
                 date == null
                     ? AppColors.secondaryTextColor
+                    : isDark
+                    ? AppColors.extraWhite
                     : AppColors.blackColor,
           ),
         ),

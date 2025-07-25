@@ -21,7 +21,7 @@ class OrderCardWidget extends StatelessWidget {
         return AppColors.skyBlue;
       case 'seller to pack':
         return AppColors.primaryColor;
-      case 'confirmed':
+      case 'paid':
         return AppColors.darkblue;
       case 'packed':
         return AppColors.lightblue;
@@ -38,7 +38,7 @@ class OrderCardWidget extends StatelessWidget {
     switch (status.toLowerCase()) {
       case 'pending':
         return "Payment pending on";
-      case 'confirmed':
+      case 'paid':
         return "Order is confirmed on";
       case 'seller to pack':
         return "Seller will pack by";

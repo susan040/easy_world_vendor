@@ -95,7 +95,7 @@ class OrderRowItem extends StatelessWidget {
       switch (rightText.toLowerCase()) {
         case 'pending':
           return AppColors.yellow;
-        case 'confirmed':
+        case 'paid':
           return AppColors.darkblue;
         case 'seller to pack':
           return AppColors.primaryColor;
