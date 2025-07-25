@@ -1,13 +1,15 @@
+import 'package:easy_world_vendor/controller/dashboard/add_bank_account_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
+import 'package:easy_world_vendor/widgets/bank_account_details_widget.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_textfield.dart';
 import 'package:easy_world_vendor/widgets/request_payout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RequestPayoutScreen extends StatelessWidget {
-  const RequestPayoutScreen({super.key});
-
+  RequestPayoutScreen({super.key});
+  final c = Get.put(AddBankAccountController());
   @override
   Widget build(BuildContext context) {
     final TextEditingController amountController = TextEditingController(
@@ -43,84 +45,7 @@ class RequestPayoutScreen extends StatelessWidget {
           children: [
             WalletWidget(isDark: isDark),
             SizedBox(height: 16),
-            Container(
-              decoration: BoxDecoration(
-                color:
-                    isDark
-                        ? AppColors.blackColor.withOpacity(0.3)
-                        : AppColors.extraWhite,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: [
-                  BoxShadow(
-                    color: isDark ? Colors.transparent : AppColors.lGrey,
-                    blurRadius: 2,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 14, right: 14, top: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.account_balance,
-                          size: 22,
-                          color: isDark ? AppColors.accepted : AppColors.brown,
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          "Bank Account Details",
-                          style: CustomTextStyles.f14W600(
-                            color:
-                                isDark
-                                    ? AppColors.extraWhite
-                                    : AppColors.blackColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Divider(height: 20),
-                    InfoRow(label: "Bank", value: "ABC Bank", isDark: isDark),
-                    InfoRow(
-                      label: "Account No",
-                      value: "****1234",
-                      isDark: isDark,
-                    ),
-                    InfoRow(
-                      label: "Name",
-                      value: "Handmade General Store",
-                      isDark: isDark,
-                    ),
-                    InfoRow(
-                      label: "IFSC",
-                      value: "ABCD0001234",
-                      isDark: isDark,
-                    ),
-                    const SizedBox(height: 4),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.edit,
-                          size: 18,
-                          color: AppColors.primaryColor,
-                        ),
-                        label: Text(
-                          "Edit Bank Details",
-                          style: CustomTextStyles.f12W500(
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            BankAccountDetailsWidget(isDark: isDark),
             const SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
@@ -239,4 +164,3 @@ class RequestPayoutScreen extends StatelessWidget {
     );
   }
 }
-

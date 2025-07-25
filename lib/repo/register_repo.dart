@@ -30,7 +30,7 @@ class RegisterRepo {
       request.fields['store_description'] = storeDesc;
       request.fields['phone'] = phone;
       request.fields['email'] = email;
-      request.fields['country_code'] = "+977";
+      request.fields['country_code'] = countryCode;
       request.fields['password'] = password;
       request.fields['password_confirmation'] = confirmPassword;
 

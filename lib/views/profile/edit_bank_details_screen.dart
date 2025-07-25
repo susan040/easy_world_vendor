@@ -1,4 +1,5 @@
 import 'package:easy_world_vendor/controller/dashboard/add_bank_account_controller.dart';
+import 'package:easy_world_vendor/models/bank_details.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/validator.dart';
@@ -7,19 +8,32 @@ import 'package:easy_world_vendor/widgets/custom/elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AddBankDetailsScreen extends StatelessWidget {
+class EditBankDetailsScreen extends StatelessWidget {
   final c = Get.put(AddBankAccountController());
 
-  AddBankDetailsScreen({super.key});
+  EditBankDetailsScreen({super.key, required this.bankDetails});
+  final BankDetails bankDetails;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accountHolderNameController = TextEditingController(
+      text: bankDetails.accountHolderName,
+    );
+    final accountNoController = TextEditingController(
+      text: bankDetails.accountNumber,
+    );
+    final branchNameController = TextEditingController(
+      text: bankDetails.branchName,
+    );
+    if (c.selectedBankName.value.isEmpty && bankDetails.bankName != null) {
+      c.updateSelectedBankName(bankDetails.bankName!);
+    }
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
       appBar: AppBar(
         title: Text(
-          "Add Bank Details",
+          "Edit Bank Details",
           style: CustomTextStyles.f16W600(
             color: isDark ? AppColors.extraWhite : AppColors.blackColor,
           ),
@@ -40,7 +54,7 @@ class AddBankDetailsScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: 16, right: 16, top: 6),
           child: Form(
-            key: c.bankAccountformKey,
+            key: c.editBankAccountFormKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -52,7 +66,7 @@ class AddBankDetailsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 6),
                 CustomTextField(
-                  controller: c.accountHolderController,
+                  controller: accountHolderNameController,
                   hint: "Please enter account holder name",
                   validator: Validators.checkFieldEmpty,
                   textInputAction: TextInputAction.next,
@@ -147,7 +161,7 @@ class AddBankDetailsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 6),
                 CustomTextField(
-                  controller: c.accountNumberController,
+                  controller: accountNoController,
                   hint: "Please enter account number",
                   validator: Validators.checkFieldEmpty,
                   textInputAction: TextInputAction.next,
@@ -162,8 +176,8 @@ class AddBankDetailsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 6),
                 CustomTextField(
-                  controller: c.branchNameController,
                   hint: "Branch Name",
+                  controller: branchNameController,
                   validator: Validators.checkFieldEmpty,
                   textInputAction: TextInputAction.next,
                   textInputType: TextInputType.text,
@@ -171,10 +185,14 @@ class AddBankDetailsScreen extends StatelessWidget {
 
                 const SizedBox(height: 24),
                 CustomElevatedButton(
-                  title: "Save Details",
+                  title: "Update Details",
                   onTap: () {
-                    // if (c.bankAccountformKey.currentState!.validate()) {}
-                    c.onSubmit();
+                    c.editBankDetails(
+                      accountHolderNameController.text,
+                      accountNoController.text,
+                      branchNameController.text,
+                      bankDetails.id.toString(),
+                    );
                   },
                   backGroundColor: AppColors.primaryColor,
                 ),
