@@ -34,10 +34,18 @@ class ProfileScreenController extends GetxController {
       storeDescriptionController.text = user.storeDescription ?? "";
       profileImageUrl.value = user.profileImage ?? "";
       selectedFilePath.value = user.documentRegistration ?? "";
+      selectCountryCode.value = user.countryCode ?? "";
       if ((user.documentRegistration ?? '').isNotEmpty) {
         selectedFilePath.value = user.documentRegistration!;
       }
     }
+  }
+
+  RxString selectCountryCode = ''.obs;
+  final List<String> countryCodeList = ['+977', '+61'];
+
+  void updateSelectedCountryCode(String value) {
+    selectCountryCode.value = value;
   }
 
   Future<void> pickImage(ImageSource source) async {
@@ -85,6 +93,7 @@ class ProfileScreenController extends GetxController {
         storeDesc: storeDescriptionController.text,
         phoneNumber: phoneNumberController.text,
         image: selectedImage.value,
+        countryCode: selectCountryCode.value,
         registrationDoc:
             selectedFilePath.value.isNotEmpty &&
                     !selectedFilePath.value.startsWith("http")

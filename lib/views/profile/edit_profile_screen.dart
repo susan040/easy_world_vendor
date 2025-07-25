@@ -134,7 +134,86 @@ class EditProfileScreen extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                   textInputType: TextInputType.text,
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 12),
+                Text(
+                  "Country Code",
+                  style: CustomTextStyles.f12W500(
+                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  ),
+                ),
+                SizedBox(height: 8),
+                Obx(
+                  () => Container(
+                    constraints: BoxConstraints(minHeight: 50),
+                    child: DropdownButtonFormField<String>(
+                      menuMaxHeight: 350,
+                      dropdownColor:
+                          isDark ? AppColors.blackColor : AppColors.extraWhite,
+                      focusColor:
+                          isDark ? AppColors.blackColor : AppColors.extraWhite,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'This field is required';
+                        }
+                        return null;
+                      },
+                      value:
+                          c.selectCountryCode.value.isEmpty
+                              ? null
+                              : c.selectCountryCode.value,
+                      hint: Text(
+                        "Select country code",
+                        style: CustomTextStyles.f12W400(
+                          color:
+                              isDark
+                                  ? AppColors.extraWhite
+                                  : AppColors.secondaryTextColor,
+                        ),
+                      ),
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.only(
+                          bottom: 10,
+                          left: 14,
+                          right: 14,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.borderColor,
+                            width: 1,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.primaryColor,
+                            width: 1,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 1),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red, width: 1),
+                        ),
+                      ),
+                      items:
+                          c.countryCodeList
+                              .map(
+                                (option) => DropdownMenuItem<String>(
+                                  value: option,
+                                  child: Text(
+                                    option,
+                                    style: CustomTextStyles.f12W400(),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                      onChanged: (value) {
+                        c.updateSelectedCountryCode(value!);
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: 12),
                 Text(
                   "Phone Number",
                   style: CustomTextStyles.f12W500(
@@ -148,7 +227,7 @@ class EditProfileScreen extends StatelessWidget {
                   textInputAction: TextInputAction.next,
                   textInputType: TextInputType.phone,
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 12),
                 Text(
                   "Description",
                   style: CustomTextStyles.f12W500(
@@ -201,7 +280,7 @@ class EditProfileScreen extends StatelessWidget {
                   controller: c.storeDescriptionController,
                 ),
 
-                SizedBox(height: 16),
+                SizedBox(height: 12),
                 Text(
                   "Document/Image",
                   style: CustomTextStyles.f12W500(

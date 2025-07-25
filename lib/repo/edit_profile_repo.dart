@@ -15,6 +15,7 @@ class EditProfileRepo {
     required String storeName,
     required String storeDesc,
     required String phoneNumber,
+    required String countryCode,
     File? image,
     File? registrationDoc,
     required Function(UsersDetails user, String token, String message)
@@ -33,6 +34,7 @@ class EditProfileRepo {
     request.headers.addAll((headers));
     request.fields['store_name'] = storeName;
     request.fields['store_description'] = storeDesc;
+    request.fields['country_code'] = countryCode;
     request.fields['phone'] = phoneNumber;
     if (image != null) {
       request.files.add(
