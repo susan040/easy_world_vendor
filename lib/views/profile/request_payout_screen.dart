@@ -1,4 +1,5 @@
 import 'package:easy_world_vendor/controller/dashboard/add_bank_account_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/payout_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/widgets/bank_account_details_widget.dart';
@@ -10,11 +11,9 @@ import 'package:get/get.dart';
 class RequestPayoutScreen extends StatelessWidget {
   RequestPayoutScreen({super.key});
   final c = Get.put(AddBankAccountController());
+  final controller = Get.put(PayoutController());
   @override
   Widget build(BuildContext context) {
-    final TextEditingController amountController = TextEditingController(
-      text: "320.00",
-    );
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -94,37 +93,46 @@ class RequestPayoutScreen extends StatelessWidget {
                     ),
                     const Divider(height: 20),
                     SizedBox(height: 10),
-                    CustomTextField(
-                      labelText: "Amount to Withdraw",
-                      preIconPath: Icons.attach_money,
-                      hint: "Enter Amount to withdraw",
-                      controller: amountController,
-                      textInputAction: TextInputAction.done,
-                      textInputType: TextInputType.number,
-                    ),
-                    const SizedBox(height: 16),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 45,
-                      child: ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.send,
-                          size: 16,
-                          color: AppColors.extraWhite,
-                        ),
-                        label: Text(
-                          "Submit Request",
-                          style: CustomTextStyles.f12W600(
-                            color: AppColors.extraWhite,
+                    Form(
+                      key: controller.payoutFormKey,
+                      child: Column(
+                        children: [
+                          CustomTextField(
+                            labelText: "Amount to Withdraw",
+                            preIconPath: Icons.attach_money,
+                            hint: "Enter Amount to withdraw",
+                            controller: controller.amountController,
+                            textInputAction: TextInputAction.done,
+                            textInputType: TextInputType.number,
                           ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 45,
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                controller.requestPayout();
+                              },
+                              icon: const Icon(
+                                Icons.send,
+                                size: 16,
+                                color: AppColors.extraWhite,
+                              ),
+                              label: Text(
+                                "Submit Request",
+                                style: CustomTextStyles.f12W600(
+                                  color: AppColors.extraWhite,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ],
@@ -140,23 +148,60 @@ class RequestPayoutScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            HistoryRow(
-              amount: 150,
-              status: "Paid",
-              date: "2025-06-01",
-              isDark: isDark,
-            ),
-            HistoryRow(
-              amount: 100,
-              status: "Pending",
-              date: "2025-05-25",
-              isDark: isDark,
-            ),
-            HistoryRow(
-              amount: 80,
-              status: "Rejected",
-              date: "2025-05-10",
-              isDark: isDark,
+            // HistoryRow(
+            //   amount: 150,
+            //   status: "Paid",
+            //   date: "2025-06-01",
+            //   isDark: isDark,
+            // ),
+            // HistoryRow(
+            //   amount: 100,
+            //   status: "Pending",
+            //   date: "2025-05-25",
+            //   isDark: isDark,
+            // ),
+            // HistoryRow(
+            //   amount: 80,
+            //   status: "Rejected",
+            //   date: "2025-05-10",
+            //   isDark: isDark,
+            // ),
+            Obx(
+              () =>
+                  controller.isLoading.value
+                      ? Center(
+                        child: CircularProgressIndicator(
+                          color:
+                              isDark
+                                  ? AppColors.extraWhite
+                                  : AppColors.blackColor,
+                        ),
+                      )
+                      : controller.payoutList.isEmpty
+                      ? Center(
+                        child: Text(
+                          "No payout history available.",
+                          style: CustomTextStyles.f12W600(
+                            color: AppColors.secondaryTextColor,
+                          ),
+                        ),
+                      )
+                      : ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: controller.payoutList.length,
+                        itemBuilder: (context, index) {
+                          final payout = controller.payoutList[index];
+                          return HistoryRow(
+                            amount:
+                                double.tryParse(payout.amount.toString()) ??
+                                0.0,
+                            status: payout.status ?? "Unknown",
+                            date: payout.createdAt ?? "Unknown",
+                            isDark: isDark,
+                          );
+                        },
+                      ),
             ),
           ],
         ),

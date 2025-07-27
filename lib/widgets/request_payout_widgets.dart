@@ -79,9 +79,10 @@ class WalletWidget extends StatelessWidget {
             final exchangeRateController = Get.put(ExchangeRateController());
             final rawEarnings =
                 homeController.earningDetails.value?.netEarnings;
-            if (rawEarnings == null) return SizedBox.shrink();
 
-            final double earningsDouble = double.tryParse(rawEarnings) ?? 0.0;
+            final double earningsDouble =
+                double.tryParse(rawEarnings ?? "0.00") ?? 0.0;
+
             final convertedPrice = exchangeRateController
                 .convertPriceFromAUD(earningsDouble.toString())
                 .toStringAsFixed(2);
@@ -171,15 +172,15 @@ class HistoryRow extends StatelessWidget {
     IconData icon;
 
     switch (status) {
-      case "Paid":
+      case "paid":
         icon = Icons.check_circle_outline;
         color = Colors.green;
         break;
-      case "Pending":
+      case "pending":
         icon = Icons.timelapse;
         color = Colors.orange;
         break;
-      case "Rejected":
+      case "rejected":
         icon = Icons.cancel_outlined;
         color = Colors.red;
         break;
