@@ -176,13 +176,13 @@ class GraphWidget extends StatelessWidget {
                           barRods: [
                             BarChartRodData(
                               toY: totalSales,
-                              color: Color(0xFFB0C4DE),
-                              width: 42,
+                              color: Color(0xFF375A7F), // Dark Slate Blue
+                              width: 40,
                               borderRadius: BorderRadius.circular(8),
                               backDrawRodData: BackgroundBarChartRodData(
                                 show: true,
                                 toY: maxY,
-                                color: Color(0xFFB0C4DE).withOpacity(0.25),
+                                color: Color(0xFF375A7F).withOpacity(0.25),
                               ),
                             ),
                           ],
@@ -193,30 +193,32 @@ class GraphWidget extends StatelessWidget {
                           barRods: [
                             BarChartRodData(
                               toY: totalCommission,
-                              color: Color(0xFFFFABAB),
-                              width: 42,
+                              color: Color(0xFFAA6F73), // Dusty Rose
+                              width: 40,
                               borderRadius: BorderRadius.circular(8),
                               backDrawRodData: BackgroundBarChartRodData(
                                 show: true,
                                 toY: maxY,
-                                color: Color(0xFFFFABAB).withOpacity(0.2),
+                                color: Color(0xFFAA6F73).withOpacity(0.25),
                               ),
                             ),
                           ],
                         ),
                         BarChartGroupData(
                           x: 2,
-                          barsSpace: 6,
+                          barsSpace: 4,
                           barRods: [
                             BarChartRodData(
                               toY: netEarnings,
-                              color: Color(0xFFFFE3B3),
-                              width: 42,
+                              color: Color(
+                                0xFF8F7352,
+                              ), // Muted Olive (darker than pale yellow)
+                              width: 40,
                               borderRadius: BorderRadius.circular(8),
                               backDrawRodData: BackgroundBarChartRodData(
                                 show: true,
                                 toY: maxY,
-                                color: Color(0xFFFFE3B3).withOpacity(0.35),
+                                color: Color(0xFF8F7352).withOpacity(0.25),
                               ),
                             ),
                           ],
