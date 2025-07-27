@@ -10,7 +10,7 @@ import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:easy_world_vendor/views/dashboard/customers_message_screen.dart';
 import 'package:easy_world_vendor/views/dashboard/notification_screen.dart';
 import 'package:easy_world_vendor/widgets/customer_messages_widget.dart';
-import 'package:easy_world_vendor/widgets/home_bar_chart_widget.dart';
+import 'package:easy_world_vendor/widgets/graph_widget.dart';
 import 'package:easy_world_vendor/widgets/home_category_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -209,13 +209,14 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 16),
               Text(
-                "Bar Chart",
+                "Sales Chart",
                 style: CustomTextStyles.f14W600(
                   color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                 ),
               ),
               SizedBox(height: 8),
-              HomeBarChartWidget(isDark: isDark, c: c),
+              // HomeBarChartWidget(isDark: isDark, c: c),
+              GraphWidget(isDark: isDark, c: c),
               SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -96,11 +96,13 @@ class HomeBarChartWidget extends StatelessWidget {
                     LineChartData(
                       maxY: maxY,
                       minY: 0,
+                      lineTouchData: LineTouchData(enabled: true),
                       titlesData: FlTitlesData(
                         leftTitles: AxisTitles(
                           sideTitles: SideTitles(
                             showTitles: true,
-                            reservedSize: 28,
+                            reservedSize: 40,
+                            interval: maxY / 5,
                             getTitlesWidget:
                                 (value, meta) => Text(
                                   value.toInt().toString(),

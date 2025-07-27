@@ -29,6 +29,10 @@ class HomeScreenController extends GetxController {
   var selectedTabIndex = 0.obs;
   final List<String> tabs = ["Weekly", "Monthly", "Yearly"];
 
+  void updateTab(int index) {
+    selectedTabIndex.value = index;
+  }
+
   final List<List<double>> chartData = [
     [1200, 1400, 1300, 1250, 1100, 1150, 1180],
     [4800, 3000, 5000, 5300, 5500, 5700, 5600, 5800, 5900, 6000, 2000, 6200],
@@ -54,7 +58,15 @@ class HomeScreenController extends GetxController {
     ["2025", "2026", "2027", "2028", "2029", "2030"],
   ];
 
-  void updateTab(int index) {
-    selectedTabIndex.value = index;
+  var chartTypeIndex = 0.obs;
+
+  void updateChartType(int index) {
+    chartTypeIndex.value = index;
+  }
+
+  var touchedIndex = RxnInt(null);
+
+  void updateTouchedIndex(int? index) {
+    touchedIndex.value = index;
   }
 }
