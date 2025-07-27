@@ -25,7 +25,7 @@ class CategoryCard extends StatelessWidget {
     return Container(
       height: 73,
       width: 170,
-      padding: const EdgeInsets.only(left: 12, bottom: 12, top: 12, right: 20),
+      padding: const EdgeInsets.only(left: 8, bottom: 12, top: 12, right: 8),
       decoration: BoxDecoration(
         color: AppColors.lightPrimaryColor,
         borderRadius: BorderRadius.circular(5),
@@ -52,7 +52,7 @@ class CategoryCard extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 count,
-                style: CustomTextStyles.f14W600(color: AppColors.blackColor),
+                style: CustomTextStyles.f12W600(color: AppColors.blackColor),
               ),
             ],
           ),

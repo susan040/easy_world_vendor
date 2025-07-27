@@ -1,4 +1,6 @@
 import 'package:easy_world_vendor/controller/core_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/exchange_rate_controller.dart'
+    show ExchangeRateController;
 import 'package:easy_world_vendor/controller/dashboard/home_screen_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
@@ -20,6 +22,7 @@ class HomeScreen extends StatelessWidget {
   final orderController = Get.put(OrderScreenController());
   final productController = Get.put(ProductsScreenController());
   final coreController = Get.put(CoreController());
+  final exchangeRateController = Get.put(ExchangeRateController());
   HomeScreen({super.key});
 
   @override
@@ -137,9 +140,10 @@ class HomeScreen extends StatelessWidget {
                 physics: NeverScrollableScrollPhysics(),
                 childAspectRatio: 170 / 73,
                 children: [
+                  // Products
                   Obx(
                     () => CategoryCard(
-                      title: "Products",
+                      title: "Total Products",
                       count: "${productController.allProductLists.length}",
                       imagePath: ImagePath.totalProducts,
                       imageHeight: 51,
@@ -147,9 +151,11 @@ class HomeScreen extends StatelessWidget {
                       isDark: isDark,
                     ),
                   ),
+
+                  // Orders
                   Obx(
                     () => CategoryCard(
-                      title: "Orders",
+                      title: "Total Orders",
                       count: "${orderController.allOrderLists.length}",
                       imagePath: ImagePath.totalOrders,
                       imageHeight: 45,
@@ -157,22 +163,48 @@ class HomeScreen extends StatelessWidget {
                       isDark: isDark,
                     ),
                   ),
-                  CategoryCard(
-                    title: "Total Earning",
-                    count: "\$4000",
-                    imagePath: ImagePath.totalEarnings,
-                    imageHeight: 50,
-                    imageWidth: 50,
-                    isDark: isDark,
-                  ),
-                  CategoryCard(
-                    title: "Gross Sales",
-                    count: "\$4000",
-                    imagePath: ImagePath.grossSales,
-                    imageHeight: 45,
-                    imageWidth: 45,
-                    isDark: isDark,
-                  ),
+
+                  // Total Earnings from API
+                  Obx(() {
+                    final rawNetEarnings = c.earningDetails.value?.netEarnings;
+                    final earningsDouble =
+                        double.tryParse(rawNetEarnings ?? "0.00") ?? 0.0;
+                    final convertedEarnings = exchangeRateController
+                        .convertPriceFromAUD(earningsDouble.toString())
+                        .toStringAsFixed(2);
+                    final code =
+                        exchangeRateController.selectedCountryData['code'];
+                    final symbol = code == 'NPR' ? 'Rs.' : '\$';
+
+                    return CategoryCard(
+                      title: "Total Earning",
+                      count: "$symbol$convertedEarnings",
+                      imagePath: ImagePath.totalEarnings,
+                      imageHeight: 50,
+                      imageWidth: 50,
+                      isDark: isDark,
+                    );
+                  }),
+                  Obx(() {
+                    final rawGrossSales = c.earningDetails.value?.totalSales;
+                    final salesDouble =
+                        double.tryParse(rawGrossSales ?? "0.00") ?? 0.0;
+                    final convertedSales = exchangeRateController
+                        .convertPriceFromAUD(salesDouble.toString())
+                        .toStringAsFixed(2);
+                    final code =
+                        exchangeRateController.selectedCountryData['code'];
+                    final symbol = code == 'NPR' ? 'Rs.' : '\$';
+
+                    return CategoryCard(
+                      title: "Gross Sales",
+                      count: "$symbol$convertedSales",
+                      imagePath: ImagePath.grossSales,
+                      imageHeight: 45,
+                      imageWidth: 45,
+                      isDark: isDark,
+                    );
+                  }),
                 ],
               ),
               SizedBox(height: 16),

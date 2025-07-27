@@ -1,6 +1,31 @@
+import 'package:easy_world_vendor/models/earning_details.dart';
+import 'package:easy_world_vendor/repo/get_earning_details_repo.dart';
 import 'package:get/get.dart';
 
 class HomeScreenController extends GetxController {
+  Rxn<EarningDetails> earningDetails = Rxn<EarningDetails>();
+  RxBool isLoading = false.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchEarnings();
+  }
+
+  void fetchEarnings() {
+    isLoading.value = true;
+    GetEarningDetailsRepo.getEarningDetailsRepo(
+      onSuccess: (data) {
+        earningDetails.value = data;
+        isLoading.value = false;
+      },
+      onError: (message) {
+        isLoading.value = false;
+        Get.snackbar("Error", message);
+      },
+    );
+  }
+
   var selectedTabIndex = 0.obs;
   final List<String> tabs = ["Weekly", "Monthly", "Yearly"];
 

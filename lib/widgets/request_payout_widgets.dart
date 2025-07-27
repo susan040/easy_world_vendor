@@ -1,14 +1,15 @@
 import 'package:easy_world_vendor/controller/dashboard/exchange_rate_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/home_screen_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class WalletWidget extends StatelessWidget {
-  const WalletWidget({super.key, required this.isDark});
+  WalletWidget({super.key, required this.isDark});
 
   final bool isDark;
-
+  final homeController = Get.put(HomeScreenController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -76,11 +77,18 @@ class WalletWidget extends StatelessWidget {
           const SizedBox(height: 2),
           Obx(() {
             final exchangeRateController = Get.put(ExchangeRateController());
+            final rawEarnings =
+                homeController.earningDetails.value?.netEarnings;
+            if (rawEarnings == null) return SizedBox.shrink();
+
+            final double earningsDouble = double.tryParse(rawEarnings) ?? 0.0;
             final convertedPrice = exchangeRateController
-                .convertPriceFromAUD(320.00.toString())
+                .convertPriceFromAUD(earningsDouble.toString())
                 .toStringAsFixed(2);
+
             final code = exchangeRateController.selectedCountryData['code'];
             final symbol = code == 'NPR' ? 'Rs.' : '\$';
+
             return Text(
               "$symbol$convertedPrice",
               style: CustomTextStyles.f32W700(color: AppColors.extraWhite),

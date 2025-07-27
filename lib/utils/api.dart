@@ -17,4 +17,5 @@ class Api {
   static const String deleteReviewUrl = "$baseUrl/review";
   static const String deleteReplyUrl = "$baseUrl/reply";
   static const String bankDetailsUrl = "$baseUrl/bank-details";
+  static const String vendorEarningsUrl = "$baseUrl/vendor-earnings";
 }
