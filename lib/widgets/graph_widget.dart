@@ -13,7 +13,7 @@ class GraphWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tabs = ['Bar Chart', 'Line Chart'];
+    final tabs = ['Bar Chart', 'Pie Chart'];
 
     return Container(
       width: double.infinity,
