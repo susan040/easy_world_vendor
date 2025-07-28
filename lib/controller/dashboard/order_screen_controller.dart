@@ -64,13 +64,21 @@ class OrderScreenController extends GetxController {
         loading.hide();
 
         int index = allOrderLists.indexWhere((o) => o.id.toString() == orderId);
-        if (index != -1) {
+        int index1 = filteredOrderLists.indexWhere(
+          (o) => o.id.toString() == orderId,
+        );
+        if (index != -1 && index1 != -1) {
           final updatedOrder = Orders.fromJson(allOrderLists[index].toJson());
+          final updatedOrder1 = Orders.fromJson(
+            filteredOrderLists[index1].toJson(),
+          );
+          updatedOrder1.status = status;
           updatedOrder.status = status;
           allOrderLists[index] = updatedOrder;
+          filteredOrderLists[index1] = updatedOrder1;
+          filteredOrderLists.refresh();
           allOrderLists.refresh();
         }
-
         CustomSnackBar.success(title: "Order", message: message);
       },
       onError: ((message) {

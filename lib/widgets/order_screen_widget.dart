@@ -93,25 +93,6 @@ class OrderCardWidget extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // ClipRRect(
-                      //   borderRadius: BorderRadius.circular(100),
-                      //   child: CachedNetworkImage(
-                      //     imageUrl: orders.customer!.profileImage ?? "",
-                      //     fit: BoxFit.cover,
-                      //     height: 48,
-                      //     width: 48,
-                      //     placeholder:
-                      //         (context, url) => const Center(
-                      //           child: CircularProgressIndicator(),
-                      //         ),
-                      //     errorWidget:
-                      //         (context, url, error) => Image.asset(
-                      //           ImagePath.noImage,
-                      //           fit: BoxFit.cover,
-                      //         ),
-                      //   ),
-                      // ),
-                      // const SizedBox(width: 6),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

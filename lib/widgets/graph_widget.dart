@@ -121,7 +121,7 @@ class GraphWidget extends StatelessWidget {
                           sideTitles: SideTitles(
                             showTitles: true,
                             reservedSize: 30,
-                            interval: maxY / 5,
+                            interval: maxY == 0 ? 1 : maxY / 5,
                             getTitlesWidget:
                                 (value, meta) => Text(
                                   value.toInt().toString(),
@@ -137,6 +137,7 @@ class GraphWidget extends StatelessWidget {
                         bottomTitles: AxisTitles(
                           sideTitles: SideTitles(
                             showTitles: true,
+                            interval: maxY == 0 ? 1 : maxY / 5,
                             getTitlesWidget: (value, meta) {
                               switch (value.toInt()) {
                                 case 0:
@@ -166,7 +167,7 @@ class GraphWidget extends StatelessWidget {
                       ),
                       gridData: FlGridData(
                         show: true,
-                        horizontalInterval: maxY / 5,
+                        horizontalInterval: maxY == 0 ? 1 : maxY / 5,
                       ),
                       borderData: FlBorderData(show: false),
                       barGroups: [
