@@ -87,7 +87,7 @@ class CustomTextField extends StatelessWidget {
                 ? Icon(
                   preIconPath,
                   size: 20,
-                  color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  color: AppColors.secondaryTextColor,
                 )
                 : null,
         suffixIcon:

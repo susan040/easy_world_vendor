@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 class GetBankDetailsRepo {
   static Future<void> getBankDetailsRepo({
-    required Function(List<BankDetails> bankDetails) onSuccess,
+    required Function(BankDetails bankDetails) onSuccess,
     required Function(String message) onError,
   }) async {
     try {
@@ -23,7 +23,7 @@ class GetBankDetailsRepo {
       http.Response response = await http.get(url, headers: headers);
       dynamic data = json.decode(response.body);
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        List<BankDetails> bankDetails = bankDetailsFromJson(data["data"]);
+        BankDetails bankDetails = BankDetails.fromJson(data["data"]);
         onSuccess(bankDetails);
       } else {
         onError(data["message"]);

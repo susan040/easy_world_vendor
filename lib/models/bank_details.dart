@@ -1,6 +1,9 @@
-List<BankDetails> bankDetailsFromJson(List<dynamic> bankDetailsJson) => List<BankDetails>.from(
-  bankDetailsJson.map((bankDetailsListJson) => BankDetails.fromJson(bankDetailsListJson)),
-);
+List<BankDetails> bankDetailsFromJson(List<dynamic> bankDetailsJson) =>
+    List<BankDetails>.from(
+      bankDetailsJson.map(
+        (bankDetailsListJson) => BankDetails.fromJson(bankDetailsListJson),
+      ),
+    );
 
 class BankDetails {
   int? id;
@@ -12,15 +15,16 @@ class BankDetails {
   String? createdAt;
   String? updatedAt;
 
-  BankDetails(
-      {this.id,
-      this.accountHolderName,
-      this.accountNumber,
-      this.branchName,
-      this.bankName,
-      this.vendor,
-      this.createdAt,
-      this.updatedAt});
+  BankDetails({
+    this.id,
+    this.accountHolderName,
+    this.accountNumber,
+    this.branchName,
+    this.bankName,
+    this.vendor,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   BankDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];

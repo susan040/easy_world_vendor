@@ -112,8 +112,7 @@ class RequestPayoutScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             CustomTextField(
-                              labelText: "Amount to Withdraw",
-                              preIconPath: Icons.attach_money,
+                              preIconPath: Icons.money_rounded,
                               hint: "Enter Amount to withdraw",
                               controller: controller.amountController,
                               textInputAction: TextInputAction.done,

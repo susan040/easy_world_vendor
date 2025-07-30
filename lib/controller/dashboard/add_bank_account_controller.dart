@@ -13,7 +13,7 @@ class AddBankAccountController extends GetxController {
   final accountHolderController = TextEditingController();
   final accountNumberController = TextEditingController();
   final branchNameController = TextEditingController();
-  RxList<BankDetails> allBankDetailsLists = <BankDetails>[].obs;
+  Rxn<BankDetails> allBankDetailsLists = Rxn<BankDetails>();
   var isLoading = true.obs;
   @override
   void onInit() {
@@ -26,7 +26,7 @@ class AddBankAccountController extends GetxController {
     await GetBankDetailsRepo.getBankDetailsRepo(
       onSuccess: (bank) {
         isLoading.value = false;
-        allBankDetailsLists.assignAll(bank);
+        allBankDetailsLists.value = bank;
       },
       onError: (msg) {
         isLoading.value = false;
@@ -117,7 +117,7 @@ class AddBankAccountController extends GetxController {
           loading.hide();
           Get.back();
           CustomSnackBar.success(title: "Bank Details", message: message);
-          allBankDetailsLists.clear();
+          allBankDetailsLists.value = null;
           getAllBankDetails();
         },
         onError: (message) {
