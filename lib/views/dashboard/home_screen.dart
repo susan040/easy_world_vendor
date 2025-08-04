@@ -1,9 +1,11 @@
 import 'package:easy_world_vendor/controller/core_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/chat_screen_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/exchange_rate_controller.dart'
     show ExchangeRateController;
 import 'package:easy_world_vendor/controller/dashboard/home_screen_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
+import 'package:easy_world_vendor/models/all_chats.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
@@ -23,6 +25,7 @@ class HomeScreen extends StatelessWidget {
   final productController = Get.put(ProductsScreenController());
   final coreController = Get.put(CoreController());
   final exchangeRateController = Get.put(ExchangeRateController());
+  final messageController = Get.put(ChatScreenController());
   HomeScreen({super.key});
 
   @override
@@ -242,13 +245,26 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 8),
-              ListView.builder(
-                itemCount: 4,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return CustomMessagesWidget(isDark: isDark);
-                },
+
+              Obx(
+                () =>
+                    (messageController.isLoading.value)
+                        ? Center(child: CircularProgressIndicator())
+                        : messageController.allChatsLists.isEmpty
+                        ? Center(child: Text("No messages"))
+                        : ListView.builder(
+                          itemCount: messageController.allChatsLists.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            final AllChats chats =
+                                messageController.allChatsLists[index];
+                            return CustomMessagesWidget(
+                              isDark: isDark,
+                              chats: chats,
+                            );
+                          },
+                        ),
               ),
             ],
           ),

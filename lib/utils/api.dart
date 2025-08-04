@@ -20,4 +20,6 @@ class Api {
   static const String vendorEarningsUrl = "$baseUrl/vendor-earnings";
   static const String payoutsUrl = "$baseUrl/payouts";
   static const String payoutsRequestUrl = "$baseUrl/payouts/request";
+  static const String fcmTokenUrl = "$baseUrl/device-token";
+  static const String chatUrl = "$baseUrl/chats";
 }

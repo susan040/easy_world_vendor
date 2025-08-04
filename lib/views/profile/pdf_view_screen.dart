@@ -43,31 +43,33 @@ class PdfViewScreen extends StatelessWidget {
           style: CustomTextStyles.f16W700(color: textColor),
         ),
       ),
-      body: FutureBuilder<String>(
-        future: _downloadAndSavePdf(pdfUrl),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Failed to load PDF'));
-          }
+      body: SafeArea(
+        child: FutureBuilder<String>(
+          future: _downloadAndSavePdf(pdfUrl),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Failed to load PDF'));
+            }
 
-          final path = snapshot.data!;
-          return Container(
-            color: bgColor,
+            final path = snapshot.data!;
+            return Container(
+              color: bgColor,
 
-            child: PDFView(
-              filePath: path,
-              autoSpacing: true,
-              swipeHorizontal: false,
-              pageSnap: true,
-              fitPolicy: FitPolicy.BOTH,
-              fitEachPage: true,
-              backgroundColor:
-                  isDark ? AppColors.darkModeColor : AppColors.extraWhite,
-            ),
-          );
-        },
+              child: PDFView(
+                filePath: path,
+                autoSpacing: true,
+                swipeHorizontal: false,
+                pageSnap: true,
+                fitPolicy: FitPolicy.BOTH,
+                fitEachPage: true,
+                backgroundColor:
+                    isDark ? AppColors.darkModeColor : AppColors.extraWhite,
+              ),
+            );
+          },
+        ),
       ),
     );
   }

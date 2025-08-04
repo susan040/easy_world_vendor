@@ -14,7 +14,9 @@ class FullImageViewScreen extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
       ),
-      body: Center(child: InteractiveViewer(child: Image.network(imageUrl))),
+      body: SafeArea(
+        child: Center(child: InteractiveViewer(child: Image.network(imageUrl))),
+      ),
     );
   }
 }

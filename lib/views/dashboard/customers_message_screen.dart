@@ -1,3 +1,5 @@
+import 'package:easy_world_vendor/controller/dashboard/chat_screen_controller.dart';
+import 'package:easy_world_vendor/models/all_chats.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/widgets/customer_messages_widget.dart';
@@ -5,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CustomersMessageScreen extends StatelessWidget {
-  const CustomersMessageScreen({super.key});
-
+  CustomersMessageScreen({super.key});
+  final messageController = Get.put(ChatScreenController());
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -31,14 +33,29 @@ class CustomersMessageScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView.builder(
-        padding: EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 10),
-        itemCount: 10,
-        shrinkWrap: true,
-        // physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          return CustomMessagesWidget(isDark: isDark);
-        },
+      body: SafeArea(
+        child: Obx(
+          () =>
+              (messageController.isLoading.value)
+                  ? Center(child: CircularProgressIndicator())
+                  : messageController.allChatsLists.isEmpty
+                  ? Center(child: Text("No messages"))
+                  : ListView.builder(
+                    padding: EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      top: 4,
+                      bottom: 10,
+                    ),
+                    itemCount: messageController.allChatsLists.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      final AllChats chats =
+                          messageController.allChatsLists[index];
+                      return CustomMessagesWidget(isDark: isDark, chats: chats);
+                    },
+                  ),
+        ),
       ),
     );
   }

@@ -289,16 +289,25 @@ class EditProfileScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 EditDocumentWidget(c: c, isDark: isDark),
-                SizedBox(height: 25),
-                CustomElevatedButton(
-                  title: "Update Details",
-                  onTap: () {
-                    c.editProfile();
-                  },
-                  backGroundColor: AppColors.primaryColor,
-                ),
               ],
             ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 16,
+            right: 16,
+            bottom: 12,
+            top: 10,
+          ),
+          child: CustomElevatedButton(
+            title: "Update Details",
+            onTap: () {
+              c.editProfile();
+            },
+            backGroundColor: AppColors.primaryColor,
           ),
         ),
       ),

@@ -29,117 +29,125 @@ class VendorDetailsScreen extends StatelessWidget {
           style: CustomTextStyles.f16W700(color: textColor),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 5, bottom: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: CircleAvatar(
-                radius: 45,
-                backgroundColor: AppColors.primaryColor.withOpacity(0.2),
-                child: Icon(
-                  Icons.storefront,
-                  size: 55,
-                  color: AppColors.primaryColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 5,
+            bottom: 20,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: CircleAvatar(
+                  radius: 45,
+                  backgroundColor: AppColors.primaryColor.withOpacity(0.2),
+                  child: Icon(
+                    Icons.storefront,
+                    size: 55,
+                    color: AppColors.primaryColor,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            Center(
-              child: Text(
-                coreController.currentUser.value!.data!.storeName ?? "",
-                style: CustomTextStyles.f18W700(color: textColor),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 6),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 14, right: 14),
+              const SizedBox(height: 16),
+              Center(
                 child: Text(
-                  coreController.currentUser.value!.data!.storeDescription ??
-                      "",
-                  style: CustomTextStyles.f11W400(
-                    color: textColor.withOpacity(0.7),
-                  ),
+                  coreController.currentUser.value!.data!.storeName ?? "",
+                  style: CustomTextStyles.f18W700(color: textColor),
                   textAlign: TextAlign.center,
                 ),
               ),
-            ),
-            const SizedBox(height: 30),
-            InfoCard(
-              icon: Icons.email,
-              label: "Email",
-              title: coreController.currentUser.value!.data!.email ?? "",
-              textColor: textColor,
-              isDark: isDark,
-            ),
-            const SizedBox(height: 8),
-            InfoCard(
-              icon: Icons.phone,
-              label: "Phone",
-              title: coreController.currentUser.value!.data!.phone ?? "",
-              textColor: textColor,
-              isDark: isDark,
-            ),
-            const SizedBox(height: 8),
-            InfoCard(
-              icon: Icons.flag,
-              label: "Country Code",
-              title: coreController.currentUser.value!.data!.countryCode ?? "",
-              textColor: textColor,
-              isDark: isDark,
-            ),
-            const SizedBox(height: 8),
-            GestureDetector(
-              onTap: () {
-                final pdfUrl =
-                    coreController
-                        .currentUser
-                        .value!
-                        .data!
-                        .documentRegistration ??
-                    "";
-                if (pdfUrl.isNotEmpty) {
-                  Get.to(() => PdfViewScreen(pdfUrl: pdfUrl));
-                } else {
-                  Get.snackbar("Error", "No document found");
-                }
-              },
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                decoration: BoxDecoration(
-                  color:
-                      isDark
-                          ? AppColors.blackColor.withOpacity(0.3)
-                          : AppColors.extraWhite,
-                  borderRadius: BorderRadius.circular(5),
-                  boxShadow: [
-                    BoxShadow(
-                      color: isDark ? Colors.transparent : AppColors.lGrey,
-                      blurRadius: 1,
-                      spreadRadius: 2,
+              const SizedBox(height: 6),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 14, right: 14),
+                  child: Text(
+                    coreController.currentUser.value!.data!.storeDescription ??
+                        "",
+                    style: CustomTextStyles.f11W400(
+                      color: textColor.withOpacity(0.7),
                     ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(Icons.picture_as_pdf, color: Colors.redAccent),
-                    const SizedBox(width: 12),
-                    Text(
-                      "Open Document.pdf",
-                      style: CustomTextStyles.f14W500(color: textColor),
-                    ),
-                    const SizedBox(width: 8),
-                    Icon(Icons.open_in_new, color: textColor),
-                  ],
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 30),
+              InfoCard(
+                icon: Icons.email,
+                label: "Email",
+                title: coreController.currentUser.value!.data!.email ?? "",
+                textColor: textColor,
+                isDark: isDark,
+              ),
+              const SizedBox(height: 8),
+              InfoCard(
+                icon: Icons.phone,
+                label: "Phone",
+                title: coreController.currentUser.value!.data!.phone ?? "",
+                textColor: textColor,
+                isDark: isDark,
+              ),
+              const SizedBox(height: 8),
+              InfoCard(
+                icon: Icons.flag,
+                label: "Country Code",
+                title:
+                    coreController.currentUser.value!.data!.countryCode ?? "",
+                textColor: textColor,
+                isDark: isDark,
+              ),
+              const SizedBox(height: 8),
+              GestureDetector(
+                onTap: () {
+                  final pdfUrl =
+                      coreController
+                          .currentUser
+                          .value!
+                          .data!
+                          .documentRegistration ??
+                      "";
+                  if (pdfUrl.isNotEmpty) {
+                    Get.to(() => PdfViewScreen(pdfUrl: pdfUrl));
+                  } else {
+                    Get.snackbar("Error", "No document found");
+                  }
+                },
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  decoration: BoxDecoration(
+                    color:
+                        isDark
+                            ? AppColors.blackColor.withOpacity(0.3)
+                            : AppColors.extraWhite,
+                    borderRadius: BorderRadius.circular(5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isDark ? Colors.transparent : AppColors.lGrey,
+                        blurRadius: 1,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Icon(Icons.picture_as_pdf, color: Colors.redAccent),
+                      const SizedBox(width: 12),
+                      Text(
+                        "Open Document.pdf",
+                        style: CustomTextStyles.f14W500(color: textColor),
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(Icons.open_in_new, color: textColor),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -39,172 +39,174 @@ class RequestPayoutScreen extends StatelessWidget {
         ),
       ),
 
-      body: Obx(() {
-        if (controller.isLoading.value && c.isLoading.value) {
-          return RequestPayoutWidget(isDark: isDark);
-        }
+      body: SafeArea(
+        child: Obx(() {
+          if (controller.isLoading.value && c.isLoading.value) {
+            return RequestPayoutWidget(isDark: isDark);
+          }
 
-        return SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: 6,
-            bottom: 20,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              WalletWidget(isDark: isDark),
-              SizedBox(height: 16),
-              BankAccountDetailsWidget(isDark: isDark),
-              const SizedBox(height: 10),
-              Container(
-                decoration: BoxDecoration(
-                  color:
-                      isDark
-                          ? AppColors.blackColor.withOpacity(0.3)
-                          : AppColors.extraWhite,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: isDark ? Colors.transparent : AppColors.lGrey,
-                      blurRadius: 2,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 14,
-                    right: 14,
-                    top: 10,
-                    bottom: 13,
+          return SingleChildScrollView(
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 6,
+              bottom: 20,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                WalletWidget(isDark: isDark),
+                SizedBox(height: 16),
+                BankAccountDetailsWidget(isDark: isDark),
+                const SizedBox(height: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    color:
+                        isDark
+                            ? AppColors.blackColor.withOpacity(0.3)
+                            : AppColors.extraWhite,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isDark ? Colors.transparent : AppColors.lGrey,
+                        blurRadius: 2,
+                        spreadRadius: 2,
+                      ),
+                    ],
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.request_page_outlined,
-                            size: 22,
-                            color:
-                                isDark
-                                    ? AppColors.darkblue
-                                    : AppColors.fieldVist,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 14,
+                      right: 14,
+                      top: 10,
+                      bottom: 13,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.request_page_outlined,
+                              size: 22,
+                              color:
+                                  isDark
+                                      ? AppColors.darkblue
+                                      : AppColors.fieldVist,
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "Request Payout",
+                              style: CustomTextStyles.f14W600(
+                                color:
+                                    isDark
+                                        ? AppColors.extraWhite
+                                        : AppColors.blackColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Divider(height: 20),
+                        SizedBox(height: 10),
+                        Form(
+                          key: controller.payoutFormKey,
+                          child: Column(
+                            children: [
+                              CustomTextField(
+                                preIconPath: Icons.money_rounded,
+                                hint: "Enter Amount to withdraw",
+                                controller: controller.amountController,
+                                textInputAction: TextInputAction.done,
+                                textInputType: TextInputType.number,
+                              ),
+                              const SizedBox(height: 16),
+                              SizedBox(
+                                width: double.infinity,
+                                height: 45,
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    controller.requestPayout();
+                                  },
+                                  icon: const Icon(
+                                    Icons.send,
+                                    size: 16,
+                                    color: AppColors.extraWhite,
+                                  ),
+                                  label: Text(
+                                    "Submit Request",
+                                    style: CustomTextStyles.f12W600(
+                                      color: AppColors.extraWhite,
+                                    ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.primaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(width: 8),
-                          Text(
-                            "Request Payout",
-                            style: CustomTextStyles.f14W600(
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+                Text(
+                  "Payout History",
+                  style: CustomTextStyles.f14W600(
+                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Obx(
+                  () =>
+                      controller.isLoading.value
+                          ? Center(
+                            child: CircularProgressIndicator(
                               color:
                                   isDark
                                       ? AppColors.extraWhite
                                       : AppColors.blackColor,
                             ),
-                          ),
-                        ],
-                      ),
-                      const Divider(height: 20),
-                      SizedBox(height: 10),
-                      Form(
-                        key: controller.payoutFormKey,
-                        child: Column(
-                          children: [
-                            CustomTextField(
-                              preIconPath: Icons.money_rounded,
-                              hint: "Enter Amount to withdraw",
-                              controller: controller.amountController,
-                              textInputAction: TextInputAction.done,
-                              textInputType: TextInputType.number,
-                            ),
-                            const SizedBox(height: 16),
-                            SizedBox(
-                              width: double.infinity,
-                              height: 45,
-                              child: ElevatedButton.icon(
-                                onPressed: () {
-                                  controller.requestPayout();
-                                },
-                                icon: const Icon(
-                                  Icons.send,
-                                  size: 16,
-                                  color: AppColors.extraWhite,
-                                ),
-                                label: Text(
-                                  "Submit Request",
-                                  style: CustomTextStyles.f12W600(
-                                    color: AppColors.extraWhite,
-                                  ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppColors.primaryColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
+                          )
+                          : controller.payoutList.isEmpty
+                          ? SizedBox(
+                            height: 30,
+                            child: Center(
+                              child: Text(
+                                "No payout history available.",
+                                style: CustomTextStyles.f12W400(
+                                  color: AppColors.secondaryTextColor,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 16),
-              Text(
-                "Payout History",
-                style: CustomTextStyles.f14W600(
-                  color: isDark ? AppColors.extraWhite : AppColors.blackColor,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Obx(
-                () =>
-                    controller.isLoading.value
-                        ? Center(
-                          child: CircularProgressIndicator(
-                            color:
-                                isDark
-                                    ? AppColors.extraWhite
-                                    : AppColors.blackColor,
+                          )
+                          : ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: controller.payoutList.length,
+                            itemBuilder: (context, index) {
+                              final payout = controller.payoutList[index];
+                              return HistoryRow(
+                                amount:
+                                    double.tryParse(payout.amount.toString()) ??
+                                    0.0,
+                                status: payout.status ?? "Unknown",
+                                date: payout.createdAt ?? "Unknown",
+                                isDark: isDark,
+                              );
+                            },
                           ),
-                        )
-                        : controller.payoutList.isEmpty
-                        ? SizedBox(
-                          height: 30,
-                          child: Center(
-                            child: Text(
-                              "No payout history available.",
-                              style: CustomTextStyles.f12W400(
-                                color: AppColors.secondaryTextColor,
-                              ),
-                            ),
-                          ),
-                        )
-                        : ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: controller.payoutList.length,
-                          itemBuilder: (context, index) {
-                            final payout = controller.payoutList[index];
-                            return HistoryRow(
-                              amount:
-                                  double.tryParse(payout.amount.toString()) ??
-                                  0.0,
-                              status: payout.status ?? "Unknown",
-                              date: payout.createdAt ?? "Unknown",
-                              isDark: isDark,
-                            );
-                          },
-                        ),
-              ),
-            ],
-          ),
-        );
-      }),
+                ),
+              ],
+            ),
+          );
+        }),
+      ),
     );
   }
 }

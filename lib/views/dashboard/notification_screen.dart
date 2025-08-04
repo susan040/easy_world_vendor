@@ -32,104 +32,109 @@ class NotificationScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.only(left: 16, right: 16),
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Today",
-                style: CustomTextStyles.f12W600(
-                  color:
-                      isDark
-                          ? AppColors.extraWhite.withOpacity(0.8)
-                          : AppColors.secondaryTextColor,
-                ),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  height: 30,
-                  width: 100,
-                  decoration: BoxDecoration(
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.only(left: 16, right: 16),
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Today",
+                  style: CustomTextStyles.f12W600(
                     color:
                         isDark
-                            ? AppColors.blackColor.withOpacity(0.1)
-                            : AppColors.extraWhite,
-                    border: Border.all(width: 1, color: AppColors.primaryColor),
-                    borderRadius: BorderRadius.circular(5),
+                            ? AppColors.extraWhite.withOpacity(0.8)
+                            : AppColors.secondaryTextColor,
                   ),
-                  child: Center(
-                    child: Text(
-                      "Mark all as read",
-                      style: CustomTextStyles.f11W400(
-                        color:
-                            isDark
-                                ? AppColors.extraWhite
-                                : AppColors.blackColor,
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    height: 30,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color:
+                          isDark
+                              ? AppColors.blackColor.withOpacity(0.1)
+                              : AppColors.extraWhite,
+                      border: Border.all(
+                        width: 1,
+                        color: AppColors.primaryColor,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Mark all as read",
+                        style: CustomTextStyles.f11W400(
+                          color:
+                              isDark
+                                  ? AppColors.extraWhite
+                                  : AppColors.blackColor,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          NotificationCard(
-            image: ImagePath.products,
-            iconColor: AppColors.primaryColor,
-            title: "Processed",
-            message:
-                "Your have received a new order #234930304. Start preparing it for shipping!",
-            time: "Now",
-            isDark: isDark,
-            borderColor: AppColors.primaryColor,
-          ),
-          const SizedBox(height: 10),
-          NotificationCard(
-            image: ImagePath.newMessage,
-            iconColor: AppColors.secondaryColor,
-            title: "New Message",
-            message:
-                "Your have received a new order #234930304. Start preparing it for shipping!",
-            time: "2 min ago",
-            isDark: isDark,
-            borderColor: AppColors.secondaryColor,
-          ),
-          const SizedBox(height: 18),
-          Text(
-            "Yesterday",
-            style: CustomTextStyles.f12W600(
-              color:
-                  isDark
-                      ? AppColors.extraWhite.withOpacity(0.8)
-                      : AppColors.secondaryTextColor,
+              ],
             ),
-          ),
-          const SizedBox(height: 8),
-          NotificationCard(
-            image: ImagePath.products,
-            iconColor: AppColors.primaryColor,
-            title: "Processed",
-            message:
-                "Your have received a new order #234930304. Start preparing it for shipping!",
-            time: "1 day ago",
-            isDark: isDark,
-            borderColor: AppColors.primaryColor,
-          ),
-          const SizedBox(height: 10),
-          NotificationCard(
-            image: ImagePath.newMessage,
-            iconColor: AppColors.darkblue,
-            title: "New Message",
-            message:
-                "Your have received a new order #234930304. Start preparing it for shipping!",
-            time: "1 day ago",
-            isDark: isDark,
-            borderColor: AppColors.secondaryColor,
-          ),
-        ],
+            const SizedBox(height: 14),
+            NotificationCard(
+              image: ImagePath.products,
+              iconColor: AppColors.primaryColor,
+              title: "Processed",
+              message:
+                  "Your have received a new order #234930304. Start preparing it for shipping!",
+              time: "Now",
+              isDark: isDark,
+              borderColor: AppColors.primaryColor,
+            ),
+            const SizedBox(height: 10),
+            NotificationCard(
+              image: ImagePath.newMessage,
+              iconColor: AppColors.secondaryColor,
+              title: "New Message",
+              message:
+                  "Your have received a new order #234930304. Start preparing it for shipping!",
+              time: "2 min ago",
+              isDark: isDark,
+              borderColor: AppColors.secondaryColor,
+            ),
+            const SizedBox(height: 18),
+            Text(
+              "Yesterday",
+              style: CustomTextStyles.f12W600(
+                color:
+                    isDark
+                        ? AppColors.extraWhite.withOpacity(0.8)
+                        : AppColors.secondaryTextColor,
+              ),
+            ),
+            const SizedBox(height: 8),
+            NotificationCard(
+              image: ImagePath.products,
+              iconColor: AppColors.primaryColor,
+              title: "Processed",
+              message:
+                  "Your have received a new order #234930304. Start preparing it for shipping!",
+              time: "1 day ago",
+              isDark: isDark,
+              borderColor: AppColors.primaryColor,
+            ),
+            const SizedBox(height: 10),
+            NotificationCard(
+              image: ImagePath.newMessage,
+              iconColor: AppColors.darkblue,
+              title: "New Message",
+              message:
+                  "Your have received a new order #234930304. Start preparing it for shipping!",
+              time: "1 day ago",
+              isDark: isDark,
+              borderColor: AppColors.secondaryColor,
+            ),
+          ],
+        ),
       ),
     );
   }

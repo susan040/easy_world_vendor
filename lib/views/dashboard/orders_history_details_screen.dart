@@ -40,137 +40,141 @@ class OrderHistoryDetailScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Obx(() {
-        final orders = controller.allOrderLists.firstWhereOrNull(
-          (o) => o.id == orderId,
-        );
+      body: SafeArea(
+        child: Obx(() {
+          final orders = controller.allOrderLists.firstWhereOrNull(
+            (o) => o.id == orderId,
+          );
 
-        if (orders == null) {
-          return Center(child: Text("Order not found"));
-        }
+          if (orders == null) {
+            return Center(child: Text("Order not found"));
+          }
 
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16),
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color:
-                      isDark
-                          ? AppColors.blackColor.withOpacity(0.3)
-                          : AppColors.extraWhite,
-                  boxShadow: [
-                    BoxShadow(
-                      color: isDark ? AppColors.darkModeColor : AppColors.lGrey,
-                      spreadRadius: 1.5,
-                      blurRadius: 1,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Deliver to: ${orders.customer?.fullName ?? ""}",
-                          style: CustomTextStyles.f12W700(
-                            color:
-                                isDark
-                                    ? AppColors.extraWhite
-                                    : AppColors.blackColor,
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color:
+                        isDark
+                            ? AppColors.blackColor.withOpacity(0.3)
+                            : AppColors.extraWhite,
+                    boxShadow: [
+                      BoxShadow(
+                        color:
+                            isDark ? AppColors.darkModeColor : AppColors.lGrey,
+                        spreadRadius: 1.5,
+                        blurRadius: 1,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Deliver to: ${orders.customer?.fullName ?? ""}",
+                            style: CustomTextStyles.f12W700(
+                              color:
+                                  isDark
+                                      ? AppColors.extraWhite
+                                      : AppColors.blackColor,
+                            ),
                           ),
-                        ),
-                        Container(
-                          height: 18,
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
-                          decoration: BoxDecoration(
-                            color: AppColors.secondaryColor,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Center(
-                            child: Text(
-                              orders.billingAddress?.type?.capitalizeFirst ??
-                                  "",
-                              style: CustomTextStyles.f11W400(
-                                color: AppColors.extraWhite,
+                          Container(
+                            height: 18,
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            decoration: BoxDecoration(
+                              color: AppColors.secondaryColor,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Center(
+                              child: Text(
+                                orders.billingAddress?.type?.capitalizeFirst ??
+                                    "",
+                                style: CustomTextStyles.f11W400(
+                                  color: AppColors.extraWhite,
+                                ),
                               ),
                             ),
                           ),
+                        ],
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        [
+                              orders.billingAddress?.street,
+                              orders.billingAddress?.addressLine1,
+                              orders.billingAddress?.city,
+                              orders.billingAddress?.province,
+                              orders.billingAddress?.country,
+                            ]
+                            .where((e) => e != null && e.trim().isNotEmpty)
+                            .join(', '),
+                        style: CustomTextStyles.f11W400(
+                          color:
+                              isDark
+                                  ? AppColors.extraWhite
+                                  : AppColors.secondaryColor,
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      [
-                            orders.billingAddress?.street,
-                            orders.billingAddress?.addressLine1,
-                            orders.billingAddress?.city,
-                            orders.billingAddress?.province,
-                            orders.billingAddress?.country,
-                          ]
-                          .where((e) => e != null && e.trim().isNotEmpty)
-                          .join(', '),
-                      style: CustomTextStyles.f11W400(
-                        color:
-                            isDark
-                                ? AppColors.extraWhite
-                                : AppColors.secondaryColor,
                       ),
-                    ),
-                    SizedBox(height: 2),
-                    Text(
-                      orders.customer?.phone ?? "",
-                      style: CustomTextStyles.f11W300(
-                        color:
-                            isDark
-                                ? AppColors.extraWhite
-                                : AppColors.secondaryTextColor,
+                      SizedBox(height: 2),
+                      Text(
+                        orders.customer?.phone ?? "",
+                        style: CustomTextStyles.f11W300(
+                          color:
+                              isDark
+                                  ? AppColors.extraWhite
+                                  : AppColors.secondaryTextColor,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              OrderHistoryDetailsWidget(isDark: isDark, orders: orders),
+                OrderHistoryDetailsWidget(isDark: isDark, orders: orders),
 
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 16),
-                padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color:
-                      isDark
-                          ? AppColors.blackColor.withOpacity(0.3)
-                          : AppColors.extraWhite,
-                  boxShadow: [
-                    BoxShadow(
-                      color: isDark ? AppColors.darkModeColor : AppColors.lGrey,
-                      spreadRadius: 1.5,
-                      blurRadius: 1,
-                    ),
-                  ],
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color:
+                        isDark
+                            ? AppColors.blackColor.withOpacity(0.3)
+                            : AppColors.extraWhite,
+                    boxShadow: [
+                      BoxShadow(
+                        color:
+                            isDark ? AppColors.darkModeColor : AppColors.lGrey,
+                        spreadRadius: 1.5,
+                        blurRadius: 1,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      OrderRowItem("Placed on", "2025 May 01 09:00:00"),
+                      SizedBox(height: 12),
+                      OrderRowItem("Paid on", "2025 May 01 09:02:00"),
+                      SizedBox(height: 12),
+                      OrderRowItem("Order Status", "${orders.status ?? ""}"),
+                    ],
+                  ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    OrderRowItem("Placed on", "2025 May 01 09:00:00"),
-                    SizedBox(height: 12),
-                    OrderRowItem("Paid on", "2025 May 01 09:02:00"),
-                    SizedBox(height: 12),
-                    OrderRowItem("Order Status", "${orders.status ?? ""}"),
-                  ],
-                ),
-              ),
 
-              buildOrderActionButtons(orders, isDark),
-            ],
-          ),
-        );
-      }),
+                buildOrderActionButtons(orders, isDark),
+              ],
+            ),
+          );
+        }),
+      ),
     );
   }
 

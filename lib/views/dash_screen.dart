@@ -17,56 +17,58 @@ class DashScreen extends StatelessWidget {
       backgroundColor: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
       body: Obx(() => c.pages[c.currentIndex.value]),
 
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        margin: const EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 10),
-        decoration: BoxDecoration(
-          color: isDark ? AppColors.blackColor : AppColors.extraWhite,
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: isDark ? AppColors.darkModeColor : AppColors.lGrey,
-              blurRadius: 2,
-              spreadRadius: 1.5,
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Obx(
-              () => CustomBottomBar(
-                svgPath: ImagePath.home,
-                title: "Home",
-                isActive: c.currentIndex.value == 0,
-                onTap: () => c.currentIndex.value = 0,
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          margin: EdgeInsets.only(top: 8, left: 16, right: 16, bottom: 10),
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.blackColor : AppColors.extraWhite,
+            borderRadius: BorderRadius.circular(25),
+            boxShadow: [
+              BoxShadow(
+                color: isDark ? AppColors.darkModeColor : AppColors.lGrey,
+                blurRadius: 2,
+                spreadRadius: 1.5,
               ),
-            ),
-            Obx(
-              () => CustomBottomBar(
-                svgPath: ImagePath.orders,
-                title: "Orders",
-                isActive: c.currentIndex.value == 1,
-                onTap: () => c.currentIndex.value = 1,
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Obx(
+                () => CustomBottomBar(
+                  svgPath: ImagePath.home,
+                  title: "Home",
+                  isActive: c.currentIndex.value == 0,
+                  onTap: () => c.currentIndex.value = 0,
+                ),
               ),
-            ),
-            Obx(
-              () => CustomBottomBar(
-                svgPath: ImagePath.product,
-                title: "Products",
-                isActive: c.currentIndex.value == 2,
-                onTap: () => c.currentIndex.value = 2,
+              Obx(
+                () => CustomBottomBar(
+                  svgPath: ImagePath.orders,
+                  title: "Orders",
+                  isActive: c.currentIndex.value == 1,
+                  onTap: () => c.currentIndex.value = 1,
+                ),
               ),
-            ),
-            Obx(
-              () => CustomBottomBar(
-                svgPath: ImagePath.profile,
-                title: "Profile",
-                isActive: c.currentIndex.value == 3,
-                onTap: () => c.currentIndex.value = 3,
+              Obx(
+                () => CustomBottomBar(
+                  svgPath: ImagePath.product,
+                  title: "Products",
+                  isActive: c.currentIndex.value == 2,
+                  onTap: () => c.currentIndex.value = 2,
+                ),
               ),
-            ),
-          ],
+              Obx(
+                () => CustomBottomBar(
+                  svgPath: ImagePath.profile,
+                  title: "Profile",
+                  isActive: c.currentIndex.value == 3,
+                  onTap: () => c.currentIndex.value = 3,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

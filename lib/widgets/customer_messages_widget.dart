@@ -1,21 +1,60 @@
+import 'package:easy_world_vendor/models/all_chats.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/views/dashboard/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CustomMessagesWidget extends StatelessWidget {
-  const CustomMessagesWidget({super.key, required this.isDark});
+  const CustomMessagesWidget({
+    super.key,
+    required this.isDark,
+    required this.chats,
+  });
 
   final bool isDark;
+  final AllChats chats;
+  String formatChatTime(String? timestamp) {
+    if (timestamp == null) return '';
+    final msgDate = DateTime.tryParse(timestamp)?.toLocal();
+    if (msgDate == null) return '';
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+    final msgDay = DateTime(msgDate.year, msgDate.month, msgDate.day);
+
+    if (msgDay == today) {
+      return DateFormat.jm().format(msgDate);
+    } else if (msgDay == yesterday) {
+      return "Yesterday";
+    } else {
+      return DateFormat('dd MMM').format(msgDate);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final bool hasReply =
+        chats.customerReply != null && chats.customerReply!.isNotEmpty;
+
+    final String message =
+        hasReply ? chats.customerReply! : (chats.vendorMessage ?? '');
+
+    final String time = formatChatTime(
+      hasReply ? chats.customerReplyTime : chats.vendorMessageTime,
+    );
     return Padding(
       padding: EdgeInsets.only(bottom: 10),
       child: InkWell(
         onTap: () {
-          Get.to(() => ChatScreen());
+          Get.to(
+            () => ChatScreen(
+              chatId: chats.chatId.toString(),
+              customerName: chats.customer!.name ?? "",
+            ),
+          );
         },
         child: Container(
           padding: EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
@@ -62,7 +101,7 @@ class CustomMessagesWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Bill Jason",
+                          chats.customer!.name ?? "",
                           style: CustomTextStyles.f12W600(
                             color:
                                 isDark
@@ -71,7 +110,7 @@ class CustomMessagesWidget extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "5 min ago",
+                          time,
                           style: CustomTextStyles.f11W400(
                             color:
                                 isDark
@@ -83,7 +122,7 @@ class CustomMessagesWidget extends StatelessWidget {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "Hi! I want to know about this product. Hi! I want to know about this product.",
+                      message,
                       style: CustomTextStyles.f11W400(
                         color:
                             isDark

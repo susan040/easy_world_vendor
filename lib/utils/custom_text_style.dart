@@ -49,6 +49,15 @@ class CustomTextStyles {
   static TextStyle f12W700({Color? color, double? height}) =>
       text(size: 12, weight: FontWeight.w700, color: color, height: height);
 
+  static TextStyle f13W400({Color? color, double? height}) =>
+      text(size: 13, weight: FontWeight.w400, color: color, height: height);
+  static TextStyle f13W500({Color? color, double? height}) =>
+      text(size: 13, weight: FontWeight.w500, color: color, height: height);
+  static TextStyle f13W600({Color? color, double? height}) =>
+      text(size: 13, weight: FontWeight.w600, color: color, height: height);
+  static TextStyle f13W700({Color? color, double? height}) =>
+      text(size: 13, weight: FontWeight.w700, color: color, height: height);
+
   static TextStyle f14W400({Color? color, double? height}) =>
       text(size: 14, weight: FontWeight.w400, color: color, height: height);
   static TextStyle f14W500({Color? color, double? height}) =>
