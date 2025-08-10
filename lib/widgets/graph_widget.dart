@@ -19,11 +19,14 @@ class GraphWidget extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.blackColor : Colors.white,
+        color:
+            isDark
+                ? AppColors.darkGrey.withOpacity(0.24)
+                : AppColors.extraWhite,
         borderRadius: BorderRadius.circular(5),
         boxShadow: [
           BoxShadow(
-            color: isDark ? Colors.black26 : AppColors.lGrey,
+            color: isDark ? Colors.transparent : AppColors.lGrey,
             spreadRadius: 2,
             blurRadius: 1,
           ),

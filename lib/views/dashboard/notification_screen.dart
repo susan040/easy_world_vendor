@@ -1,12 +1,44 @@
+import 'package:easy_world_vendor/controller/dashboard/notification_screen_controller.dart';
+import 'package:easy_world_vendor/models/notification_details.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
-import 'package:easy_world_vendor/utils/image_path.dart';
+import 'package:easy_world_vendor/widgets/notification_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 
 class NotificationScreen extends StatelessWidget {
-  const NotificationScreen({super.key});
+  NotificationScreen({super.key});
+  final c = Get.put(NotificationController());
+  String formatDate(DateTime date) {
+    final today = DateTime.now();
+    if (date.year == today.year &&
+        date.month == today.month &&
+        date.day == today.day) {
+      return "Today";
+    } else if (date.year == today.year &&
+        date.month == today.month &&
+        date.day == today.subtract(const Duration(days: 1)).day) {
+      return "Yesterday";
+    } else {
+      return DateFormat('MMM dd, yyyy').format(date);
+    }
+  }
+
+  Map<String, List<GetNotificationDetails>> groupNotification(
+    List<GetNotificationDetails> notification,
+  ) {
+    final Map<String, List<GetNotificationDetails>> groupNotifications = {};
+    for (var notifications in notification) {
+      final createdAt = notifications.createdAt;
+      if (createdAt != null) {
+        final dateKey = formatDate(DateTime.parse(createdAt));
+        groupNotifications.putIfAbsent(dateKey, () => []).add(notifications);
+      }
+    }
+    return groupNotifications;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,42 +46,77 @@ class NotificationScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
       appBar: AppBar(
-        title: Text(
-          "Notifications",
-          style: CustomTextStyles.f16W600(
-            color: isDark ? AppColors.extraWhite : AppColors.blackColor,
-          ),
-        ),
-        centerTitle: true,
         backgroundColor:
-            isDark ? AppColors.darkModeColor : AppColors.extraWhite,
+            Theme.of(context).brightness == Brightness.dark
+                ? AppColors.darkModeColor
+                : AppColors.extraWhite,
+        leading: Obx(() {
+          if (!c.isSelectionMode.value) {
+            return InkWell(
+              onTap: () => Get.back(),
+              child: Icon(
+                Icons.arrow_back,
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.extraWhite
+                        : AppColors.blackColor,
+              ),
+            );
+          } else {
+            return IconButton(
+              icon: Icon(
+                Icons.close,
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.extraWhite
+                        : AppColors.blackColor,
+              ),
+              onPressed: () {
+                c.clearSelection();
+              },
+            );
+          }
+        }),
+        title: Obx(() {
+          if (!c.isSelectionMode.value) {
+            return Text(
+              "Notifications",
+              style: CustomTextStyles.f16W600(
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.extraWhite
+                        : AppColors.blackColor,
+              ),
+            );
+          } else {
+            return Text(
+              '${c.selectedNotifications.length} selected',
+              style: CustomTextStyles.f16W600(
+                color:
+                    Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.extraWhite
+                        : AppColors.blackColor,
+              ),
+            );
+          }
+        }),
+        centerTitle: false,
         elevation: 0,
-        leading: InkWell(
-          onTap: () => Get.back(),
-          child: Icon(
-            Icons.arrow_back,
-            color: isDark ? AppColors.extraWhite : AppColors.blackColor,
-          ),
-        ),
-      ),
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.only(left: 16, right: 16),
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Today",
-                  style: CustomTextStyles.f12W600(
-                    color:
-                        isDark
-                            ? AppColors.extraWhite.withOpacity(0.8)
-                            : AppColors.secondaryTextColor,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {},
+        actions: [
+          Obx(() {
+            if (c.allNotificationList.isEmpty) {
+              return const SizedBox(); // Don't show any actions if empty
+            }
+
+            final isDark = Theme.of(context).brightness == Brightness.dark;
+
+            if (!c.isSelectionMode.value) {
+              return Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: InkWell(
+                  onTap: () {
+                    c.markAllNotificationsAsRead();
+                  },
                   child: Container(
                     height: 30,
                     width: 100,
@@ -77,162 +144,132 @@ class NotificationScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            NotificationCard(
-              image: ImagePath.products,
-              iconColor: AppColors.primaryColor,
-              title: "Processed",
-              message:
-                  "Your have received a new order #234930304. Start preparing it for shipping!",
-              time: "Now",
-              isDark: isDark,
-              borderColor: AppColors.primaryColor,
-            ),
-            const SizedBox(height: 10),
-            NotificationCard(
-              image: ImagePath.newMessage,
-              iconColor: AppColors.secondaryColor,
-              title: "New Message",
-              message:
-                  "Your have received a new order #234930304. Start preparing it for shipping!",
-              time: "2 min ago",
-              isDark: isDark,
-              borderColor: AppColors.secondaryColor,
-            ),
-            const SizedBox(height: 18),
-            Text(
-              "Yesterday",
-              style: CustomTextStyles.f12W600(
-                color:
-                    isDark
-                        ? AppColors.extraWhite.withOpacity(0.8)
-                        : AppColors.secondaryTextColor,
-              ),
-            ),
-            const SizedBox(height: 8),
-            NotificationCard(
-              image: ImagePath.products,
-              iconColor: AppColors.primaryColor,
-              title: "Processed",
-              message:
-                  "Your have received a new order #234930304. Start preparing it for shipping!",
-              time: "1 day ago",
-              isDark: isDark,
-              borderColor: AppColors.primaryColor,
-            ),
-            const SizedBox(height: 10),
-            NotificationCard(
-              image: ImagePath.newMessage,
-              iconColor: AppColors.darkblue,
-              title: "New Message",
-              message:
-                  "Your have received a new order #234930304. Start preparing it for shipping!",
-              time: "1 day ago",
-              isDark: isDark,
-              borderColor: AppColors.secondaryColor,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+              );
+            } else {
+              bool allSelected =
+                  c.selectedNotifications.length ==
+                  c.allNotificationList.length;
 
-class NotificationCard extends StatelessWidget {
-  final String image;
-  final Color iconColor;
-  final String title;
-  final String message;
-  final String time;
-  final Color borderColor;
-  final bool isDark;
-
-  const NotificationCard({
-    super.key,
-    required this.image,
-    required this.iconColor,
-    required this.title,
-    required this.message,
-    required this.time,
-    required this.isDark,
-    required this.borderColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 10),
-      decoration: BoxDecoration(
-        color:
-            isDark
-                ? AppColors.blackColor.withOpacity(0.3)
-                : AppColors.extraWhite,
-        borderRadius: BorderRadius.circular(5),
-        boxShadow: [
-          BoxShadow(
-            color: isDark ? AppColors.darkModeColor : AppColors.lGrey,
-            blurRadius: 1,
-            spreadRadius: 1.5,
-          ),
+              return Row(
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      allSelected ? Icons.cancel : Icons.done,
+                      color:
+                          isDark
+                              ? AppColors.extraWhite
+                              : AppColors.secondaryTextColor,
+                    ),
+                    onPressed: () {
+                      if (allSelected) {
+                        c.clearSelection();
+                      } else {
+                        c.selectAll();
+                      }
+                    },
+                    tooltip: allSelected ? 'Clear Selection' : 'Select All',
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete, color: Colors.redAccent),
+                    onPressed: () {
+                      if (allSelected) {
+                        c.deleteAllNotifications();
+                      } else {
+                        c.deleteSelected();
+                      }
+                    },
+                    tooltip: 'Delete Selected',
+                  ),
+                ],
+              );
+            }
+          }),
         ],
       ),
-      child: Row(
-        children: [
-          Container(
-            height: 40,
-            width: 40,
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: borderColor.withOpacity(0.18),
-              border: Border.all(width: 0.5, color: borderColor),
-              borderRadius: BorderRadius.circular(3),
-            ),
-            child: SvgPicture.asset(image),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      title,
-                      style: CustomTextStyles.f12W600(
-                        color:
-                            isDark
-                                ? AppColors.extraWhite
-                                : AppColors.blackColor,
-                      ),
-                    ),
-                    Text(
-                      time,
-                      style: CustomTextStyles.f10W400(
-                        color:
-                            isDark
-                                ? AppColors.extraWhite.withOpacity(0.7)
-                                : AppColors.secondaryTextColor,
-                      ),
-                    ),
-                  ],
+      body: SafeArea(
+        child: Obx(() {
+          if (c.isLoading.value) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 14,
+                  right: 14,
+                  top: 4,
+                  bottom: 20,
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  message,
-                  style: CustomTextStyles.f11W400(
-                    color:
-                        isDark
-                            ? AppColors.extraWhite.withOpacity(0.7)
-                            : AppColors.secondaryTextColor,
+                child: Shimmer.fromColors(
+                  baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+                  highlightColor:
+                      isDark ? Colors.grey[700]! : Colors.grey[100]!,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 8,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        height: 80,
+                      );
+                    },
                   ),
                 ),
-              ],
-            ),
-          ),
-        ],
+              ),
+            );
+          } else if (c.allNotificationList.isEmpty) {
+            return Center(
+              child: Text(
+                "No notification",
+                style: CustomTextStyles.f14W400(
+                  color: AppColors.secondaryTextColor,
+                ),
+              ),
+            );
+          } else {
+            final groupedNotification = groupNotification(
+              c.allNotificationList.toList(),
+            );
+            return ListView.builder(
+              itemCount: groupedNotification.keys.length,
+              itemBuilder: (context, index) {
+                final dateKey = groupedNotification.keys.toList()[index];
+                final notification = groupedNotification[dateKey]!;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, bottom: 10),
+                      child: Text(
+                        dateKey,
+                        style: CustomTextStyles.f12W600(
+                          color:
+                              isDark
+                                  ? AppColors.extraWhite.withOpacity(0.8)
+                                  : AppColors.secondaryTextColor,
+                        ),
+                      ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: notification.length,
+                      itemBuilder: (context, index) {
+                        final notif = notification[index];
+                        return NotificationCard(
+                          notifications: notif,
+                          isDark: isDark,
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        }),
       ),
     );
   }

@@ -22,4 +22,5 @@ class Api {
   static const String payoutsRequestUrl = "$baseUrl/payouts/request";
   static const String fcmTokenUrl = "$baseUrl/device-token";
   static const String chatUrl = "$baseUrl/chats";
+  static const String notificationUrl = "$baseUrl/notifications";
 }

@@ -7,6 +7,7 @@ class AppColors {
   static const secondaryColor = Color(0xFF093663);
   static const highlightColor = Color(0xFFE3F2FD);
   static const indigo = Color(0xFF6372AF);
+  static const Color darkGrey = Color(0xFF0D0D0D);
 
   static const Color lGrey = Color(0xFFEBEBEB);
   static const Color grey = Color(0xFFD9D9D9);

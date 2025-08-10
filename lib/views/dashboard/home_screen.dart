@@ -3,6 +3,7 @@ import 'package:easy_world_vendor/controller/dashboard/chat_screen_controller.da
 import 'package:easy_world_vendor/controller/dashboard/exchange_rate_controller.dart'
     show ExchangeRateController;
 import 'package:easy_world_vendor/controller/dashboard/home_screen_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/notification_screen_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
 import 'package:easy_world_vendor/models/all_chats.dart';
@@ -26,6 +27,7 @@ class HomeScreen extends StatelessWidget {
   final coreController = Get.put(CoreController());
   final exchangeRateController = Get.put(ExchangeRateController());
   final messageController = Get.put(ChatScreenController());
+  final notificationController = Get.put(NotificationController());
   HomeScreen({super.key});
 
   @override
@@ -69,7 +71,10 @@ class HomeScreen extends StatelessWidget {
               height: 33,
               width: 33,
               decoration: BoxDecoration(
-                color: isDark ? AppColors.blackColor : AppColors.extraWhite,
+                color:
+                    isDark
+                        ? AppColors.darkGrey.withOpacity(0.6)
+                        : AppColors.extraWhite,
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
@@ -95,26 +100,31 @@ class HomeScreen extends StatelessWidget {
                                 : AppColors.darkModeColor,
                       ),
                     ),
-                    Positioned(
-                      top: 3,
-                      right: 3,
-                      child: Container(
-                        height: 16,
-                        width: 16,
-                        decoration: BoxDecoration(
-                          color: AppColors.rejected,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: Text(
-                            "2",
-                            style: CustomTextStyles.f10W400(
-                              color: AppColors.extraWhite,
+                    Obx(() {
+                      final unread = notificationController.unreadCount;
+                      return unread > 0
+                          ? Positioned(
+                            top: 3,
+                            right: 3,
+                            child: Container(
+                              height: 16,
+                              width: 16,
+                              decoration: BoxDecoration(
+                                color: AppColors.rejected,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  unread.toString(),
+                                  style: CustomTextStyles.f10W400(
+                                    color: AppColors.extraWhite,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                    ),
+                          )
+                          : SizedBox();
+                    }),
                   ],
                 ),
               ),

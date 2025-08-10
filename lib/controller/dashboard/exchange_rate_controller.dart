@@ -56,7 +56,7 @@ class ExchangeRateController extends GetxController {
 
     final response = await http.get(Uri.parse(url));
     final jsonData = json.decode(response.body);
-    log("Exchange Rate API response: $jsonData");
+    // log("Exchange Rate API response: $jsonData");
 
     latestRates.value = ExchangeRateModel.fromJson(jsonData);
   }
