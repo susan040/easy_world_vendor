@@ -106,44 +106,46 @@ class CountryBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'Choose Country',
-            style: CustomTextStyles.f14W600(
-              color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+        ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Choose Country',
+              style: CustomTextStyles.f14W600(
+                color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-          ...countryController.allCountries.map((country) {
-            return ListTile(
-              leading: Image.asset(
-                country['flag']!,
-                width: 24,
-                height: 24,
-                fit: BoxFit.cover,
-              ),
-              title: Text(
-                "${country['name']} (${country['code']})",
-                style: CustomTextStyles.f12W400(
-                  color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+            const SizedBox(height: 12),
+            ...countryController.allCountries.map((country) {
+              return ListTile(
+                leading: Image.asset(
+                  country['flag']!,
+                  width: 24,
+                  height: 24,
+                  fit: BoxFit.cover,
                 ),
-              ),
-              onTap: () {
-                countryController.updateSelectedCountry(country);
-                countryController.editCurrencyPreference();
-                Get.back();
-              },
-            );
-          }).toList(),
-        ],
+                title: Text(
+                  "${country['name']} (${country['code']})",
+                  style: CustomTextStyles.f12W400(
+                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                  ),
+                ),
+                onTap: () {
+                  countryController.updateSelectedCountry(country);
+                  countryController.editCurrencyPreference();
+                  Get.back();
+                },
+              );
+            }).toList(),
+          ],
+        ),
       ),
     );
   }

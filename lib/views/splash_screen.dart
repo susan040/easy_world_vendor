@@ -3,6 +3,7 @@ import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -11,6 +12,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: AppColors.extraWhite,
       body: SafeArea(
@@ -19,7 +21,10 @@ class SplashScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: 170),
-              Image.asset(ImagePath.logo, height: 220, width: 220),
+              if (isDark)
+                SvgPicture.asset(ImagePath.logo, height: 220, width: 220)
+              else
+                SvgPicture.asset(ImagePath.logo, height: 220, width: 220),
               Expanded(
                 child: SpinKitFadingCircle(
                   color: AppColors.secondaryColor,

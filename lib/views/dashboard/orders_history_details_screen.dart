@@ -2,11 +2,13 @@ import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.d
 import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
+import 'package:easy_world_vendor/views/dashboard/order_tracking_screen.dart';
 import 'package:easy_world_vendor/widgets/custom/elevated_button.dart';
 import 'package:easy_world_vendor/widgets/order_history_details_widget.dart';
 import 'package:easy_world_vendor/widgets/order_payment_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class OrderHistoryDetailScreen extends StatelessWidget {
   final int orderId;
@@ -54,7 +56,12 @@ class OrderHistoryDetailScreen extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                  margin: EdgeInsets.only(
+                    left: 14,
+                    right: 14,
+                    top: 6,
+                    bottom: 6,
+                  ),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -78,7 +85,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Deliver to: ${orders.customer?.fullName ?? ""}",
+                            "Deliver to: ${orders.customer?.fullName ?? "No Name"}",
                             style: CustomTextStyles.f12W700(
                               color:
                                   isDark
@@ -136,11 +143,106 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                // ["packed", "shipped", "delivered"].contains(orders.status)
+                //     ?
+                //     : SizedBox.shrink(),
+                Container(
+                  margin: const EdgeInsets.only(right: 14, left: 14, top: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 9,
+                  ),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color:
+                        isDark
+                            ? AppColors.blackColor.withOpacity(0.3)
+                            : AppColors.extraWhite,
+                    boxShadow: [
+                      BoxShadow(
+                        color:
+                            isDark ? AppColors.darkModeColor : AppColors.lGrey,
+                        spreadRadius: 1.5,
+                        blurRadius: 1,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              orders.orderNo ?? "Order No Unknown",
+                              style: CustomTextStyles.f14W400(
+                                color:
+                                    isDark
+                                        ? AppColors.extraWhite
+                                        : AppColors.blackColor,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              "Status: ${orders.status ?? 'Pending Pickup'}",
+                              style: CustomTextStyles.f12W400(
+                                color:
+                                    isDark
+                                        ? AppColors.borderColor
+                                        : AppColors.secondaryTextColor,
+                                height: 1.3,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              "Customer: ${orders.customer?.fullName ?? 'Anonymous'}",
+                              style: CustomTextStyles.f12W400(
+                                color:
+                                    isDark
+                                        ? AppColors.borderColor
+                                        : AppColors.secondaryTextColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor:
+                                isDark
+                                    ? AppColors.lightblue
+                                    : AppColors.secondaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                          ),
+                          onPressed: () {
+                            Get.to(
+                              () => SellerOrderTrackingScreen(
+                                orderNo: orders.orderNo ?? '',
+                                currentStatus: orders.status ?? '',
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "View Details",
+                            style: CustomTextStyles.f11W500(
+                              color: AppColors.extraWhite,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
 
                 OrderHistoryDetailsWidget(isDark: isDark, orders: orders),
 
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
+                  margin: EdgeInsets.only(left: 14, right: 14, bottom: 16),
                   padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -160,16 +262,33 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      OrderRowItem("Placed on", "2025 May 01 09:00:00"),
+                      OrderRowItem(
+                        "Placed on",
+                        DateFormat(
+                          'yyyy-MM-dd HH:mm:ss',
+                        ).format(DateTime.parse(orders.createdAt ?? "")),
+                      ),
+                      orders.status != "pending" &&
+                              orders.payments?.first.createdAt != null
+                          ? Column(
+                            children: [
+                              SizedBox(height: 12),
+                              OrderRowItem(
+                                "Paid on",
+                                orders.payments?.first.createdAt ?? "",
+                              ),
+                            ],
+                          )
+                          : SizedBox.shrink(),
+
                       SizedBox(height: 12),
-                      OrderRowItem("Paid on", "2025 May 01 09:02:00"),
-                      SizedBox(height: 12),
-                      OrderRowItem("Order Status", "${orders.status ?? ""}"),
+                      OrderRowItem(
+                        "Order Status",
+                        "${orders.status}".capitalizeFirst ?? "",
+                      ),
                     ],
                   ),
                 ),
-
-                buildOrderActionButtons(orders, isDark),
               ],
             ),
           );
@@ -217,25 +336,6 @@ class OrderHistoryDetailScreen extends StatelessWidget {
     }
 
     if (lowerStatus == 'paid') {
-      return Padding(
-        padding: padding,
-        child: Column(
-          children: [
-            CustomElevatedButton(
-              title: "Accept",
-              onTap: () {
-                controller.changeStatus(orders.id.toString(), "seller to pack");
-              },
-              backGroundColor: AppColors.primaryColor,
-            ),
-            const SizedBox(height: 6),
-            buildCancelButton(),
-          ],
-        ),
-      );
-    }
-
-    if (lowerStatus == 'seller to pack') {
       return Padding(
         padding: padding,
         child: CustomElevatedButton(

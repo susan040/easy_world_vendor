@@ -172,7 +172,7 @@ class HistoryRow extends StatelessWidget {
     IconData icon;
 
     switch (status) {
-      case "paid":
+      case "completed":
         icon = Icons.check_circle_outline;
         color = Colors.green;
         break;
@@ -242,7 +242,10 @@ class HistoryRow extends StatelessWidget {
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Text(status, style: CustomTextStyles.f11W600(color: color)),
+            child: Text(
+              status.capitalizeFirst ?? "",
+              style: CustomTextStyles.f11W600(color: color),
+            ),
           ),
         ],
       ),

@@ -13,6 +13,7 @@ class Orders {
   List<Items>? items;
   String? totalAmount;
   String? createdAt;
+  List<Payments>? payments;
 
   Orders({
     this.id,
@@ -25,6 +26,7 @@ class Orders {
     this.items,
     this.totalAmount,
     this.createdAt,
+    this.payments,
   });
 
   Orders.fromJson(Map<String, dynamic> json) {
@@ -53,6 +55,12 @@ class Orders {
     }
     totalAmount = json['total_amount'];
     createdAt = json['created_at'];
+    if (json['payments'] != null) {
+      payments = <Payments>[];
+      json['payments'].forEach((v) {
+        payments!.add(new Payments.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -77,6 +85,9 @@ class Orders {
     }
     data['total_amount'] = this.totalAmount;
     data['created_at'] = this.createdAt;
+    if (this.payments != null) {
+      data['payments'] = this.payments!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -362,6 +373,44 @@ class Product {
     data['sku'] = this.sku;
     data['price_symbol'] = this.priceSymbol;
     data['product_images'] = this.productImages;
+    return data;
+  }
+}
+
+class Payments {
+  int? id;
+  String? paymentMethod;
+  String? transactionId;
+  String? status;
+  String? amount;
+  String? createdAt;
+
+  Payments({
+    this.id,
+    this.paymentMethod,
+    this.transactionId,
+    this.status,
+    this.amount,
+    this.createdAt,
+  });
+
+  Payments.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    paymentMethod = json['payment_method'];
+    transactionId = json['transaction_id'];
+    status = json['status'];
+    amount = json['amount'];
+    createdAt = json['created_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['payment_method'] = this.paymentMethod;
+    data['transaction_id'] = this.transactionId;
+    data['status'] = this.status;
+    data['amount'] = this.amount;
+    data['created_at'] = this.createdAt;
     return data;
   }
 }

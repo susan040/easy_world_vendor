@@ -16,155 +16,160 @@ class OrderFilterSheet extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return GetBuilder<OrderFilterTempController>(
       builder: (controller) {
-        return Container(
-          padding: const EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: 20,
-            bottom: 30,
-          ),
-          decoration: BoxDecoration(
-            color: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Text(
-                  'Filter orders',
-                  style: CustomTextStyles.f14W600(
-                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+        return SafeArea(
+          child: Container(
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              top: 20,
+              bottom: 30,
+            ),
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Text(
+                    'Filter orders',
+                    style: CustomTextStyles.f14W600(
+                      color:
+                          isDark ? AppColors.extraWhite : AppColors.blackColor,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  buildRangeButton(
-                    controller,
-                    'Last 1 month',
-                    FilterOption.last1Month,
-                    context,
-                    isDark,
-                  ),
-                  buildRangeButton(
-                    controller,
-                    'Last 3 months',
-                    FilterOption.last3Months,
-                    context,
-                    isDark,
-                  ),
-                  buildRangeButton(
-                    controller,
-                    'Last 6 months',
-                    FilterOption.last6Months,
-                    context,
-                    isDark,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              Row(
-                children: [
-                  Expanded(
-                    child: buildDatePickerButton(
-                      context,
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    buildRangeButton(
                       controller,
-                      isStart: true,
-                      isDark: isDark,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      '—',
-                      style: CustomTextStyles.f12W500(
-                        color:
-                            isDark
-                                ? AppColors.extraWhite
-                                : AppColors.secondaryTextColor,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: buildDatePickerButton(
+                      'Last 1 month',
+                      FilterOption.last1Month,
                       context,
+                      isDark,
+                    ),
+                    buildRangeButton(
                       controller,
-                      isStart: false,
-                      isDark: isDark,
+                      'Last 3 months',
+                      FilterOption.last3Months,
+                      context,
+                      isDark,
                     ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 35),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        controller.clear();
-                        c.clearDateFilter();
-                        Get.back();
-                      },
-                      child: Text(
-                        'Reset',
-                        style: CustomTextStyles.f14W400(
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: AppColors.primaryColor),
+                    buildRangeButton(
+                      controller,
+                      'Last 6 months',
+                      FilterOption.last6Months,
+                      context,
+                      isDark,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+                Row(
+                  children: [
+                    Expanded(
+                      child: buildDatePickerButton(
+                        context,
+                        controller,
+                        isStart: true,
+                        isDark: isDark,
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        final now = DateTime.now();
-                        DateTime? start;
-                        DateTime end = now;
-
-                        final selectedOption = controller.selectedOption;
-
-                        if (selectedOption == FilterOption.last1Month) {
-                          start = DateTime(now.year, now.month - 1, now.day);
-                        } else if (selectedOption == FilterOption.last3Months) {
-                          start = DateTime(now.year, now.month - 3, now.day);
-                        } else if (selectedOption == FilterOption.last6Months) {
-                          start = DateTime(now.year, now.month - 6, now.day);
-                        } else if (selectedOption == FilterOption.custom &&
-                            controller.customStart != null &&
-                            controller.customEnd != null) {
-                          start = controller.customStart;
-                          end = controller.customEnd!;
-                        }
-                        if (start != null) {
-                          Get.back();
-                          onFilterSelected(start, end);
-                        } else {
-                          Get.back();
-                          onFilterSelected(DateTime(2000), now);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryColor,
-                      ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
                       child: Text(
-                        'Confirm',
-                        style: CustomTextStyles.f14W400(
-                          color: AppColors.extraWhite,
+                        '—',
+                        style: CustomTextStyles.f12W500(
+                          color:
+                              isDark
+                                  ? AppColors.extraWhite
+                                  : AppColors.secondaryTextColor,
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    Expanded(
+                      child: buildDatePickerButton(
+                        context,
+                        controller,
+                        isStart: false,
+                        isDark: isDark,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 35),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          controller.clear();
+                          c.clearDateFilter();
+                          Get.back();
+                        },
+                        child: Text(
+                          'Reset',
+                          style: CustomTextStyles.f14W400(
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: AppColors.primaryColor),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final now = DateTime.now();
+                          DateTime? start;
+                          DateTime end = now;
+
+                          final selectedOption = controller.selectedOption;
+
+                          if (selectedOption == FilterOption.last1Month) {
+                            start = DateTime(now.year, now.month - 1, now.day);
+                          } else if (selectedOption ==
+                              FilterOption.last3Months) {
+                            start = DateTime(now.year, now.month - 3, now.day);
+                          } else if (selectedOption ==
+                              FilterOption.last6Months) {
+                            start = DateTime(now.year, now.month - 6, now.day);
+                          } else if (selectedOption == FilterOption.custom &&
+                              controller.customStart != null &&
+                              controller.customEnd != null) {
+                            start = controller.customStart;
+                            end = controller.customEnd!;
+                          }
+                          if (start != null) {
+                            Get.back();
+                            onFilterSelected(start, end);
+                          } else {
+                            Get.back();
+                            onFilterSelected(DateTime(2000), now);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primaryColor,
+                        ),
+                        child: Text(
+                          'Confirm',
+                          style: CustomTextStyles.f14W400(
+                            color: AppColors.extraWhite,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },

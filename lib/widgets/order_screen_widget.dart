@@ -3,10 +3,8 @@ import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.d
 import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
-import 'package:easy_world_vendor/utils/image_path.dart';
 import 'package:easy_world_vendor/views/dashboard/orders_history_details_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -18,13 +16,13 @@ class OrderCardWidget extends StatelessWidget {
   Color getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
-        return AppColors.skyBlue;
-      case 'seller to pack':
-        return AppColors.primaryColor;
+        return AppColors.yellow;
       case 'paid':
-        return AppColors.darkblue;
+        return AppColors.skyBlue;
       case 'packed':
         return AppColors.lightblue;
+      case 'in transit':
+        return AppColors.darkblue;
       case 'delivered':
         return AppColors.accepted;
       case 'cancelled':
@@ -40,10 +38,12 @@ class OrderCardWidget extends StatelessWidget {
         return "Payment pending on";
       case 'paid':
         return "Order is confirmed on";
-      case 'seller to pack':
-        return "Seller will pack by";
+      // case 'seller to pack':
+      //   return "Seller will pack by";
       case 'packed':
         return "Order is packed on";
+      case 'in transit':
+        return "Order is in transit since";
       case 'delivered':
       case 'completed':
         return "Order is completed on";
@@ -57,7 +57,7 @@ class OrderCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 10),
+      padding: const EdgeInsets.only(left: 14, right: 14, top: 10),
       child: InkWell(
         onTap: () {
           Get.to(
@@ -97,7 +97,7 @@ class OrderCardWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            orders.customer!.fullName ?? "",
+                            orders.customer?.fullName ?? "No Name",
                             style: CustomTextStyles.f16W600(
                               color:
                                   isDark
@@ -121,7 +121,9 @@ class OrderCardWidget extends StatelessWidget {
                   ),
                   Center(
                     child: Text(
-                      orders.status ?? "",
+                      orders.status?.toLowerCase() == "paid"
+                          ? "seller to pack"
+                          : "${orders.status}".capitalizeFirst ?? "",
                       style: CustomTextStyles.f11W600(
                         color: getStatusColor(orders.status ?? ""),
                       ),
@@ -144,9 +146,9 @@ class OrderCardWidget extends StatelessWidget {
                   SizedBox(width: 4),
                   Text(
                     orders.createdAt != null && orders.createdAt!.isNotEmpty
-                        ? DateFormat(
-                          'd MMM yyyy hh:mm a',
-                        ).format(DateTime.parse(orders.createdAt!).toLocal())
+                        ? DateFormat('d MMM yyyy hh:mm a').format(
+                          DateTime.parse(orders.createdAt ?? "").toLocal(),
+                        )
                         : '',
                     style: CustomTextStyles.f12W400(
                       color:
@@ -166,7 +168,7 @@ class OrderCardWidget extends StatelessWidget {
                       ExchangeRateController(),
                     );
                     final convertedPrice = exchangeRateController
-                        .convertPriceFromAUD(orders.totalAmount)
+                        .convertPriceFromAUD(orders.totalAmount ?? "")
                         .toStringAsFixed(2);
                     final code =
                         exchangeRateController.selectedCountryData['code'];
@@ -181,66 +183,6 @@ class OrderCardWidget extends StatelessWidget {
                       ),
                     );
                   }),
-
-                  InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            backgroundColor:
-                                isDark
-                                    ? AppColors.darkModeColor
-                                    : AppColors.extraWhite,
-                            title: Text(
-                              "Confirm Delete",
-                              style: CustomTextStyles.f16W700(
-                                color:
-                                    isDark
-                                        ? AppColors.extraWhite
-                                        : AppColors.blackColor,
-                              ),
-                            ),
-                            content: Text(
-                              "Are you sure you want to delete this order?",
-                              style: CustomTextStyles.f14W400(
-                                color:
-                                    isDark
-                                        ? AppColors.extraWhite
-                                        : AppColors.textGreyColor,
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: Text(
-                                  "Cancel",
-                                  style: CustomTextStyles.f12W400(
-                                    color: AppColors.lightblue,
-                                  ),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  c.deleteOrder(
-                                    int.parse(orders.id.toString()),
-                                  );
-                                },
-                                child: Text(
-                                  "Delete",
-                                  style: CustomTextStyles.f12W400(
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                    child: SvgPicture.asset(ImagePath.delete),
-                  ),
                 ],
               ),
             ],

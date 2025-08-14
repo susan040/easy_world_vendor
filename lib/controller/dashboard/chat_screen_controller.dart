@@ -1,5 +1,5 @@
+import 'dart:developer';
 import 'package:easy_world_vendor/models/all_chats.dart';
-import 'package:easy_world_vendor/models/chat_by_id.dart';
 import 'package:easy_world_vendor/repo/chat/get_all_chat_repo.dart';
 import 'package:easy_world_vendor/repo/chat/get_chat_by_id_repo.dart';
 import 'package:easy_world_vendor/repo/chat/send_message_to_customer_repo.dart';
@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 class ChatScreenController extends GetxController {
   final messageController = TextEditingController();
   RxList<AllChats> allChatsLists = <AllChats>[].obs;
-  Rxn<ChatWithID> chatDetailsByIdLists = Rxn<ChatWithID>();
+  Rx<AllChats?> currentChat = Rx<AllChats?>(null);
   final ScrollController scrollController = ScrollController();
   var isLoading = true.obs;
 
@@ -33,15 +33,40 @@ class ChatScreenController extends GetxController {
     );
   }
 
-  void getChatDetailsById(int chatId, {bool showLoader = true}) async {
-    if (showLoader) isLoading.value = true;
+  var errorMessage = "".obs;
+  void fetchSingleChatById(int chatId) async {
+    isLoading.value = true;
+    errorMessage.value = "";
+
     await GetChatByIdRepo.getChatByIdRepo(
       chatId: chatId,
-      onSuccess: (chatDetails) {
-        chatDetailsByIdLists.value = chatDetails;
-        if (showLoader) isLoading.value = true;
+      onSuccess: (chat) {
+        // Mark all messages as read
+        chat.messages?.forEach((msg) {
+          msg.readAt = DateTime.now().toUtc().toIso8601String();
+        });
+
+        // Update current chat without replacing the object entirely
+        if (currentChat.value != null &&
+            currentChat.value!.chatId == chat.chatId) {
+          currentChat.value!.messages = chat.messages;
+          currentChat.refresh();
+        } else {
+          currentChat.value = chat;
+        }
+
+        isLoading.value = false;
+
+        // Scroll to bottom after loading
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (scrollController.hasClients) {
+            scrollController.jumpTo(scrollController.position.maxScrollExtent);
+          }
+        });
       },
       onError: (message) {
+        errorMessage.value = message;
+        currentChat.value = null;
         isLoading.value = false;
       },
     );
@@ -60,38 +85,64 @@ class ChatScreenController extends GetxController {
     }
   }
 
-  void sendChatMessage({required String chatId, required String messages}) {
-    // final user = Get.find<CoreController>().currentUser.value?.data;
-
+  Future<void> sendChatMessage({
+    required String chatId,
+    required String messages,
+  }) async {
     final newMessage = Messages(
-      chatId: chatId,
       message: messages,
+      senderType: "Vendor",
       createdAt: DateTime.now().toUtc().toIso8601String(),
-      senderType: "customer",
-      // sender:
-      //     user != null
-      //         ? Customer(id: user.id, name: user.storeName, email: user.email)
-      //         : null,
+      readAt: null,
     );
 
-    if (chatDetailsByIdLists.value?.messages == null) {
-      chatDetailsByIdLists.value?.messages = [];
+    if (currentChat.value == null) {
+      currentChat.value = AllChats(chatId: null, messages: RxList<Messages>());
     }
-    chatDetailsByIdLists.value?.messages?.add(newMessage);
-    chatDetailsByIdLists.refresh();
-    messageController.clear();
 
-    SendMessageToCustomerRepo.sendMessageToCustomer(
+    if (currentChat.value!.messages is! RxList<Messages>) {
+      currentChat.value!.messages = RxList<Messages>(
+        currentChat.value!.messages ?? [],
+      );
+    }
+
+    (currentChat.value!.messages as RxList<Messages>).add(newMessage);
+    currentChat.refresh();
+
+    await SendMessageToCustomerRepo.sendMessageToCustomer(
       messages: messages,
       chatId: chatId,
-      onSuccess: (message) {
-        Get.snackbar("Success", message);
+      onSuccess: (messageText) {
+        log("Message sent successfully");
+
+        // if (currentChat.value != null) {
+        //   currentChat.value!.chatId = chatIdFromServer;
+        //   currentChat.refresh();
+        // }
       },
       onError: (message) {
-        Get.snackbar("Error", message);
-        // Optional: Mark message as failed in UI
+        log("Error sending message: $message");
       },
     );
+  }
+
+  void markMessagesAsRead(AllChats chat) {
+    if (chat.messages == null) return;
+
+    bool updated = false;
+    for (var msg in chat.messages!) {
+      // Only mark customer messages as read if they are not yet read
+      if (msg.senderType == "Customer" && msg.readAt == null) {
+        msg.readAt = DateTime.now().toUtc().toIso8601String();
+        updated = true;
+      }
+    }
+
+    if (updated) {
+      currentChat.refresh();
+      allChatsLists.refresh();
+      // Optionally, call your API to mark messages as read on server
+    }
   }
 
   String formatTimestamp(String? timestamp) {
@@ -124,3 +175,37 @@ class ChatScreenController extends GetxController {
     }
   }
 }
+// void addNewMessage(Messages newMessage) {
+//   if (!messages.any((m) => m.id == newMessage.id)) {
+//     messages.add(newMessage);
+
+//     // Scroll to bottom after adding
+//     if (scrollController.hasClients) {
+//       scrollController.jumpTo(scrollController.position.maxScrollExtent);
+//     }
+//   }
+// }
+// void fetchSingleChatById(int chatId) async {
+//     isLoading.value = true;
+//     errorMessage.value = "";
+
+//     await GetChatByIdRepo.getChatByIdRepo(
+//       chatId: chatId,
+//       onSuccess: (chat) {
+//         currentChat.value = chat;
+//         messages.value = chat.messages ?? [];
+//         isLoading.value = false;
+
+//         // Scroll to bottom
+//         if (scrollController.hasClients) {
+//           scrollController.jumpTo(scrollController.position.maxScrollExtent);
+//         }
+//       },
+//       onError: (msg) {
+//         errorMessage.value = msg;
+//         currentChat.value = null;
+//         messages.clear();
+//         isLoading.value = false;
+//       },
+//     );
+//   }

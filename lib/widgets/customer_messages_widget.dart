@@ -1,9 +1,7 @@
 import 'package:easy_world_vendor/models/all_chats.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
-import 'package:easy_world_vendor/views/dashboard/chat_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class CustomMessagesWidget extends StatelessWidget {
@@ -36,108 +34,81 @@ class CustomMessagesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool hasReply =
-        chats.customerReply != null && chats.customerReply!.isNotEmpty;
+    final lastMessage =
+        (chats.messages != null && chats.messages!.isNotEmpty)
+            ? chats.messages!.last
+            : null;
 
-    final String message =
-        hasReply ? chats.customerReply! : (chats.vendorMessage ?? '');
-
-    final String time = formatChatTime(
-      hasReply ? chats.customerReplyTime : chats.vendorMessageTime,
-    );
+    final messageText = lastMessage?.message ?? '';
+    final messageTime = lastMessage?.createdAt;
+    final time = formatChatTime(messageTime);
     return Padding(
-      padding: EdgeInsets.only(bottom: 10),
-      child: InkWell(
-        onTap: () {
-          Get.to(
-            () => ChatScreen(
-              chatId: chats.chatId.toString(),
-              customerName: chats.customer!.name ?? "",
-            ),
-          );
-        },
-        child: Container(
-          padding: EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color:
-                isDark
-                    ? AppColors.blackColor.withOpacity(0.3)
-                    : AppColors.extraWhite,
-            borderRadius: BorderRadius.circular(5),
-            boxShadow: [
-              BoxShadow(
-                color: isDark ? Colors.transparent : AppColors.lGrey,
-                blurRadius: 1,
-                spreadRadius: 1.5,
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              Container(
-                height: 48,
-                width: 45,
-                decoration: BoxDecoration(
-                  color:
-                      isDark
-                          ? AppColors.blackColor.withOpacity(0.3)
-                          : AppColors.extraWhite,
-                  borderRadius: BorderRadius.circular(13),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      "https://blog.photofeeler.com/wp-content/uploads/2017/02/flattering-pose-profile-pics.jpeg",
-                    ),
-                    fit: BoxFit.cover,
-                  ),
+      padding: EdgeInsets.only(top: 10, left: 16, right: 16, bottom: 10),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(13),
+            child: Container(
+              height: 48,
+              width: 45,
+              color: AppColors.lightPrimaryColor,
+              alignment: Alignment.center,
+              child: Text(
+                (chats.customer?.name != null &&
+                        chats.customer!.name!.isNotEmpty)
+                    ? chats.customer!.name![0].toUpperCase()
+                    : "?",
+                style: CustomTextStyles.f18W600(
+                  color: AppColors.extraWhite,
                 ),
               ),
-              SizedBox(width: 9),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+    
+          SizedBox(width: 9),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          chats.customer!.name ?? "",
-                          style: CustomTextStyles.f12W600(
-                            color:
-                                isDark
-                                    ? AppColors.extraWhite
-                                    : AppColors.blackColor,
-                          ),
-                        ),
-                        Text(
-                          time,
-                          style: CustomTextStyles.f11W400(
-                            color:
-                                isDark
-                                    ? AppColors.extraWhite.withOpacity(0.7)
-                                    : AppColors.secondaryTextColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
                     Text(
-                      message,
+                      chats.customer!.name ?? "",
+                      style: CustomTextStyles.f12W600(
+                        color:
+                            isDark
+                                ? AppColors.extraWhite
+                                : AppColors.blackColor,
+                      ),
+                    ),
+                    Text(
+                      time,
                       style: CustomTextStyles.f11W400(
                         color:
                             isDark
                                 ? AppColors.extraWhite.withOpacity(0.7)
                                 : AppColors.secondaryTextColor,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
                     ),
                   ],
                 ),
-              ),
-            ],
+                SizedBox(height: 4),
+                Text(
+                  messageText,
+                  style: CustomTextStyles.f11W400(
+                    color:
+                        isDark
+                            ? AppColors.extraWhite.withOpacity(0.7)
+                            : AppColors.secondaryTextColor,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

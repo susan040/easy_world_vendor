@@ -22,7 +22,8 @@ class ImagePath {
   static const String newMessage = "$baseIconPath/new_message.svg";
   static const String message = "$baseIconPath/chat.svg";
 
-  static const String logo = "$baseImagePath/logo.png";
+  static const String logo = "$baseImagePath/app_logo.svg";
+  static const String secondaryLogo = "$baseImagePath/secondary_logo.svg";
   static const String blankProfile = "$baseImagePath/blank_profile.png";
   static const String noImage = "$baseImagePath/no_image.png";
   static const String totalProducts = "$baseImagePath/products.png";

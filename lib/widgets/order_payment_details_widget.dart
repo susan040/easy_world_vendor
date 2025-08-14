@@ -91,27 +91,36 @@ class OrderRowItem extends StatelessWidget {
         isDark ? AppColors.extraWhite : AppColors.blackColor;
     final Color secondaryColor =
         isDark ? AppColors.extraWhite.withOpacity(0.7) : AppColors.blackColor;
+
+    // Decide the color based on the original status
     Color getRightTextColor() {
       switch (rightText.toLowerCase()) {
         case 'pending':
           return AppColors.yellow;
         case 'paid':
-          return AppColors.darkblue;
-        case 'seller to pack':
-          return AppColors.primaryColor;
+          return AppColors.skyBlue;
         case 'packed':
           return AppColors.lightblue;
+        case 'in transit':
+          return AppColors.darkblue;
         case 'delivered':
           return AppColors.accepted;
         case 'cancelled':
           return AppColors.redColor;
-        case 'to pay':
-          return Colors.brown;
+        case 'paypal':
+          return AppColors.lightGreen;
         default:
           return isRejected
               ? AppColors.rejected
               : (rightBold && isBold ? textColor : secondaryColor);
       }
+    }
+
+    String getDisplayText() {
+      if (rightText.toLowerCase() == 'paid') {
+        return 'Seller to pack';
+      }
+      return rightText.capitalizeFirst ?? '';
     }
 
     return Row(
@@ -124,9 +133,8 @@ class OrderRowItem extends StatelessWidget {
                   ? CustomTextStyles.f12W600(color: textColor)
                   : CustomTextStyles.f12W400(color: textColor),
         ),
-
         Text(
-          rightText,
+          getDisplayText(),
           style: CustomTextStyles.f12W400(color: getRightTextColor()),
         ),
       ],

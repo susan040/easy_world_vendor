@@ -48,9 +48,14 @@ class RegisterScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Center(
-                  child: Image.asset(ImagePath.logo, height: 192, width: 192),
-                ),
+                if (isDark)
+                  SvgPicture.asset(
+                    ImagePath.secondaryLogo,
+                    height: 192,
+                    width: 192,
+                  )
+                else
+                  SvgPicture.asset(ImagePath.logo, height: 192, width: 192),
                 SizedBox(height: 6),
                 CustomTextField(
                   controller: c.fullNameController,

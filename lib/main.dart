@@ -1,8 +1,10 @@
 import 'dart:developer';
 
 import 'package:easy_world_vendor/controller/core_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/chat_screen_controller.dart';
 import 'package:easy_world_vendor/controller/theme_controller.dart';
-import 'package:easy_world_vendor/views/dashboard/chat_screen.dart';
+import 'package:easy_world_vendor/models/all_chats.dart';
+import 'package:easy_world_vendor/views/chats/chat_screen.dart';
 import 'package:easy_world_vendor/views/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -46,19 +48,95 @@ Future<void> _initializeFirebaseMessaging() async {
   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       showNotification(message);
-      log("Foreground Notification: ${message.notification?.body}");
+      log(
+        "Foreground Notification: ${message.notification?.body}, ${message.notification?.title}",
+      );
+
+      // Only handle vendor messages
+      if (message.notification?.title?.trim().toLowerCase() != "new message") {
+        log("Ignored message with title: ${message.notification?.title}");
+        return;
+      }
+
+      if (message.data.isNotEmpty && message.data['chat_id'] != null) {
+        final chatId = int.tryParse(message.data['chat_id'] ?? '');
+        if (chatId == null) return;
+
+        final chatController = Get.find<ChatScreenController>();
+
+        final newMsg = Messages(
+          message: message.data['message'] ?? message.notification?.body ?? '',
+          senderType: "Customer",
+          createdAt:
+              message.data['created_at'] ??
+              DateTime.now().toUtc().toIso8601String(),
+          readAt: null,
+        );
+        bool? customerIsOnline;
+        if (message.data['customer_is_online'] != null) {
+          final val = message.data['customer_is_online'];
+          if (val is String) {
+            customerIsOnline = val.toLowerCase() == 'true';
+          } else if (val is bool) {
+            customerIsOnline = val;
+          }
+        }
+        // Update current chat if open
+        if (chatController.currentChat.value?.chatId == chatId) {
+          chatController.currentChat.value!.messages ??= [];
+          chatController.currentChat.value!.messages!.add(newMsg);
+          if (customerIsOnline != null) {
+            chatController.currentChat.value!.customer?.isOnline =
+                customerIsOnline;
+          }
+          // Trigger rebuild
+          chatController.currentChat.refresh();
+
+          // Scroll to bottom
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (chatController.scrollController.hasClients) {
+              chatController.scrollController.jumpTo(
+                chatController.scrollController.position.maxScrollExtent,
+              );
+            }
+          });
+        } else {
+          // Update chat in the list if not currently open
+          chatController.fetchSingleChatById(chatId);
+          final chatIndex = chatController.allChatsLists.indexWhere(
+            (c) => c.chatId == chatId,
+          );
+          if (chatIndex != -1) {
+            chatController.allChatsLists[chatIndex].messages?.add(newMsg);
+
+            // Update vendor online status if available
+            if (customerIsOnline != null) {
+              chatController.allChatsLists[chatIndex].customer?.isOnline =
+                  customerIsOnline;
+            }
+
+            chatController.allChatsLists.refresh();
+          }
+        }
+      }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       log("Notification tapped from background.");
       if (message.data.isNotEmpty) {
-        log("Message data: ${message.data}");
-        Get.to(
-          () => ChatScreen(
-            chatId: message.data['chat_id'],
-            customerName: message.data['customer_name'],
-          ),
-        );
+        final chatId = int.tryParse(message.data['chat_id'] ?? '');
+        if (chatId != null) {
+          final chatController = Get.find<ChatScreenController>();
+          // Fetch the full chat to ensure messages are up-to-date
+          chatController.fetchSingleChatById(chatId);
+
+          Get.to(
+            () => ChatScreen(
+              chatId: chatId,
+              customerName: message.data['customer_name'] ?? '',
+            ),
+          );
+        }
       }
     });
 

@@ -17,56 +17,58 @@ class EditProfileBottomSheetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: Icon(
-              Icons.photo,
-              size: 24,
-              color:
-                  isDark
-                      ? AppColors.extraWhite
-                      : AppColors.blackColor.withOpacity(0.7),
-            ),
-            title: Text(
-              'Gallery',
-              style: CustomTextStyles.f14W400(
-                color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+    return SafeArea(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(
+                Icons.photo,
+                size: 24,
+                color:
+                    isDark
+                        ? AppColors.extraWhite
+                        : AppColors.blackColor.withOpacity(0.7),
               ),
-            ),
-            onTap: () {
-              Get.back();
-              c.pickImage(ImageSource.gallery);
-            },
-          ),
-          ListTile(
-            leading: Icon(
-              Icons.camera_alt,
-              size: 24,
-              color:
-                  isDark
-                      ? AppColors.extraWhite
-                      : AppColors.blackColor.withOpacity(0.7),
-            ),
-            title: Text(
-              'Camera',
-              style: CustomTextStyles.f14W400(
-                color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+              title: Text(
+                'Gallery',
+                style: CustomTextStyles.f14W400(
+                  color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                ),
               ),
+              onTap: () {
+                Get.back();
+                c.pickImage(ImageSource.gallery);
+              },
             ),
-            onTap: () {
-              Get.back();
-              c.pickImage(ImageSource.camera);
-            },
-          ),
-        ],
+            ListTile(
+              leading: Icon(
+                Icons.camera_alt,
+                size: 24,
+                color:
+                    isDark
+                        ? AppColors.extraWhite
+                        : AppColors.blackColor.withOpacity(0.7),
+              ),
+              title: Text(
+                'Camera',
+                style: CustomTextStyles.f14W400(
+                  color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+                ),
+              ),
+              onTap: () {
+                Get.back();
+                c.pickImage(ImageSource.camera);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

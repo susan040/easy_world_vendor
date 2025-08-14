@@ -48,11 +48,15 @@ class LoginScreen extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Center(
-                  child: Image.asset(ImagePath.logo, height: 192, width: 192),
-                ),
+                if (isDark)
+                  SvgPicture.asset(
+                    ImagePath.secondaryLogo,
+                    height: 192,
+                    width: 192,
+                  )
+                else
+                  SvgPicture.asset(ImagePath.logo, height: 192, width: 192),
                 SizedBox(height: 16),
-
                 CustomTextField(
                   hint: "Enter your email",
                   controller: c.emailController,

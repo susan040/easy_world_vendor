@@ -56,34 +56,45 @@ class EditProfileScreen extends StatelessWidget {
                   child: Obx(() {
                     return Stack(
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child:
-                              c.selectedImage.value != null
-                                  ? Image.file(
-                                    c.selectedImage.value!,
-                                    fit: BoxFit.cover,
-                                    height: 120,
-                                    width: 120,
-                                  )
-                                  : CachedNetworkImage(
-                                    imageUrl:
-                                        c.profileImageUrl.value.toString(),
-                                    placeholder:
-                                        (context, url) => const Center(
-                                          child: CircularProgressIndicator(),
-                                        ),
-                                    errorWidget:
-                                        (context, url, error) => Image.asset(
-                                          ImagePath.blankProfile,
-                                          height: 120,
-                                          width: 120,
-                                          fit: BoxFit.cover,
-                                        ),
-                                    fit: BoxFit.cover,
-                                    height: 120,
-                                    width: 120,
-                                  ),
+                        Container(
+                          height: 120,
+                          width: 120,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppColors.primaryColor,
+                              width: 1,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(60),
+                            child:
+                                c.selectedImage.value != null
+                                    ? Image.file(
+                                      c.selectedImage.value!,
+                                      fit: BoxFit.cover,
+                                      height: 120,
+                                      width: 120,
+                                    )
+                                    : CachedNetworkImage(
+                                      imageUrl:
+                                          c.profileImageUrl.value.toString(),
+                                      placeholder:
+                                          (context, url) => const Center(
+                                            child: CircularProgressIndicator(),
+                                          ),
+                                      errorWidget:
+                                          (context, url, error) => Image.asset(
+                                            ImagePath.blankProfile,
+                                            height: 120,
+                                            width: 120,
+                                            fit: BoxFit.cover,
+                                          ),
+                                      fit: BoxFit.cover,
+                                      height: 120,
+                                      width: 120,
+                                    ),
+                          ),
                         ),
                         Positioned(
                           bottom: 8,

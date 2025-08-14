@@ -42,7 +42,7 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
     double totalAmount = total - getDiscountAmount(orders.voucher);
 
     return Container(
-      margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+      margin: EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 8),
       padding: EdgeInsets.only(left: 14, right: 14, top: 14, bottom: 12),
       width: double.infinity,
       decoration: BoxDecoration(
@@ -198,7 +198,7 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
 
           OrderRowItem(
             "Payment method",
-            "PayPal Mobile Wallet",
+            orders.payments?.first.paymentMethod?.capitalizeFirst ?? "",
             isBold: true,
             rightBold: false,
           ),
