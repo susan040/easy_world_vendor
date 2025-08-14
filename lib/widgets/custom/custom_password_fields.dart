@@ -54,13 +54,13 @@ class CustomPasswordField extends StatelessWidget {
           borderSide: BorderSide(width: 1, color: AppColors.borderColor),
         ),
         focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(width: 1, color: AppColors.errorColor),
+          borderSide: BorderSide(width: 1, color: Colors.red),
         ),
         focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(width: 1, color: AppColors.primaryColor),
         ),
         errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(width: 1, color: AppColors.errorColor),
+          borderSide: BorderSide(width: 1, color: Colors.red),
         ),
         suffixIcon: IconButton(
           onPressed: onEyeClick,

@@ -36,150 +36,162 @@ class LoginScreen extends StatelessWidget {
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
-      body: Form(
-        key: c.loginFormKey,
-        child: Padding(
-          padding: const EdgeInsets.only(
-            left: 16,
-            right: 16,
-            top: 16,
-            bottom: 24,
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                if (isDark)
-                  SvgPicture.asset(
-                    ImagePath.secondaryLogo,
-                    height: 192,
-                    width: 192,
-                  )
-                else
-                  SvgPicture.asset(ImagePath.logo, height: 192, width: 192),
-                SizedBox(height: 16),
-                CustomTextField(
-                  hint: "Enter your email",
-                  controller: c.emailController,
-                  textInputAction: TextInputAction.next,
-                  textCapitalization: TextCapitalization.none,
-                  textInputType: TextInputType.emailAddress,
-                ),
-                SizedBox(height: 16),
-                Obx(
-                  () => CustomPasswordField(
-                    validator: Validators.checkPasswordField,
-                    hint: "Enter password",
-                    eye: c.passwordObscure.value,
-                    onEyeClick: c.onEyeCLick,
-                    controller: c.passwordController,
-                    textInputAction: TextInputAction.done,
-                  ),
-                ),
-                SizedBox(height: 6),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Form(
+            key: c.loginFormKey,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 16,
+                bottom: 24,
+              ),
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        Get.to(() => AddEmailScreen());
-                      },
-                      child: Text(
-                        "Forgot password?",
-                        style: CustomTextStyles.f12W400(
-                          color:
-                              isDark
-                                  ? AppColors.extraWhite
-                                  : AppColors.blackColor,
-                        ),
+                    if (isDark)
+                      SvgPicture.asset(
+                        ImagePath.secondaryLogo,
+                        height: 192,
+                        width: 192,
+                      )
+                    else
+                      SvgPicture.asset(ImagePath.logo, height: 192, width: 192),
+                    SizedBox(height: 16),
+                    CustomTextField(
+                      hint: "Enter your email",
+                      controller: c.emailController,
+                      textInputAction: TextInputAction.next,
+                      textCapitalization: TextCapitalization.none,
+                      textInputType: TextInputType.emailAddress,
+                      validator: Validators.checkEmailField,
+                    ),
+                    SizedBox(height: 16),
+                    Obx(
+                      () => CustomPasswordField(
+                        validator: Validators.checkPasswordField,
+                        hint: "Enter password",
+                        eye: c.passwordObscure.value,
+                        onEyeClick: c.onEyeCLick,
+                        controller: c.passwordController,
+                        textInputAction: TextInputAction.done,
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                CustomElevatedButton(
-                  title: "Login",
-                  onTap: () {
-                    c.onSubmit();
-                  },
-                  backGroundColor: AppColors.primaryColor,
-                ),
-                SizedBox(height: 14),
-                Text(
-                  "or",
-                  style: CustomTextStyles.f12W500(
-                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
-                  ),
-                ),
-                SizedBox(height: 14),
-                InkWell(
-                  onTap: () {
-                    controller.signInWithGoogle();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.only(left: 10, right: 12),
-                    height: 46,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color:
-                          isDark
-                              ? AppColors.blackColor.withOpacity(0.1)
-                              : AppColors.extraWhite,
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        width: 0.5,
-                        color: isDark ? AppColors.grey : AppColors.blackColor,
-                      ),
-                    ),
-                    child: Row(
+                    SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        SvgPicture.asset(
-                          ImagePath.google,
-                          height: 20,
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: Text(
-                              "Login with google",
-                              style: CustomTextStyles.f12W400(
-                                color:
-                                    isDark
-                                        ? AppColors.extraWhite
-                                        : AppColors.blackColor,
-                              ),
+                        InkWell(
+                          onTap: () {
+                            Get.to(() => AddEmailScreen());
+                          },
+                          child: Text(
+                            "Forgot password?",
+                            style: CustomTextStyles.f12W400(
+                              color:
+                                  isDark
+                                      ? AppColors.lightblue
+                                      : AppColors.secondaryColor,
                             ),
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ),
-                SizedBox(height: 100),
-                InkWell(
-                  onTap: () {
-                    Get.to(() => RegisterScreen());
-                  },
-                  child: RichText(
-                    text: TextSpan(
-                      text: "Don't have an account? ",
-                      style: CustomTextStyles.f12W400(
+                    SizedBox(height: 20),
+                    CustomElevatedButton(
+                      title: "Login",
+                      onTap: () {
+                        c.onSubmit();
+                      },
+                      backGroundColor: AppColors.primaryColor,
+                    ),
+                    SizedBox(height: 14),
+                    Text(
+                      "or",
+                      style: CustomTextStyles.f12W500(
                         color:
                             isDark
                                 ? AppColors.extraWhite
                                 : AppColors.blackColor,
                       ),
-                      children: [
-                        TextSpan(
-                          text: 'Sign Up',
-                          style: CustomTextStyles.f12W500(
-                            color: AppColors.primaryColor,
+                    ),
+                    SizedBox(height: 14),
+                    InkWell(
+                      onTap: () {
+                        controller.signInWithGoogle();
+                      },
+                      child: Container(
+                        padding: EdgeInsets.only(left: 10, right: 12),
+                        height: 46,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color:
+                              isDark
+                                  ? AppColors.blackColor.withOpacity(0.1)
+                                  : AppColors.extraWhite,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            width: 0.5,
+                            color:
+                                isDark ? AppColors.grey : AppColors.blackColor,
                           ),
                         ),
-                      ],
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              ImagePath.google,
+                              height: 20,
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Center(
+                                child: Text(
+                                  "Login with google",
+                                  style: CustomTextStyles.f12W400(
+                                    color:
+                                        isDark
+                                            ? AppColors.extraWhite
+                                            : AppColors.blackColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(height: 65),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => RegisterScreen());
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: RichText(
+                          text: TextSpan(
+                            text: "Don't have an account? ",
+                            style: CustomTextStyles.f12W400(
+                              color:
+                                  isDark
+                                      ? AppColors.extraWhite
+                                      : AppColors.blackColor,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: ' Sign Up',
+                                style: CustomTextStyles.f12W500(
+                                  color: AppColors.primaryColor,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
