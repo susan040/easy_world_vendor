@@ -4,15 +4,16 @@ import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/widgets/bank_account_details_widget.dart';
 import 'package:easy_world_vendor/widgets/custom/custom_textfield.dart';
-import 'package:easy_world_vendor/widgets/request_payout_shimmer_widget.dart';
 import 'package:easy_world_vendor/widgets/request_payout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 
 class RequestPayoutScreen extends StatelessWidget {
   RequestPayoutScreen({super.key});
   final c = Get.put(AddBankAccountController());
   final controller = Get.put(PayoutController());
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -38,25 +39,23 @@ class RequestPayoutScreen extends StatelessWidget {
           ),
         ),
       ),
-
       body: SafeArea(
         child: Obx(() {
-          if (controller.isLoading.value && c.isLoading.value) {
+          final loading = controller.isLoading.value || c.isLoading.value;
+
+          if (loading) {
+            // Full page shimmer
             return RequestPayoutWidget(isDark: isDark);
           }
-
+          // return RequestPayoutWidget(isDark: isDark);
+          // Actual page
           return SingleChildScrollView(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 6,
-              bottom: 20,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 WalletWidget(isDark: isDark),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 BankAccountDetailsWidget(isDark: isDark),
                 const SizedBox(height: 10),
                 Container(
@@ -153,7 +152,6 @@ class RequestPayoutScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 16),
                 Text(
                   "Payout History",
@@ -164,16 +162,7 @@ class RequestPayoutScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 Obx(
                   () =>
-                      controller.isLoading.value
-                          ? Center(
-                            child: CircularProgressIndicator(
-                              color:
-                                  isDark
-                                      ? AppColors.extraWhite
-                                      : AppColors.blackColor,
-                            ),
-                          )
-                          : controller.payoutList.isEmpty
+                      controller.payoutList.isEmpty
                           ? SizedBox(
                             height: 30,
                             child: Center(
@@ -187,7 +176,7 @@ class RequestPayoutScreen extends StatelessWidget {
                           )
                           : ListView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: controller.payoutList.length,
                             itemBuilder: (context, index) {
                               final payout = controller.payoutList[index];
@@ -206,6 +195,97 @@ class RequestPayoutScreen extends StatelessWidget {
             ),
           );
         }),
+      ),
+    );
+  }
+}
+
+class RequestPayoutWidget extends StatelessWidget {
+  const RequestPayoutWidget({super.key, required this.isDark});
+
+  final bool isDark;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Wallet shimmer
+          Shimmer.fromColors(
+            baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+            highlightColor: isDark ? Colors.grey[600]! : Colors.grey[100]!,
+            child: Container(
+              height: 180,
+              width: double.infinity,
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+          // Bank account shimmer
+          Shimmer.fromColors(
+            baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+            highlightColor: isDark ? Colors.grey[600]! : Colors.grey[100]!,
+            child: Container(
+              height: 180,
+              width: double.infinity,
+              margin: const EdgeInsets.only(bottom: 12),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+          Shimmer.fromColors(
+            baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+            highlightColor: isDark ? Colors.grey[600]! : Colors.grey[100]!,
+            child: Container(
+              height: 160,
+              width: double.infinity,
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+          Shimmer.fromColors(
+            baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+            highlightColor: isDark ? Colors.grey[600]! : Colors.grey[100]!,
+            child: Container(
+              height: 25,
+              width: 100,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+          ),
+          Column(
+            children: List.generate(5, (index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                child: Shimmer.fromColors(
+                  baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+                  highlightColor:
+                      isDark ? Colors.grey[600]! : Colors.grey[100]!,
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
       ),
     );
   }

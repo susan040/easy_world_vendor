@@ -41,8 +41,10 @@ class PayoutController extends GetxController {
       loading.show(message: 'Loading...');
       RequestPayoutRepo.requestPayoutRepo(
         amount: amountController.text,
-        onSuccess: (message) {
+        onSuccess: (message) async {
           loading.hide();
+
+          await getAllPayouts();
           CustomSnackBar.success(title: "Payout", message: message);
           amountController.clear();
         },
