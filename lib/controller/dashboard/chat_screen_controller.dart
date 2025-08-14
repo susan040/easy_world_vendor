@@ -42,9 +42,9 @@ class ChatScreenController extends GetxController {
       chatId: chatId,
       onSuccess: (chat) {
         // Mark all messages as read
-        chat.messages?.forEach((msg) {
-          msg.readAt = DateTime.now().toUtc().toIso8601String();
-        });
+        // chat.messages?.forEach((msg) {
+        //   msg.readAt = DateTime.now().toUtc().toIso8601String();
+        // });
 
         // Update current chat without replacing the object entirely
         if (currentChat.value != null &&
@@ -174,38 +174,32 @@ class ChatScreenController extends GetxController {
       return "$date AT $time";
     }
   }
+
+  int totalUnreadMessages(List<AllChats> allChats) {
+    int count = 0;
+
+    for (var chat in allChats) {
+      if (chat.messages != null && chat.messages!.isNotEmpty) {
+        count += chat.messages!.where((msg) => msg.readAt == null).length;
+      }
+    }
+
+    return count;
+  }
+
+  String? getLastMessage(AllChats chat) {
+    if (chat.messages == null || chat.messages!.isEmpty) return null;
+
+    final lastMessage = chat.messages!.reduce((a, b) {
+      final aTime =
+          DateTime.tryParse(a.createdAt ?? '') ??
+          DateTime.fromMillisecondsSinceEpoch(0);
+      final bTime =
+          DateTime.tryParse(b.createdAt ?? '') ??
+          DateTime.fromMillisecondsSinceEpoch(0);
+      return aTime.isAfter(bTime) ? a : b;
+    });
+
+    return lastMessage.message;
+  }
 }
-// void addNewMessage(Messages newMessage) {
-//   if (!messages.any((m) => m.id == newMessage.id)) {
-//     messages.add(newMessage);
-
-//     // Scroll to bottom after adding
-//     if (scrollController.hasClients) {
-//       scrollController.jumpTo(scrollController.position.maxScrollExtent);
-//     }
-//   }
-// }
-// void fetchSingleChatById(int chatId) async {
-//     isLoading.value = true;
-//     errorMessage.value = "";
-
-//     await GetChatByIdRepo.getChatByIdRepo(
-//       chatId: chatId,
-//       onSuccess: (chat) {
-//         currentChat.value = chat;
-//         messages.value = chat.messages ?? [];
-//         isLoading.value = false;
-
-//         // Scroll to bottom
-//         if (scrollController.hasClients) {
-//           scrollController.jumpTo(scrollController.position.maxScrollExtent);
-//         }
-//       },
-//       onError: (msg) {
-//         errorMessage.value = msg;
-//         currentChat.value = null;
-//         messages.clear();
-//         isLoading.value = false;
-//       },
-//     );
-//   }

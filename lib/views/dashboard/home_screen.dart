@@ -198,7 +198,17 @@ class HomeScreen extends StatelessWidget {
                 }
 
                 if (groupedChats.isEmpty)
-                  return const Center(child: Text("No messages"));
+                  return SizedBox(
+                    height: 70,
+                    child: Center(
+                      child: Text(
+                        "No messages",
+                        style: CustomTextStyles.f12W400(
+                          color: AppColors.secondaryTextColor,
+                        ),
+                      ),
+                    ),
+                  );
 
                 final customerChatsLists = groupedChats.values.toList();
                 final latestChats =
@@ -216,13 +226,20 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final customChats = latestChats[index];
                     final chats = customChats.last;
-                    return InkWell(
-                      onTap: () {
-                        Get.to(
-                          () => ChatProductsScreen(customerChats: customChats),
-                        );
-                      },
-                      child: CustomMessagesWidget(isDark: isDark, chats: chats),
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8, bottom: 8),
+                      child: InkWell(
+                        onTap: () {
+                          Get.to(
+                            () =>
+                                ChatProductsScreen(customerChats: customChats),
+                          );
+                        },
+                        child: CustomMessagesWidget(
+                          isDark: isDark,
+                          chats: chats,
+                        ),
+                      ),
                     );
                   },
                 );

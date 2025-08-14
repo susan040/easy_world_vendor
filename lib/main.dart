@@ -103,6 +103,7 @@ Future<void> _initializeFirebaseMessaging() async {
         } else {
           // Update chat in the list if not currently open
           chatController.fetchSingleChatById(chatId);
+          // chatController.getAllChats();
           final chatIndex = chatController.allChatsLists.indexWhere(
             (c) => c.chatId == chatId,
           );
