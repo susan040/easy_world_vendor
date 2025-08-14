@@ -175,10 +175,7 @@ class EditProfileScreen extends StatelessWidget {
                       hint: Text(
                         "Select country code",
                         style: CustomTextStyles.f12W400(
-                          color:
-                              isDark
-                                  ? AppColors.extraWhite
-                                  : AppColors.secondaryTextColor,
+                          color: AppColors.secondaryTextColor,
                         ),
                       ),
                       decoration: const InputDecoration(
@@ -213,7 +210,12 @@ class EditProfileScreen extends StatelessWidget {
                                   value: option,
                                   child: Text(
                                     option,
-                                    style: CustomTextStyles.f12W400(),
+                                    style: CustomTextStyles.f12W400(
+                                      color:
+                                          isDark
+                                              ? AppColors.extraWhite
+                                              : AppColors.blackColor,
+                                    ),
                                   ),
                                 ),
                               )

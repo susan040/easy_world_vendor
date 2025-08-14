@@ -134,7 +134,12 @@ class RegisterScreen extends StatelessWidget {
                                     value: option,
                                     child: Text(
                                       option,
-                                      style: CustomTextStyles.f12W400(),
+                                      style: CustomTextStyles.f12W400(
+                                        color:
+                                            isDark
+                                                ? AppColors.extraWhite
+                                                : AppColors.blackColor,
+                                      ),
                                     ),
                                   ),
                                 )

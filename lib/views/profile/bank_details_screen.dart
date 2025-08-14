@@ -96,10 +96,7 @@ class AddBankDetailsScreen extends StatelessWidget {
                         hint: Text(
                           "Please select bank name",
                           style: CustomTextStyles.f12W400(
-                            color:
-                                isDark
-                                    ? AppColors.extraWhite
-                                    : AppColors.secondaryTextColor,
+                            color: AppColors.secondaryTextColor,
                           ),
                         ),
                         decoration: const InputDecoration(
@@ -134,7 +131,12 @@ class AddBankDetailsScreen extends StatelessWidget {
                                     value: option,
                                     child: Text(
                                       option,
-                                      style: CustomTextStyles.f12W400(),
+                                      style: CustomTextStyles.f12W400(
+                                        color:
+                                            isDark
+                                                ? AppColors.extraWhite
+                                                : AppColors.blackColor,
+                                      ),
                                     ),
                                   ),
                                 )
