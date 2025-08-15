@@ -73,9 +73,12 @@ class EditProfileRepo {
     var data = jsonDecode(responseData);
     log("User data:$data");
     if (response.statusCode >= 200 && response.statusCode < 300) {
-      String accessToken = data["token"].toString();
       UsersDetails user = UsersDetails.fromJson(data);
-      log(UsersDetails.fromJson(data["data"]).toString());
+      String accessToken = token;
+      user.token = accessToken;
+
+      log("Parsed user data: ${user.data}");
+      log("edit profile token: $accessToken");
       onSuccess(user, accessToken, data['message']);
     } else {
       onError(data['message']);

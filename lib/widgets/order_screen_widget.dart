@@ -13,46 +13,7 @@ class OrderCardWidget extends StatelessWidget {
   final Orders orders;
   final c = Get.put(OrderScreenController());
   OrderCardWidget({required this.isDark, super.key, required this.orders});
-  Color getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return AppColors.yellow;
-      case 'paid':
-        return AppColors.skyBlue;
-      case 'packed':
-        return AppColors.lightblue;
-      case 'in transit':
-        return AppColors.darkblue;
-      case 'delivered':
-        return AppColors.accepted;
-      case 'cancelled':
-        return AppColors.redColor;
-      default:
-        return Colors.grey;
-    }
-  }
-
-  String getOrderStatusText(String status) {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return "Payment pending on";
-      case 'paid':
-        return "Order is confirmed on";
-      // case 'seller to pack':
-      //   return "Seller will pack by";
-      case 'packed':
-        return "Order is packed on";
-      case 'in transit':
-        return "Order is in transit since";
-      case 'delivered':
-      case 'completed':
-        return "Order is completed on";
-      case 'cancelled':
-        return "Order is cancelled on";
-      default:
-        return "Order status updated on";
-    }
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -122,10 +83,10 @@ class OrderCardWidget extends StatelessWidget {
                   Center(
                     child: Text(
                       orders.status?.toLowerCase() == "paid"
-                          ? "seller to pack"
+                          ? "Seller to pack"
                           : "${orders.status}".capitalizeFirst ?? "",
                       style: CustomTextStyles.f11W600(
-                        color: getStatusColor(orders.status ?? ""),
+                        color:c. getStatusColor(orders.status ?? ""),
                       ),
                     ),
                   ),
@@ -135,7 +96,7 @@ class OrderCardWidget extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    getOrderStatusText(orders.status ?? ""),
+                   c. getOrderStatusText(orders.status ?? ""),
                     style: CustomTextStyles.f12W400(
                       color:
                           isDark

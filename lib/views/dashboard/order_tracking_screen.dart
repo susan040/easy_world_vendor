@@ -1,3 +1,4 @@
+import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:flutter/material.dart';
@@ -6,18 +7,20 @@ import 'package:get/get.dart';
 class SellerOrderTrackingScreen extends StatelessWidget {
   final String orderNo;
   final String currentStatus;
+  final int orderId;
 
   const SellerOrderTrackingScreen({
     super.key,
     required this.orderNo,
     required this.currentStatus,
+    required this.orderId,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final controller = Get.put(
-      SellerOrderTrackingController(orderNo, currentStatus),
+      SellerOrderTrackingController(orderNo, currentStatus, orderId),
     );
 
     return Scaffold(
@@ -43,11 +46,15 @@ class SellerOrderTrackingScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.only(
+            right: 16,
+            left: 16,
+            top: 4,
+            bottom: 18,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Order number section
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -66,7 +73,7 @@ class SellerOrderTrackingScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      "Order No: #$orderNo",
+                      "Order No: $orderNo",
                       style: CustomTextStyles.f14W500(
                         color:
                             isDark
@@ -209,10 +216,10 @@ class SellerOrderTrackingScreen extends StatelessWidget {
                 return currentIndex < controller.steps.length - 1
                     ? SizedBox(
                       width: double.infinity,
+                      height: 45,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primaryColor,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -220,7 +227,9 @@ class SellerOrderTrackingScreen extends StatelessWidget {
                         onPressed: controller.updateStatus,
                         child: Text(
                           'Mark as ${controller.steps[currentIndex + 1].title}',
-                          style: const TextStyle(color: Colors.white),
+                          style: CustomTextStyles.f14W500(
+                            color: AppColors.extraWhite,
+                          ),
                         ),
                       ),
                     )
@@ -234,51 +243,50 @@ class SellerOrderTrackingScreen extends StatelessWidget {
   }
 }
 
-// Controller remains same as yours but UI-only (no API)
 class SellerOrderTrackingController extends GetxController {
   final String orderNo;
+  final int orderId;
   final RxInt currentIndex = 0.obs;
-  late final List<_TrackingStep> steps;
+  final List<_TrackingStep> steps = [];
+  final OrderScreenController orderController =
+      Get.find<OrderScreenController>();
 
-  SellerOrderTrackingController(this.orderNo, String initialStatus) {
+  SellerOrderTrackingController(
+    this.orderNo,
+    String initialStatus,
+    this.orderId,
+  ) {
     Color getStatusColor(String status) {
       switch (status.toLowerCase()) {
-        case 'pending':
-          return AppColors.yellow;
-        case 'paid':
+        case 'order placed':
           return AppColors.skyBlue;
+        case 'paid':
+          return AppColors.lightGreen;
         case 'packed':
           return AppColors.lightblue;
-        case 'in transit':
-        case 'shipped': // adding shipped as it matches your step title
+        case 'shipped':
           return AppColors.darkblue;
         case 'delivered':
           return AppColors.accepted;
         case 'cancelled':
           return AppColors.redColor;
-        case 'paypal':
-          return AppColors.lightGreen;
-        case 'order received': // added to handle your first step
-          return AppColors.skyBlue; // you can customize this
-        case 'preparing': // for preparing step color
-          return AppColors.yellow;
         default:
           return AppColors.secondaryTextColor;
       }
     }
 
-    steps = [
+    steps.addAll([
       _TrackingStep(
-        title: 'Order Received',
-        description: 'You have received a new order.',
-        icon: Icons.assignment_turned_in,
-        color: getStatusColor('order received'),
+        title: 'Order Placed',
+        description: 'Customer has placed the order.',
+        icon: Icons.shopping_cart,
+        color: getStatusColor('order placed'),
       ),
       _TrackingStep(
-        title: 'Preparing',
-        description: 'Preparing the order for shipment.',
-        icon: Icons.kitchen,
-        color: getStatusColor('preparing'),
+        title: 'Paid',
+        description: 'Payment has been received.',
+        icon: Icons.payment,
+        color: getStatusColor('paid'),
       ),
       _TrackingStep(
         title: 'Packed',
@@ -298,7 +306,7 @@ class SellerOrderTrackingController extends GetxController {
         icon: Icons.check_circle_outline,
         color: getStatusColor('delivered'),
       ),
-    ];
+    ]);
 
     int index = steps.indexWhere(
       (step) => step.title.toLowerCase() == initialStatus.toLowerCase(),
@@ -309,6 +317,10 @@ class SellerOrderTrackingController extends GetxController {
   void updateStatus() {
     if (currentIndex.value < steps.length - 1) {
       currentIndex.value++;
+      orderController.changeStatus(
+        orderId.toString(),
+        steps[currentIndex.value].title.toLowerCase(),
+      );
     }
   }
 }

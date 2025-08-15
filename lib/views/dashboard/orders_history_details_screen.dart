@@ -1,9 +1,7 @@
 import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.dart';
-import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/views/dashboard/order_tracking_screen.dart';
-import 'package:easy_world_vendor/widgets/custom/elevated_button.dart';
 import 'package:easy_world_vendor/widgets/order_history_details_widget.dart';
 import 'package:easy_world_vendor/widgets/order_payment_details_widget.dart';
 import 'package:flutter/material.dart';
@@ -143,101 +141,107 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                // ["packed", "shipped", "delivered"].contains(orders.status)
-                //     ?
-                //     : SizedBox.shrink(),
-                Container(
-                  margin: const EdgeInsets.only(right: 14, left: 14, top: 4),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 9,
-                  ),
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color:
-                        isDark
-                            ? AppColors.blackColor.withOpacity(0.3)
-                            : AppColors.extraWhite,
-                    boxShadow: [
-                      BoxShadow(
+                [
+                      "paid",
+                      "packed",
+                      "shipped",
+                      "delivered",
+                    ].contains(orders.status)
+                    ? Container(
+                      margin: const EdgeInsets.only(
+                        right: 14,
+                        left: 14,
+                        top: 4,
+                        bottom: 10,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 9,
+                      ),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
                         color:
-                            isDark ? AppColors.darkModeColor : AppColors.lGrey,
-                        spreadRadius: 1.5,
-                        blurRadius: 1,
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              orders.orderNo ?? "Order No Unknown",
-                              style: CustomTextStyles.f14W400(
-                                color:
-                                    isDark
-                                        ? AppColors.extraWhite
-                                        : AppColors.blackColor,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              "Status: ${orders.status ?? 'Pending Pickup'}",
-                              style: CustomTextStyles.f12W400(
-                                color:
-                                    isDark
-                                        ? AppColors.borderColor
-                                        : AppColors.secondaryTextColor,
-                                height: 1.3,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              "Customer: ${orders.customer?.fullName ?? 'Anonymous'}",
-                              style: CustomTextStyles.f12W400(
-                                color:
-                                    isDark
-                                        ? AppColors.borderColor
-                                        : AppColors.secondaryTextColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor:
+                            isDark
+                                ? AppColors.blackColor.withOpacity(0.3)
+                                : AppColors.extraWhite,
+                        boxShadow: [
+                          BoxShadow(
+                            color:
                                 isDark
-                                    ? AppColors.lightblue
-                                    : AppColors.secondaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(4),
-                            ),
+                                    ? AppColors.darkModeColor
+                                    : AppColors.lGrey,
+                            spreadRadius: 1.5,
+                            blurRadius: 1,
                           ),
-                          onPressed: () {
-                            Get.to(
-                              () => SellerOrderTrackingScreen(
-                                orderNo: orders.orderNo ?? '',
-                                currentStatus: orders.status ?? '',
-                              ),
-                            );
-                          },
-                          child: Text(
-                            "View Details",
-                            style: CustomTextStyles.f11W500(
-                              color: AppColors.extraWhite,
-                            ),
-                          ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${orders.orderNo ?? "Order No Unknown"}",
+                                  style: CustomTextStyles.f12W700(
+                                    color: AppColors.primaryColor,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "Status: ${orders.status ?? 'Pending Pickup'}",
+                                  style: CustomTextStyles.f12W400(
+                                    color: AppColors.accepted,
+                                    height: 1.3,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  "Customer: ${orders.customer?.fullName ?? 'Anonymous'}",
+                                  style: CustomTextStyles.f12W400(
+                                    color:
+                                        isDark
+                                            ? AppColors.borderColor
+                                            : AppColors.secondaryTextColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor:
+                                    isDark
+                                        ? AppColors.lightblue
+                                        : AppColors.secondaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              onPressed: () {
+                                Get.to(
+                                  () => SellerOrderTrackingScreen(
+                                    orderNo: orders.orderNo ?? '',
+                                    currentStatus: orders.status ?? '',
+                                    orderId: int.parse(orders.id.toString()),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "View Details",
+                                style: CustomTextStyles.f11W500(
+                                  color: AppColors.extraWhite,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    : SizedBox.shrink(),
 
                 OrderHistoryDetailsWidget(isDark: isDark, orders: orders),
 
@@ -262,29 +266,59 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      OrderRowItem(
-                        "Placed on",
-                        DateFormat(
-                          'yyyy-MM-dd HH:mm:ss',
-                        ).format(DateTime.parse(orders.createdAt ?? "")),
+                      // "Placed on"
+                      LabelValueRow(
+                        label: "Placed on",
+                        isBold: false,
+                        valueWidget: Text(
+                          DateFormat('yyyy-MM-dd HH:mm:ss').format(
+                            DateTime.parse(
+                              orders.createdAt ?? '1970-01-01T00:00:00',
+                            ),
+                          ),
+                          style: CustomTextStyles.f12W400(
+                            color:
+                                isDark
+                                    ? AppColors.extraWhite
+                                    : AppColors.blackColor,
+                          ),
+                        ),
                       ),
-                      orders.status != "pending" &&
-                              orders.payments?.first.createdAt != null
-                          ? Column(
-                            children: [
-                              SizedBox(height: 12),
-                              OrderRowItem(
-                                "Paid on",
-                                orders.payments?.first.createdAt ?? "",
-                              ),
-                            ],
-                          )
-                          : SizedBox.shrink(),
 
-                      SizedBox(height: 12),
-                      OrderRowItem(
-                        "Order Status",
-                        "${orders.status}".capitalizeFirst ?? "",
+                      if (orders.status != null &&
+                          orders.status!.toLowerCase() != "pending" &&
+                          orders.status!.toLowerCase() != "cancelled" &&
+                          orders.payments != null &&
+                          orders.payments!.isNotEmpty &&
+                          orders.payments!.first.createdAt != null)
+                        LabelValueRow(
+                          label: "Paid on",
+                          isBold: false,
+                          valueWidget: Text(
+                            DateFormat('yyyy-MM-dd HH:mm:ss').format(
+                              DateTime.parse(orders.payments!.first.createdAt!),
+                            ),
+                            style: CustomTextStyles.f12W400(
+                              color:
+                                  isDark
+                                      ? AppColors.extraWhite
+                                      : AppColors.blackColor,
+                            ),
+                          ),
+                        ),
+                      LabelValueRow(
+                        label: "Order Status",
+                        isBold: false,
+                        valueWidget: Text(
+                          orders.status?.toLowerCase() == "paid"
+                              ? "Seller to pack"
+                              : "${orders.status}".capitalizeFirst ?? "",
+                          style: CustomTextStyles.f12W400(
+                            color: controller.getStatusColor(
+                              orders.status ?? "",
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -295,72 +329,5 @@ class OrderHistoryDetailScreen extends StatelessWidget {
         }),
       ),
     );
-  }
-
-  Widget buildOrderActionButtons(Orders orders, bool isDark) {
-    final lowerStatus = orders.status?.toLowerCase() ?? '';
-    final controller = Get.find<OrderScreenController>();
-    const EdgeInsets padding = EdgeInsets.only(
-      left: 16,
-      right: 16,
-      top: 20,
-      bottom: 30,
-    );
-
-    Widget buildCancelButton() {
-      return SizedBox(
-        width: double.infinity,
-        child: OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: AppColors.primaryColor, width: 1.5),
-            backgroundColor: Colors.transparent,
-            foregroundColor: Colors.red,
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
-            ),
-          ),
-          onPressed: () {
-            controller.changeStatus(orders.id.toString(), "cancelled");
-          },
-          child: Text(
-            "Cancel",
-            style: CustomTextStyles.f12W600(color: AppColors.primaryColor),
-          ),
-        ),
-      );
-    }
-
-    if (lowerStatus == 'pending') {
-      return Padding(padding: padding, child: buildCancelButton());
-    }
-
-    if (lowerStatus == 'paid') {
-      return Padding(
-        padding: padding,
-        child: CustomElevatedButton(
-          title: "Pack",
-          onTap: () {
-            controller.changeStatus(orders.id.toString(), "packed");
-          },
-          backGroundColor: AppColors.primaryColor,
-        ),
-      );
-    }
-
-    if (lowerStatus == 'packed') {
-      return Padding(
-        padding: padding,
-        child: CustomElevatedButton(
-          title: "Mark as Delivered",
-          onTap: () {
-            controller.changeStatus(orders.id.toString(), "delivered");
-          },
-          backGroundColor: AppColors.primaryColor,
-        ),
-      );
-    }
-
-    return const SizedBox.shrink();
   }
 }

@@ -67,77 +67,40 @@ class AmountRow extends StatelessWidget {
   }
 }
 
-class OrderRowItem extends StatelessWidget {
-  final String leftText;
-  final String rightText;
+class LabelValueRow extends StatelessWidget {
+  final String label;
+  final Widget valueWidget;
   final bool isBold;
   final bool isRejected;
-  final bool rightBold;
+  final bool showMinus;
 
-  const OrderRowItem(
-    this.leftText,
-    this.rightText, {
+  const LabelValueRow({
     super.key,
+    required this.label,
+    required this.valueWidget,
     this.isBold = false,
     this.isRejected = false,
-    this.rightBold = true,
+    this.showMinus = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final labelStyle =
+        isBold
+            ? CustomTextStyles.f12W600(
+              color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+            )
+            : CustomTextStyles.f12W400(
+              color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+            );
 
-    final Color textColor =
-        isDark ? AppColors.extraWhite : AppColors.blackColor;
-    final Color secondaryColor =
-        isDark ? AppColors.extraWhite.withOpacity(0.7) : AppColors.blackColor;
-
-    // Decide the color based on the original status
-    Color getRightTextColor() {
-      switch (rightText.toLowerCase()) {
-        case 'pending':
-          return AppColors.yellow;
-        case 'paid':
-          return AppColors.skyBlue;
-        case 'packed':
-          return AppColors.lightblue;
-        case 'in transit':
-          return AppColors.darkblue;
-        case 'delivered':
-          return AppColors.accepted;
-        case 'cancelled':
-          return AppColors.redColor;
-        case 'paypal':
-          return AppColors.lightGreen;
-        default:
-          return isRejected
-              ? AppColors.rejected
-              : (rightBold && isBold ? textColor : secondaryColor);
-      }
-    }
-
-    String getDisplayText() {
-      if (rightText.toLowerCase() == 'paid') {
-        return 'Seller to pack';
-      }
-      return rightText.capitalizeFirst ?? '';
-    }
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          leftText,
-          style:
-              isBold
-                  ? CustomTextStyles.f12W600(color: textColor)
-                  : CustomTextStyles.f12W400(color: textColor),
-        ),
-        Text(
-          getDisplayText(),
-          style: CustomTextStyles.f12W400(color: getRightTextColor()),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [Text(label, style: labelStyle), valueWidget],
+      ),
     );
   }
 }

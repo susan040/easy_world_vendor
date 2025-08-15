@@ -42,7 +42,7 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
     double totalAmount = total - getDiscountAmount(orders.voucher);
 
     return Container(
-      margin: EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 8),
+      margin: EdgeInsets.only(left: 14, right: 14, bottom: 8),
       padding: EdgeInsets.only(left: 14, right: 14, top: 14, bottom: 12),
       width: double.infinity,
       decoration: BoxDecoration(
@@ -162,8 +162,15 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
           }).toList(),
           Divider(),
           SizedBox(height: 6),
-          OrderRowItem("Order No:", "${orders.orderNo ?? ""}", isBold: true),
-          SizedBox(height: 12),
+          LabelValueRow(
+            label: "Order No:",
+
+            valueWidget: Text(
+              "${orders.orderNo ?? ""}",
+              style: CustomTextStyles.f12W600(color: AppColors.primaryColor),
+            ),
+            isBold: true,
+          ),
           AmountRow(
             title: "Subtotal (${orders.items!.length} items)",
             amount: subtotal,
@@ -192,18 +199,30 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
             isBold: true,
             isDark: isDark,
           ),
-          SizedBox(height: 12),
-          Divider(),
           SizedBox(height: 8),
-
-          OrderRowItem(
-            "Payment method",
-            orders.payments?.first.paymentMethod?.capitalizeFirst ?? "",
-            isBold: true,
-            rightBold: false,
-          ),
-          SizedBox(height: 8),
-          Divider(),
+          (orders.status != "pending" && orders.status != "cancelled") &&
+                  (orders.payments != null &&
+                      orders.payments!.isNotEmpty &&
+                      orders.payments!.first.paymentMethod != null)
+              ? Column(
+                children: [
+                  Divider(),
+                  SizedBox(height: 8),
+                  LabelValueRow(
+                    label: "Payment method",
+                    isBold: true,
+                    valueWidget: Text(
+                      orders.payments!.first.paymentMethod!.capitalizeFirst ??
+                          "",
+                      style: CustomTextStyles.f12W600(
+                        color: AppColors.darkGreen,
+                      ),
+                    ),
+                  ),
+                  Divider(),
+                ],
+              )
+              : SizedBox.shrink(),
         ],
       ),
     );

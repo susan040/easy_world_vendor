@@ -50,7 +50,7 @@ class CustomMessagesWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        chats.customer?.name ?? "",
+                        chats.customer?.name ?? "No Name",
                         style: CustomTextStyles.f14W600(
                           color:
                               isDark
@@ -62,7 +62,10 @@ class CustomMessagesWidget extends StatelessWidget {
                       Text(
                         c.getLastMessage(chats) ?? "",
                         style: CustomTextStyles.f12W400(
-                          color: AppColors.secondaryTextColor,
+                          color:
+                              isDark
+                                  ? AppColors.hintTextColor
+                                  : AppColors.secondaryTextColor,
                           height: 1.2,
                         ),
                         maxLines: 2,
@@ -83,7 +86,10 @@ class CustomMessagesWidget extends StatelessWidget {
                 Text(
                   "${formatChatTime(chats.messages?.first.createdAt)}",
                   style: CustomTextStyles.f11W400(
-                    color: AppColors.secondaryTextColor,
+                    color:
+                        isDark
+                            ? AppColors.hintTextColor
+                            : AppColors.secondaryTextColor,
                   ),
                 ),
                 SizedBox(height: 4),
