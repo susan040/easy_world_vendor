@@ -41,11 +41,12 @@ class Data {
   String? sku;
   String? barcode;
   String? brand;
-  String? priceSymbol;
   String? price;
-  String? costPrice;
+  String? weight;
+  String? weightUnit;
   String? discount;
   String? discountType;
+  String? discountTotalAmount;
   String? quantity;
   Category? category;
   List<String>? tags;
@@ -66,11 +67,12 @@ class Data {
     this.sku,
     this.barcode,
     this.brand,
-    this.priceSymbol,
     this.price,
-    this.costPrice,
+    this.weight,
+    this.weightUnit,
     this.discount,
     this.discountType,
+    this.discountTotalAmount,
     this.quantity,
     this.category,
     this.tags,
@@ -92,11 +94,12 @@ class Data {
     sku = json['sku'];
     barcode = json['barcode'];
     brand = json['brand'];
-    priceSymbol = json['price_symbol'];
     price = json['price'];
-    costPrice = json['cost_price'];
+    weight = json['weight'];
+    weightUnit = json['weight_unit'];
     discount = json['discount'];
     discountType = json['discount_type'];
+    discountTotalAmount = json['discount_total_amount'];
     quantity = json['quantity'];
     category =
         json['category'] != null
@@ -122,11 +125,12 @@ class Data {
     data['sku'] = this.sku;
     data['barcode'] = this.barcode;
     data['brand'] = this.brand;
-    data['price_symbol'] = this.priceSymbol;
     data['price'] = this.price;
-    data['cost_price'] = this.costPrice;
+    data['weight'] = this.weight;
+    data['weight_unit'] = this.weightUnit;
     data['discount'] = this.discount;
     data['discount_type'] = this.discountType;
+    data['discount_total_amount'] = this.discountTotalAmount;
     data['quantity'] = this.quantity;
     if (this.category != null) {
       data['category'] = this.category!.toJson();

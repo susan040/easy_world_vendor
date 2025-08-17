@@ -46,29 +46,16 @@ class ProductDecShimmerWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(bottom: 16),
-                  height: 30,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 16),
-                  height: 30,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-              ],
+            Container(
+              margin: EdgeInsets.only(bottom: 16),
+              height: 30,
+              width: 80,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
             ),
+
             Container(
               width: 100,
               margin: EdgeInsets.only(bottom: 14),
@@ -87,28 +74,41 @@ class ProductDecShimmerWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(bottom: 8),
-                  height: 20,
-                  width: 75,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 8),
-                  height: 20,
-                  width: 45,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                ),
-              ],
+            Container(
+              margin: EdgeInsets.only(bottom: 8),
+              height: 20,
+              width: 120,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 8),
+              height: 120,
+              width: 190,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 8),
+              height: 20,
+              width: 120,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 8),
+              height: 120,
+              width: 170,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5),
+              ),
             ),
           ],
         ),

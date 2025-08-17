@@ -58,7 +58,7 @@ class ProductsScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 16, right: 16, top: 14),
+              padding: const EdgeInsets.only(left: 14, right: 14, top: 14),
               child: Obx(
                 () =>
                     c.isLoading.value

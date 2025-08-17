@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class FullImageViewScreen extends StatelessWidget {
   final String imageUrl;
@@ -15,7 +16,21 @@ class FullImageViewScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: SafeArea(
-        child: Center(child: InteractiveViewer(child: Image.network(imageUrl))),
+        child: Center(
+          child: InteractiveViewer(
+            child: CachedNetworkImage(
+              imageUrl: imageUrl,
+              placeholder:
+                  (context, url) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+              errorWidget:
+                  (context, url, error) =>
+                      const Icon(Icons.error, color: Colors.red, size: 50),
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
       ),
     );
   }

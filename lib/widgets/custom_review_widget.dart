@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
 import 'package:easy_world_vendor/models/reviews.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
@@ -91,7 +92,8 @@ class ReviewBox extends StatelessWidget {
           const SizedBox(height: 6),
           (imageUrls.isNotEmpty)
               ? SizedBox(
-                height: 50,
+                height: 58,
+                width: 60,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: imageUrls.length,
@@ -105,11 +107,21 @@ class ReviewBox extends StatelessWidget {
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.network(
-                          imageUrls[index],
-                          width: 50,
-                          height: 50,
-                          fit: BoxFit.cover,
+                        child: CachedNetworkImage(
+                          fadeInDuration: Duration.zero,
+                          fadeOutDuration: Duration.zero,
+                          fit: BoxFit.contain,
+                          imageUrl: imageUrls[index],
+
+                          placeholder:
+                              (context, url) =>
+                                  Center(child: CircularProgressIndicator()),
+                          errorWidget:
+                              (context, url, error) => const Icon(
+                                Icons.error,
+                                size: 24,
+                                color: Colors.red,
+                              ),
                         ),
                       ),
                     );

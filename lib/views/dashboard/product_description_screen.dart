@@ -1,10 +1,11 @@
+import 'package:easy_world_vendor/controller/dashboard/exchange_rate_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
 import 'package:easy_world_vendor/models/reviews.dart';
 import 'package:easy_world_vendor/views/dashboard/full_image_view_screen.dart';
 import 'package:easy_world_vendor/views/dashboard/products_reviews_screen.dart';
 import 'package:easy_world_vendor/widgets/custom_review_widget.dart';
 import 'package:easy_world_vendor/widgets/product_dec_shimmer_widget.dart';
-import 'package:easy_world_vendor/widgets/product_desc_price_widget.dart';
+import 'package:easy_world_vendor/widgets/product_desc_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
@@ -16,19 +17,25 @@ import 'package:intl/intl.dart';
 class ProductDescriptionScreen extends StatelessWidget {
   final bool isDark;
   final String productId;
+
   ProductDescriptionScreen({
     super.key,
     required this.isDark,
     required this.productId,
   });
+
   final c = Get.put(ProductsScreenController());
+  final exchangeRateController = Get.put(ExchangeRateController());
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       c.fetchProductById(productId);
     });
+
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkModeColor : AppColors.extraWhite,
+
       appBar: AppBar(
         backgroundColor:
             isDark ? AppColors.darkModeColor : AppColors.extraWhite,
@@ -56,23 +63,27 @@ class ProductDescriptionScreen extends StatelessWidget {
               child: ProductDecShimmerWidget(isDark: isDark),
             );
           }
+
           final products = c.product.value;
           if (products == null) {
             return const Center(child: Text("Product not found"));
           }
+
           final List<String> imageUrls = products.productImages ?? [];
+          double price = double.tryParse(products.price ?? "0") ?? 0;
+          double discount = double.tryParse(products.discount ?? "0") ?? 0;
+          double discountPercent =
+              products.discountType == "percentage"
+                  ? discount
+                  : (price > 0 ? (discount / price) * 100 : 0);
 
           return SingleChildScrollView(
-            padding: const EdgeInsets.only(
-              left: 16,
-              right: 16,
-              top: 4,
-              bottom: 16,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (imageUrls.isNotEmpty) ...[
+                // Main Image
+                if (imageUrls.isNotEmpty)
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: CachedNetworkImage(
@@ -87,8 +98,17 @@ class ProductDescriptionScreen extends StatelessWidget {
                           (context, url, error) =>
                               Image.asset(ImagePath.noImage),
                     ),
+                  )
+                else
+                  Image.asset(
+                    ImagePath.noImage,
+                    height: 220,
+                    fit: BoxFit.cover,
                   ),
-                  const SizedBox(height: 12),
+                const SizedBox(height: 12),
+
+                // Gallery Thumbnails
+                if (imageUrls.length > 1)
                   GridView.builder(
                     itemCount: imageUrls.length - 1,
                     shrinkWrap: true,
@@ -127,62 +147,91 @@ class ProductDescriptionScreen extends StatelessWidget {
                       );
                     },
                   ),
-                ] else ...[
-                  Image.asset(
-                    ImagePath.noImage,
-                    height: 220,
-                    fit: BoxFit.cover,
-                  ),
-                ],
+
                 const SizedBox(height: 16),
+
+                // Product Name
                 Text(
                   products.name ?? "",
                   style: CustomTextStyles.f18W700(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   ),
                 ),
-                const SizedBox(height: 8),
-                PriceWidget(isDark: isDark, products: products),
-                const SizedBox(height: 14),
-                Text(
-                  "Description",
-                  style: CustomTextStyles.f14W600(
-                    color: isDark ? AppColors.extraWhite : AppColors.blackColor,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  products.description ?? "",
-                  style: CustomTextStyles.f12W400(
-                    color:
-                        isDark
-                            ? AppColors.extraWhite.withOpacity(0.6)
-                            : AppColors.secondaryTextColor,
-                  ),
-                  textAlign: TextAlign.justify,
-                ),
-                const SizedBox(height: 14),
-                Text(
-                  "Brand: ${products.brand ?? ""}",
-                  style: CustomTextStyles.f12W400(
-                    color:
-                        isDark
-                            ? AppColors.extraWhite.withOpacity(0.7)
-                            : AppColors.secondaryTextColor,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  "SKU: ${products.sku ?? ""}",
-                  style: CustomTextStyles.f12W400(
-                    color:
-                        isDark
-                            ? AppColors.extraWhite.withOpacity(0.7)
-                            : AppColors.secondaryTextColor,
-                  ),
-                ),
 
-                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Obx(() {
+                      final convertedPrice = exchangeRateController
+                          .convertPriceFromAUD(
+                            products.discountTotalAmount ?? "0",
+                          )
+                          .toStringAsFixed(2);
+                      final code =
+                          exchangeRateController.selectedCountryData['code'];
+                      final symbol = code == 'NPR' ? 'Rs.' : '\$';
+                      return Text(
+                        "$symbol$convertedPrice",
+                        style: CustomTextStyles.f18W700(
+                          color:
+                              isDark
+                                  ? AppColors.primaryColor
+                                  : AppColors.secondaryColor,
+                        ),
+                      );
+                    }),
+                    const SizedBox(width: 6),
+
+                    if (products.discount != null &&
+                        products.discountType != null &&
+                        products.discountTotalAmount != null)
+                      Row(
+                        children: [
+                          Obx(() {
+                            final convertedPrice = exchangeRateController
+                                .convertPriceFromAUD(products.price ?? "0")
+                                .toStringAsFixed(2);
+                            final code =
+                                exchangeRateController
+                                    .selectedCountryData['code'];
+                            final symbol = code == 'NPR' ? 'Rs.' : '\$';
+                            return Text(
+                              "$symbol$convertedPrice",
+                              style: const TextStyle(
+                                color: AppColors.textGreyColor,
+                                fontSize: 13,
+                                fontFamily: "Roboto",
+                                fontWeight: FontWeight.w400,
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            );
+                          }),
+                          const SizedBox(width: 4),
+                          Container(
+                            padding: const EdgeInsets.only(
+                              left: 3,
+                              right: 3,
+                              top: 1,
+                              bottom: 1,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.rejected,
+                              borderRadius: BorderRadius.circular(3),
+                            ),
+                            child: Center(
+                              child: Text(
+                                "-${discountPercent.toStringAsFixed(0)}%",
+                                style: CustomTextStyles.f10W400(
+                                  color: AppColors.extraWhite,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+                ProductDetailsWidget(isDark: isDark, products: products),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -216,6 +265,8 @@ class ProductDescriptionScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
+
+                // Reviews List
                 FutureBuilder<List<Reviews>>(
                   future: c.getAllReviewsByProductId(products.id.toString()),
                   builder: (context, snapshot) {
@@ -239,14 +290,22 @@ class ProductDescriptionScreen extends StatelessWidget {
                       final List<Reviews> reviews = snapshot.data!;
                       return Column(
                         children:
-                            reviews.map((review) {
-                              return ReviewBox(isDark: isDark, reviews: review);
-                            }).toList(),
+                            reviews
+                                .map(
+                                  (review) => ReviewBox(
+                                    isDark: isDark,
+                                    reviews: review,
+                                  ),
+                                )
+                                .toList(),
                       );
                     }
                   },
                 ),
+
                 const SizedBox(height: 20),
+
+                // Created At
                 Align(
                   alignment: Alignment.centerRight,
                   child: RichText(
@@ -292,3 +351,4 @@ class ProductDescriptionScreen extends StatelessWidget {
     );
   }
 }
+
