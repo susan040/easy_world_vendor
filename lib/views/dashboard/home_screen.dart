@@ -1,6 +1,8 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_world_vendor/controller/dashboard/chat_screen_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/exchange_rate_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/home_screen_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/network_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/order_screen_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
 import 'package:easy_world_vendor/models/all_chats.dart';
@@ -22,7 +24,7 @@ class HomeScreen extends StatelessWidget {
   final productController = Get.put(ProductsScreenController());
   final exchangeRateController = Get.put(ExchangeRateController());
   final messageController = Get.put(ChatScreenController());
-
+  final networkController = Get.put(NetworkController());
   HomeScreen({super.key});
 
   @override
@@ -42,6 +44,12 @@ class HomeScreen extends StatelessWidget {
         actions: [HomeScreenNotificationWidget(isDark: isDark)],
       ),
       body: Obx(() {
+        if (networkController.connectivityStatus.value ==
+            ConnectivityResult.none) {
+          return SingleChildScrollView(
+            child: HomePageShimmerWidget(isDark: isDark),
+          );
+        }
         final isLoading =
             productController.isLoading.value ||
             orderController.isLoading.value ||

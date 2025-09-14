@@ -3,6 +3,7 @@ import 'package:easy_world_vendor/models/notification_details.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:easy_world_vendor/utils/image_path.dart' show ImagePath;
+import 'package:easy_world_vendor/views/dashboard/orders_history_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -41,6 +42,12 @@ class NotificationCard extends StatelessWidget {
           } else {
             if (notifications.readAt == null) {
               controller.markNotificationAsRead(notifications.id ?? '');
+            }
+            if (notifications.type?.contains('OrderNotification') ?? false) {
+              final orderId = notifications.data?.orderId;
+              if (orderId != null) {
+                Get.to(() => OrderHistoryDetailScreen(orderId: orderId));
+              }
             }
           }
         },

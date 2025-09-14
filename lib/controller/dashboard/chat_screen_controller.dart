@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:easy_world_vendor/controller/dashboard/network_controller.dart';
 import 'package:easy_world_vendor/models/all_chats.dart';
 import 'package:easy_world_vendor/repo/chat/get_all_chat_repo.dart';
 import 'package:easy_world_vendor/repo/chat/get_chat_by_id_repo.dart';
@@ -13,11 +15,19 @@ class ChatScreenController extends GetxController {
   Rx<AllChats?> currentChat = Rx<AllChats?>(null);
   final ScrollController scrollController = ScrollController();
   var isLoading = true.obs;
+  final networkController = Get.find<NetworkController>();
 
   @override
   void onInit() {
     super.onInit();
     getAllChats();
+    ever(networkController.connectivityStatus, (status) {
+      if (status != null && status != ConnectivityResult.none) {
+        if (allChatsLists.isEmpty || allChatsLists.isEmpty) {
+          getAllChats();
+        }
+      }
+    });
   }
 
   getAllChats() async {

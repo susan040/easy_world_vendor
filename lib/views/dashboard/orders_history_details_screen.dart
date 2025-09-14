@@ -231,7 +231,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                                 );
                               },
                               child: Text(
-                                "View Details",
+                                "Track Order",
                                 style: CustomTextStyles.f11W500(
                                   color: AppColors.extraWhite,
                                 ),

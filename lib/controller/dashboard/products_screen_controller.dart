@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:easy_world_vendor/controller/dashboard/network_controller.dart';
 import 'package:easy_world_vendor/models/products.dart';
 import 'package:easy_world_vendor/models/review_replies.dart';
 import 'package:easy_world_vendor/models/reviews.dart';
@@ -18,6 +20,7 @@ class ProductsScreenController extends GetxController {
   RxList<Data> allProductsFullList = <Data>[].obs;
   RxList<Data> allProductLists = <Data>[].obs;
   RxList<Reviews> allReviewsLists = <Reviews>[].obs;
+  final networkController = Get.find<NetworkController>();
   RxList<ReviewReplies> allReviewsRepliedLists = <ReviewReplies>[].obs;
   final commentReplyController = TextEditingController();
   var isLoading = true.obs;
@@ -28,6 +31,13 @@ class ProductsScreenController extends GetxController {
     super.onInit();
     getAllProducts();
     getAllReviewsReplied();
+    ever(networkController.connectivityStatus, (status) {
+      if (status != null && status != ConnectivityResult.none) {
+        if (allProductsFullList.isEmpty) {
+          getAllProducts();
+        }
+      }
+    });
   }
 
   getAllProducts() async {

@@ -22,7 +22,7 @@ class GetReviewRepliesRepo {
       var url = Uri.parse("${Api.replyReviewUrl}/replies");
       http.Response response = await http.get(url, headers: headers);
       dynamic data = json.decode(response.body);
-      log("review reply: $data");
+      // log("review reply: $data");
       if (response.statusCode >= 200 && response.statusCode < 300) {
         List<ReviewReplies> replies = reviewRepliesFromJson(data["data"]);
         onSuccess(replies);

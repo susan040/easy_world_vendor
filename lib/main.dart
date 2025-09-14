@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:easy_world_vendor/controller/core_controller.dart';
 import 'package:easy_world_vendor/controller/dashboard/chat_screen_controller.dart';
+import 'package:easy_world_vendor/controller/dashboard/network_controller.dart';
 import 'package:easy_world_vendor/controller/theme_controller.dart';
 import 'package:easy_world_vendor/models/all_chats.dart';
 import 'package:easy_world_vendor/views/chats/chat_screen.dart';
@@ -21,6 +22,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
+  Get.put(NetworkController());
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   await _initializeFirebaseMessaging();

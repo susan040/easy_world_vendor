@@ -1,8 +1,9 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:easy_world_vendor/controller/dashboard/network_controller.dart';
 import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/repo/change_order_status_repo.dart';
 import 'package:easy_world_vendor/repo/delete_order_repo.dart';
 import 'package:easy_world_vendor/repo/get_order_repo.dart';
-import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import 'package:simple_fontellico_progress_dialog/simple_fontico_loading.dart';
 class OrderScreenController extends GetxController {
   RxList<Orders> allOrderLists = <Orders>[].obs;
   RxList<Orders> filteredOrderLists = <Orders>[].obs;
+  final networkController = Get.find<NetworkController>();
   var isLoading = true.obs;
   DateTime? filterStartDate;
   DateTime? filterEndDate;
@@ -18,6 +20,13 @@ class OrderScreenController extends GetxController {
   void onInit() {
     super.onInit();
     getAllOrders();
+    ever(networkController.connectivityStatus, (status) {
+      if (status != null && status != ConnectivityResult.none) {
+        if (allOrderLists.isEmpty || allOrderLists.isEmpty) {
+          getAllOrders();
+        }
+      }
+    });
   }
 
   getAllOrders() async {
@@ -130,17 +139,17 @@ class OrderScreenController extends GetxController {
   Color getStatusColor(String status) {
     switch (status.toLowerCase()) {
       case 'pending':
-        return AppColors.yellow;
+        return Colors.amberAccent;
       case 'paid':
-        return AppColors.skyBlue;
+        return Colors.lightBlueAccent;
       case 'packed':
-        return AppColors.lightblue;
-      case 'in transit':
-        return AppColors.darkblue;
+        return Colors.blueAccent;
+      case 'shipped':
+        return Colors.purpleAccent;
       case 'delivered':
-        return AppColors.accepted;
+        return Colors.green;
       case 'cancelled':
-        return AppColors.redColor;
+        return Colors.redAccent;
       default:
         return Colors.grey;
     }
@@ -152,12 +161,10 @@ class OrderScreenController extends GetxController {
         return "Payment pending on";
       case 'paid':
         return "Order is confirmed on";
-      // case 'seller to pack':
-      //   return "Seller will pack by";
       case 'packed':
         return "Order is packed on";
-      case 'in transit':
-        return "Order is in transit since";
+      case 'shipped':
+        return "Order is shipped on";
       case 'delivered':
       case 'completed':
         return "Order is completed on";
