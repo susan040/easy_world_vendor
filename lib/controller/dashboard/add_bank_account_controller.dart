@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_world_vendor/models/bank_details.dart';
 import 'package:easy_world_vendor/repo/bank_details/add_bank_details_repo.dart';
 import 'package:easy_world_vendor/repo/bank_details/edit_bank_details_repo.dart';
@@ -30,7 +32,7 @@ class AddBankAccountController extends GetxController {
       },
       onError: (msg) {
         isLoading.value = false;
-        print("Error: $msg");
+        log("Error: $msg");
       },
     );
   }

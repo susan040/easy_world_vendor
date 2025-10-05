@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_world_vendor/models/earning_details.dart';
 import 'package:easy_world_vendor/repo/get_earning_details_repo.dart';
 import 'package:get/get.dart';
@@ -21,7 +23,8 @@ class HomeScreenController extends GetxController {
       },
       onError: (message) {
         isLoading.value = false;
-        Get.snackbar("Error", message);
+        // Get.snackbar("Error", message);
+        log("Error fetching earnings: $message");
       },
     );
   }
