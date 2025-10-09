@@ -227,6 +227,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                                     orderNo: orders.orderNo ?? '',
                                     currentStatus: orders.status ?? '',
                                     orderId: int.parse(orders.id.toString()),
+                                    trackingId: orders.orderTrackingId ?? '',
                                   ),
                                 );
                               },

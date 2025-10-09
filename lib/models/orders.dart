@@ -14,7 +14,7 @@ class Orders {
   String? totalAmount;
   String? createdAt;
   List<Payments>? payments;
-
+  String? orderTrackingId;
   Orders({
     this.id,
     this.orderNo,
@@ -27,6 +27,7 @@ class Orders {
     this.totalAmount,
     this.createdAt,
     this.payments,
+    this.orderTrackingId,
   });
 
   Orders.fromJson(Map<String, dynamic> json) {
@@ -61,6 +62,7 @@ class Orders {
         payments!.add(new Payments.fromJson(v));
       });
     }
+    orderTrackingId = json['order_tracking_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -88,6 +90,7 @@ class Orders {
     if (this.payments != null) {
       data['payments'] = this.payments!.map((v) => v.toJson()).toList();
     }
+    data['order_tracking_id'] = this.orderTrackingId;
     return data;
   }
 }

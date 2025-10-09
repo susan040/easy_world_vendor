@@ -231,6 +231,15 @@ class ProductDescriptionScreen extends StatelessWidget {
                       ),
                   ],
                 ),
+                Obx(
+                  () => Text(
+                    'Total Sold: ${c.totalSold.value}',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
                 ProductDetailsWidget(isDark: isDark, products: products),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -351,4 +360,3 @@ class ProductDescriptionScreen extends StatelessWidget {
     );
   }
 }
-

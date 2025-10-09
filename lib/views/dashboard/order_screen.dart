@@ -150,13 +150,19 @@ class OrderScreen extends StatelessWidget {
                     ),
                   );
                 } else {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: c.filteredOrderLists.length,
-                    itemBuilder: (context, index) {
-                      final Orders orders = c.filteredOrderLists[index];
-                      return OrderCardWidget(isDark: isDark, orders: orders);
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      await c.getAllOrders();
+                      ;
                     },
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: c.filteredOrderLists.length,
+                      itemBuilder: (context, index) {
+                        final Orders orders = c.filteredOrderLists[index];
+                        return OrderCardWidget(isDark: isDark, orders: orders);
+                      },
+                    ),
                   );
                 }
               }),

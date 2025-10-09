@@ -23,4 +23,5 @@ class Api {
   static const String fcmTokenUrl = "$baseUrl/device-token";
   static const String chatUrl = "$baseUrl/chats";
   static const String notificationUrl = "$baseUrl/notifications";
+  static const String addTrackingIdUrl = "$baseUrl/orders/tracking";
 }

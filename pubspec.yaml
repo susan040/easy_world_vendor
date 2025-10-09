@@ -61,6 +61,7 @@ dependencies:
   firebase_messaging: ^15.2.10
   barcode: ^2.2.9
   connectivity_plus: ^6.1.5
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
