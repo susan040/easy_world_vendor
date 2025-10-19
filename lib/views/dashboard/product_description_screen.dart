@@ -6,6 +6,7 @@ import 'package:easy_world_vendor/views/dashboard/products_reviews_screen.dart';
 import 'package:easy_world_vendor/widgets/custom_review_widget.dart';
 import 'package:easy_world_vendor/widgets/product_dec_shimmer_widget.dart';
 import 'package:easy_world_vendor/widgets/product_desc_widget.dart';
+import 'package:easy_world_vendor/widgets/product_price_calculation_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
@@ -76,7 +77,8 @@ class ProductDescriptionScreen extends StatelessWidget {
               products.discountType == "percentage"
                   ? discount
                   : (price > 0 ? (discount / price) * 100 : 0);
-
+          final int quantity =
+              int.tryParse(products.quantity?.toString() ?? '0') ?? 0;
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
@@ -150,96 +152,20 @@ class ProductDescriptionScreen extends StatelessWidget {
 
                 const SizedBox(height: 16),
 
-                // Product Name
                 Text(
                   products.name ?? "",
-                  style: CustomTextStyles.f18W700(
+                  style: CustomTextStyles.f16W700(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   ),
                 ),
-
-                Row(
-                  children: [
-                    Obx(() {
-                      final convertedPrice = exchangeRateController
-                          .convertPriceFromAUD(
-                            products.discountTotalAmount ?? "0",
-                          )
-                          .toStringAsFixed(2);
-                      final code =
-                          exchangeRateController.selectedCountryData['code'];
-                      final symbol = code == 'NPR' ? 'Rs.' : '\$';
-                      return Text(
-                        "$symbol$convertedPrice",
-                        style: CustomTextStyles.f18W700(
-                          color:
-                              isDark
-                                  ? AppColors.primaryColor
-                                  : AppColors.secondaryColor,
-                        ),
-                      );
-                    }),
-                    const SizedBox(width: 6),
-
-                    if (products.discount != null &&
-                        products.discountType != null &&
-                        products.discountTotalAmount != null)
-                      Row(
-                        children: [
-                          Obx(() {
-                            final convertedPrice = exchangeRateController
-                                .convertPriceFromAUD(products.price ?? "0")
-                                .toStringAsFixed(2);
-                            final code =
-                                exchangeRateController
-                                    .selectedCountryData['code'];
-                            final symbol = code == 'NPR' ? 'Rs.' : '\$';
-                            return Text(
-                              "$symbol$convertedPrice",
-                              style: const TextStyle(
-                                color: AppColors.textGreyColor,
-                                fontSize: 13,
-                                fontFamily: "Roboto",
-                                fontWeight: FontWeight.w400,
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            );
-                          }),
-                          const SizedBox(width: 4),
-                          Container(
-                            padding: const EdgeInsets.only(
-                              left: 3,
-                              right: 3,
-                              top: 1,
-                              bottom: 1,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.rejected,
-                              borderRadius: BorderRadius.circular(3),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "-${discountPercent.toStringAsFixed(0)}%",
-                                style: CustomTextStyles.f10W400(
-                                  color: AppColors.extraWhite,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                  ],
+                ProductPriceCalculationWidget(
+                  products: products,
+                  isDark: isDark,
+                  quantity: quantity,
+                  exchangeRateController: exchangeRateController,
+                  discountPercent: discountPercent,
                 ),
-                Obx(
-                  () => Text(
-                    'Total Sold: ${c.totalSold.value}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
+
                 ProductDetailsWidget(isDark: isDark, products: products),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -263,7 +189,7 @@ class ProductDescriptionScreen extends StatelessWidget {
                       },
                       child: Text(
                         "View All",
-                        style: CustomTextStyles.f12W400(
+                        style: CustomTextStyles.f13W400(
                           color:
                               isDark
                                   ? AppColors.primaryColor
@@ -289,7 +215,7 @@ class ProductDescriptionScreen extends StatelessWidget {
                         child: Center(
                           child: Text(
                             "No review",
-                            style: CustomTextStyles.f12W400(
+                            style: CustomTextStyles.f13W400(
                               color: AppColors.secondaryTextColor,
                             ),
                           ),
@@ -322,7 +248,7 @@ class ProductDescriptionScreen extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: "Created at: ",
-                          style: CustomTextStyles.f12W400(
+                          style: CustomTextStyles.f13W400(
                             color:
                                 isDark
                                     ? AppColors.extraWhite.withOpacity(0.5)
@@ -341,7 +267,7 @@ class ProductDescriptionScreen extends StatelessWidget {
                                     ).toLocal(),
                                   )
                                   : '',
-                          style: CustomTextStyles.f12W400(
+                          style: CustomTextStyles.f13W400(
                             color:
                                 isDark
                                     ? AppColors.primaryColor.withOpacity(0.7)

@@ -49,7 +49,7 @@ class AddEmailScreen extends StatelessWidget {
             SizedBox(height: 6),
             Text(
               "Please enter your email to reset the password",
-              style: CustomTextStyles.f12W400(
+              style: CustomTextStyles.f13W400(
                 color:
                     isDark
                         ? AppColors.extraWhite.withOpacity(0.7)
@@ -59,7 +59,7 @@ class AddEmailScreen extends StatelessWidget {
             SizedBox(height: 25),
             Text(
               "Your Email",
-              style: CustomTextStyles.f12W500(
+              style: CustomTextStyles.f13W500(
                 color: isDark ? AppColors.extraWhite : AppColors.blackColor,
               ),
             ),

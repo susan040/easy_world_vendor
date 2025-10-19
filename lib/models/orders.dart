@@ -13,6 +13,7 @@ class Orders {
   List<Items>? items;
   String? totalAmount;
   String? createdAt;
+  String? totalShippingAmount;
   List<Payments>? payments;
   String? orderTrackingId;
   Orders({
@@ -25,6 +26,7 @@ class Orders {
     this.status,
     this.items,
     this.totalAmount,
+    this.totalShippingAmount,
     this.createdAt,
     this.payments,
     this.orderTrackingId,
@@ -55,6 +57,7 @@ class Orders {
       });
     }
     totalAmount = json['total_amount'];
+    totalShippingAmount = json['total_shipping_amount'];
     createdAt = json['created_at'];
     if (json['payments'] != null) {
       payments = <Payments>[];
@@ -86,6 +89,7 @@ class Orders {
       data['items'] = this.items!.map((v) => v.toJson()).toList();
     }
     data['total_amount'] = this.totalAmount;
+    data['total_shipping_amount'] = this.totalShippingAmount;
     data['created_at'] = this.createdAt;
     if (this.payments != null) {
       data['payments'] = this.payments!.map((v) => v.toJson()).toList();

@@ -109,7 +109,7 @@ class EditBankDetailsScreen extends StatelessWidget {
                                 : c.selectedBankName.value,
                         hint: Text(
                           "Please select bank name",
-                          style: CustomTextStyles.f12W400(
+                          style: CustomTextStyles.f13W400(
                             color: AppColors.secondaryTextColor,
                           ),
                         ),
@@ -145,7 +145,7 @@ class EditBankDetailsScreen extends StatelessWidget {
                                     value: option,
                                     child: Text(
                                       option,
-                                      style: CustomTextStyles.f12W400(
+                                      style: CustomTextStyles.f13W400(
                                         color:
                                             isDark
                                                 ? AppColors.extraWhite

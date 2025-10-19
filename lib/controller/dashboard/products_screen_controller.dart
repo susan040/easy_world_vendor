@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:easy_world_vendor/controller/dashboard/network_controller.dart';
-import 'package:easy_world_vendor/models/orders.dart';
 import 'package:easy_world_vendor/models/products.dart';
 import 'package:easy_world_vendor/models/review_replies.dart';
 import 'package:easy_world_vendor/models/reviews.dart';
@@ -201,38 +200,5 @@ class ProductsScreenController extends GetxController {
         CustomSnackBar.error(title: "Review", message: message);
       }),
     );
-  }
-
-  RxInt totalSold = 0.obs;
-
-  // void calculateSold(List<Orders> orders, int productId) {
-  //   int total = 0;
-  //   for (var order in orders) {
-  //     if (order.status?.toLowerCase() == 'delivered') {
-  //       for (var item in order.items ?? []) {
-  //         if (item.productId == productId) {
-  //           total += int.parse(item.quantity ?? 0);
-  //         }
-  //       }
-  //     }
-  //   }
-  //   totalSold.value = total;
-  // }
-
-  int calculateTotalSoldForProduct(List<Orders> orders, int productId) {
-    int totalSold = 0;
-
-    for (var order in orders) {
-      if (order.status?.toLowerCase() == 'delivered') {
-        for (var item in order.items ?? []) {
-          // Check product_id directly
-          final id = item.toJson()['product_id'] ?? 0;
-          final quantity = item.toJson()['quantity'] ?? 0;
-
-          if (id == productId) totalSold += int.parse(quantity.toString());
-        }
-      }
-    }
-    return totalSold;
   }
 }

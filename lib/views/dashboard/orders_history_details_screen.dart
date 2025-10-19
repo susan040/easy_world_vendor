@@ -84,7 +84,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                         children: [
                           Text(
                             "Deliver to: ${orders.customer?.fullName ?? "No Name"}",
-                            style: CustomTextStyles.f12W700(
+                            style: CustomTextStyles.f13W700(
                               color:
                                   isDark
                                       ? AppColors.extraWhite
@@ -121,7 +121,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                             ]
                             .where((e) => e != null && e.trim().isNotEmpty)
                             .join(', '),
-                        style: CustomTextStyles.f11W400(
+                        style: CustomTextStyles.f12W400(
                           color:
                               isDark
                                   ? AppColors.extraWhite
@@ -131,7 +131,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                       SizedBox(height: 2),
                       Text(
                         orders.customer?.phone ?? "",
-                        style: CustomTextStyles.f11W300(
+                        style: CustomTextStyles.f11W400(
                           color:
                               isDark
                                   ? AppColors.extraWhite
@@ -184,14 +184,14 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   "${orders.orderNo ?? "Order No Unknown"}",
-                                  style: CustomTextStyles.f12W700(
+                                  style: CustomTextStyles.f13W700(
                                     color: AppColors.primaryColor,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   "Status: ${orders.status ?? 'Pending Pickup'}",
-                                  style: CustomTextStyles.f12W400(
+                                  style: CustomTextStyles.f13W400(
                                     color: AppColors.accepted,
                                     height: 1.3,
                                   ),
@@ -199,7 +199,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                                 const SizedBox(height: 2),
                                 Text(
                                   "Customer: ${orders.customer?.fullName ?? 'Anonymous'}",
-                                  style: CustomTextStyles.f12W400(
+                                  style: CustomTextStyles.f13W400(
                                     color:
                                         isDark
                                             ? AppColors.borderColor
@@ -277,7 +277,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                               orders.createdAt ?? '1970-01-01T00:00:00',
                             ),
                           ),
-                          style: CustomTextStyles.f12W400(
+                          style: CustomTextStyles.f13W400(
                             color:
                                 isDark
                                     ? AppColors.extraWhite
@@ -299,7 +299,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                             DateFormat('yyyy-MM-dd HH:mm:ss').format(
                               DateTime.parse(orders.payments!.first.createdAt!),
                             ),
-                            style: CustomTextStyles.f12W400(
+                            style: CustomTextStyles.f13W400(
                               color:
                                   isDark
                                       ? AppColors.extraWhite
@@ -314,7 +314,7 @@ class OrderHistoryDetailScreen extends StatelessWidget {
                           orders.status?.toLowerCase() == "paid"
                               ? "Seller to pack"
                               : "${orders.status}".capitalizeFirst ?? "",
-                          style: CustomTextStyles.f12W400(
+                          style: CustomTextStyles.f13W400(
                             color: controller.getStatusColor(
                               orders.status ?? "",
                             ),

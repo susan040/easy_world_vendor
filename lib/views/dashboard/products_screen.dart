@@ -95,17 +95,22 @@ class ProductsScreen extends StatelessWidget {
                             ),
                           ),
                         )
-                        : ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: c.allProductLists.length,
-                          itemBuilder: (context, index) {
-                            final Data product = c.allProductLists[index];
-                            return ProductsWidget(
-                              isDark: isDark,
-                              products: product,
-                            );
+                        : RefreshIndicator(
+                          onRefresh: () async {
+                            c.getAllProducts();
                           },
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: c.allProductLists.length,
+                            itemBuilder: (context, index) {
+                              final Data product = c.allProductLists[index];
+                              return ProductsWidget(
+                                isDark: isDark,
+                                products: product,
+                              );
+                            },
+                          ),
                         ),
               ),
             ),

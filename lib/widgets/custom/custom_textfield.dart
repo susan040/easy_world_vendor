@@ -126,11 +126,11 @@ class CustomTextField extends StatelessWidget {
                 ? const TextStyle(fontSize: 12)
                 : const TextStyle(fontSize: 0),
         hintText: hint,
-        hintStyle: CustomTextStyles.f12W400(
+        hintStyle: CustomTextStyles.f13W400(
           color: AppColors.secondaryTextColor,
         ),
       ),
-      style: CustomTextStyles.f12W400(
+      style: CustomTextStyles.f13W400(
         color:
             (readOnly ?? false)
                 ? isDark

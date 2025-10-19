@@ -73,6 +73,24 @@ class OrderScreenController extends GetxController {
     );
   }
 
+  int calculateTotalQuantity(List items) {
+    int totalQty = 0;
+    for (var item in items) {
+      totalQty += int.tryParse(item.quantity.toString()) ?? 0;
+    }
+    return totalQty;
+  }
+
+  double calculateSubtotal(List items) {
+    double subtotal = 0;
+    for (var item in items) {
+      final price = double.tryParse(item.price.toString()) ?? 0;
+      final qty = int.tryParse(item.quantity.toString()) ?? 0;
+      subtotal += price * qty;
+    }
+    return subtotal;
+  }
+
   void changeStatus(String orderId, String status) async {
     loading.show(message: 'Loading...');
     await ChangeOrderStatusRepo.changeOrderStatusRepo(

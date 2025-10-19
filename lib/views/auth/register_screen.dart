@@ -98,7 +98,7 @@ class RegisterScreen extends StatelessWidget {
                                 : c.selectCountryCode.value,
                         hint: Text(
                           "Select country code",
-                          style: CustomTextStyles.f12W400(
+                          style: CustomTextStyles.f13W400(
                             color: AppColors.secondaryTextColor,
                           ),
                         ),
@@ -134,7 +134,7 @@ class RegisterScreen extends StatelessWidget {
                                     value: option,
                                     child: Text(
                                       option,
-                                      style: CustomTextStyles.f12W400(
+                                      style: CustomTextStyles.f13W400(
                                         color:
                                             isDark
                                                 ? AppColors.extraWhite
@@ -186,7 +186,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   TextFormField(
-                    style: CustomTextStyles.f12W400(
+                    style: CustomTextStyles.f13W400(
                       color:
                           isDark ? AppColors.extraWhite : AppColors.blackColor,
                     ),
@@ -224,7 +224,7 @@ class RegisterScreen extends StatelessWidget {
                           color: AppColors.errorColor,
                         ),
                       ),
-                      hintStyle: CustomTextStyles.f12W400(
+                      hintStyle: CustomTextStyles.f13W400(
                         color: AppColors.secondaryTextColor,
                       ),
                     ),
@@ -244,7 +244,7 @@ class RegisterScreen extends StatelessWidget {
                   SizedBox(height: 14),
                   Text(
                     "or",
-                    style: CustomTextStyles.f12W500(
+                    style: CustomTextStyles.f13W500(
                       color:
                           isDark ? AppColors.extraWhite : AppColors.blackColor,
                     ),
@@ -280,7 +280,7 @@ class RegisterScreen extends StatelessWidget {
                             child: Center(
                               child: Text(
                                 "Sign Up with google",
-                                style: CustomTextStyles.f12W400(
+                                style: CustomTextStyles.f13W400(
                                   color:
                                       isDark
                                           ? AppColors.extraWhite
@@ -303,7 +303,7 @@ class RegisterScreen extends StatelessWidget {
                       child: RichText(
                         text: TextSpan(
                           text: "Don't have an account? ",
-                          style: CustomTextStyles.f12W400(
+                          style: CustomTextStyles.f13W400(
                             color:
                                 isDark
                                     ? AppColors.extraWhite
@@ -312,7 +312,7 @@ class RegisterScreen extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: ' Login',
-                              style: CustomTextStyles.f12W500(
+                              style: CustomTextStyles.f13W500(
                                 color: AppColors.primaryColor,
                               ),
                             ),

@@ -133,7 +133,7 @@ class InfoRow extends StatelessWidget {
             width: 110,
             child: Text(
               "$label:",
-              style: CustomTextStyles.f12W600(
+              style: CustomTextStyles.f13W600(
                 color: isDark ? AppColors.extraWhite : AppColors.blackColor,
               ),
             ),
@@ -141,7 +141,7 @@ class InfoRow extends StatelessWidget {
           Expanded(
             child: Text(
               value,
-              style: CustomTextStyles.f12W400(
+              style: CustomTextStyles.f13W400(
                 color: isDark ? AppColors.extraWhite : AppColors.blackColor,
               ),
             ),

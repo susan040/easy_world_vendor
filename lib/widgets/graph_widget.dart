@@ -49,7 +49,10 @@ class GraphWidget extends StatelessWidget {
                 fillColor: AppColors.primaryColor,
                 selectedColor: AppColors.extraWhite,
                 color: isDark ? Colors.white70 : Colors.black87,
-                constraints: const BoxConstraints(minHeight: 37, minWidth: 142),
+                constraints: BoxConstraints(
+                  minHeight: 37,
+                  minWidth: Get.width / 2.5,
+                ),
                 isSelected: List.generate(
                   tabs.length,
                   (i) => i == c.chartTypeIndex.value,

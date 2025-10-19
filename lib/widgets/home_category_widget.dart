@@ -45,14 +45,14 @@ class CategoryCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: CustomTextStyles.f12W500(
+                style: CustomTextStyles.f13W500(
                   color: AppColors.secondaryTextColor,
                 ),
               ),
               const SizedBox(height: 4),
               Text(
                 count,
-                style: CustomTextStyles.f12W600(color: AppColors.blackColor),
+                style: CustomTextStyles.f13W600(color: AppColors.blackColor),
               ),
             ],
           ),

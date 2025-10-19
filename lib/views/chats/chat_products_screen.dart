@@ -116,7 +116,7 @@ class ChatProductsScreen extends StatelessWidget {
                             children: [
                               Text(
                                 product.name ?? "No name",
-                                style: CustomTextStyles.f12W600(
+                                style: CustomTextStyles.f13W600(
                                   color:
                                       isDark
                                           ? AppColors.extraWhite
@@ -125,7 +125,7 @@ class ChatProductsScreen extends StatelessWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: 2),
                               Obx(() {
                                 final convertedPrice = exchangeController
                                     .convertPriceFromAUD(product.price ?? "N/A")
@@ -144,7 +144,7 @@ class ChatProductsScreen extends StatelessWidget {
                                   ),
                                 );
                               }),
-                              const SizedBox(height: 6),
+                              const SizedBox(height: 2),
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -156,7 +156,7 @@ class ChatProductsScreen extends StatelessWidget {
                                   const SizedBox(width: 4),
                                   Text(
                                     customer.name ?? "Unknown",
-                                    style: CustomTextStyles.f11W400(
+                                    style: CustomTextStyles.f12W400(
                                       color: AppColors.secondaryTextColor,
                                     ),
                                   ),

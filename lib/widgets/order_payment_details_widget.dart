@@ -31,10 +31,10 @@ class AmountRow extends StatelessWidget {
           title,
           style:
               isBold
-                  ? CustomTextStyles.f12W600(
+                  ? CustomTextStyles.f13W600(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   )
-                  : CustomTextStyles.f12W400(
+                  : CustomTextStyles.f13W400(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   ),
         ),
@@ -50,13 +50,13 @@ class AmountRow extends StatelessWidget {
             text,
             style:
                 isDiscount
-                    ? CustomTextStyles.f12W400(color: AppColors.rejected)
+                    ? CustomTextStyles.f13W400(color: AppColors.rejected)
                     : isBold
-                    ? CustomTextStyles.f12W600(
+                    ? CustomTextStyles.f13W600(
                       color:
                           isDark ? AppColors.extraWhite : AppColors.blackColor,
                     )
-                    : CustomTextStyles.f12W400(
+                    : CustomTextStyles.f13W400(
                       color:
                           isDark ? AppColors.extraWhite : AppColors.blackColor,
                     ),
@@ -88,10 +88,10 @@ class LabelValueRow extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final labelStyle =
         isBold
-            ? CustomTextStyles.f12W600(
+            ? CustomTextStyles.f13W600(
               color: isDark ? AppColors.extraWhite : AppColors.blackColor,
             )
-            : CustomTextStyles.f12W400(
+            : CustomTextStyles.f13W400(
               color: isDark ? AppColors.extraWhite : AppColors.blackColor,
             );
 

@@ -105,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
                         const SizedBox(width: 12),
                         Text(
                           "Dark Mode",
-                          style: CustomTextStyles.f12W400(
+                          style: CustomTextStyles.f13W400(
                             color:
                                 (isDark
                                     ? AppColors.extraWhite
@@ -182,7 +182,7 @@ class ProfileScreen extends StatelessWidget {
                             const SizedBox(width: 12),
                             Text(
                               "${country['name']} (${country['code']})",
-                              style: CustomTextStyles.f12W400(
+                              style: CustomTextStyles.f13W400(
                                 color:
                                     isDark
                                         ? AppColors.extraWhite
@@ -231,7 +231,7 @@ class ProfileScreen extends StatelessWidget {
                       children: [
                         Text(
                           "Are you sure you want to log out?",
-                          style: CustomTextStyles.f12W400(
+                          style: CustomTextStyles.f13W400(
                             color:
                                 isDark
                                     ? AppColors.extraWhite
@@ -261,7 +261,7 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                                 child: Text(
                                   "Cancel",
-                                  style: CustomTextStyles.f12W500(
+                                  style: CustomTextStyles.f13W500(
                                     color:
                                         isDark
                                             ? AppColors.extraWhite
@@ -290,7 +290,7 @@ class ProfileScreen extends StatelessWidget {
                                 ),
                                 child: Text(
                                   "Logout",
-                                  style: CustomTextStyles.f12W600(
+                                  style: CustomTextStyles.f13W600(
                                     color: AppColors.extraWhite,
                                   ),
                                 ),

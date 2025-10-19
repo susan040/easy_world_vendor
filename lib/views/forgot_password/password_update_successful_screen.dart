@@ -33,7 +33,7 @@ class PasswordUpdateSuccessfulScreen extends StatelessWidget {
             SizedBox(height: 10),
             Text(
               "Congratulations! Your password has been\nchanged. Click continue to login",
-              style: CustomTextStyles.f12W400(
+              style: CustomTextStyles.f13W400(
                 height: 1.65,
                 color:
                     isDark

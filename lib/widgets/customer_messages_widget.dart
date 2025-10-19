@@ -14,7 +14,7 @@ class CustomMessagesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16),
+      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -41,7 +41,7 @@ class CustomMessagesWidget extends StatelessWidget {
                     (chats.customer?.name?.isNotEmpty ?? false)
                         ? chats.customer!.name![0].toUpperCase()
                         : "?",
-                    style: CustomTextStyles.f20W700(color: Colors.white),
+                    style: CustomTextStyles.f18W700(color: Colors.white),
                   ),
                 ),
                 SizedBox(width: 8),
@@ -61,7 +61,7 @@ class CustomMessagesWidget extends StatelessWidget {
                       SizedBox(height: 2),
                       Text(
                         c.getLastMessage(chats) ?? "",
-                        style: CustomTextStyles.f12W400(
+                        style: CustomTextStyles.f13W400(
                           color:
                               isDark
                                   ? AppColors.hintTextColor

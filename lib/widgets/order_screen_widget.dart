@@ -13,7 +13,6 @@ class OrderCardWidget extends StatelessWidget {
   final Orders orders;
   final c = Get.put(OrderScreenController());
   OrderCardWidget({required this.isDark, super.key, required this.orders});
-  
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +68,7 @@ class OrderCardWidget extends StatelessWidget {
                           const SizedBox(height: 4),
                           Text(
                             "Order No: ${orders.orderNo ?? ""}",
-                            style: CustomTextStyles.f11W400(
+                            style: CustomTextStyles.f13W400(
                               color:
                                   isDark
                                       ? AppColors.extraWhite.withOpacity(0.7)
@@ -85,19 +84,19 @@ class OrderCardWidget extends StatelessWidget {
                       orders.status?.toLowerCase() == "paid"
                           ? "Seller to pack"
                           : "${orders.status}".capitalizeFirst ?? "",
-                      style: CustomTextStyles.f11W600(
-                        color:c. getStatusColor(orders.status ?? ""),
+                      style: CustomTextStyles.f12W600(
+                        color: c.getStatusColor(orders.status ?? ""),
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Row(
                 children: [
                   Text(
-                   c. getOrderStatusText(orders.status ?? ""),
-                    style: CustomTextStyles.f12W400(
+                    c.getOrderStatusText(orders.status ?? ""),
+                    style: CustomTextStyles.f13W400(
                       color:
                           isDark
                               ? AppColors.extraWhite.withOpacity(0.7)

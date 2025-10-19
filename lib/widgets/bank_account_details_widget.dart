@@ -65,7 +65,7 @@ class BankAccountDetailsWidget extends StatelessWidget {
                   child: Center(
                     child: Text(
                       "No bank details",
-                      style: CustomTextStyles.f12W400(
+                      style: CustomTextStyles.f13W400(
                         color: AppColors.textGreyColor,
                       ),
                     ),

@@ -49,7 +49,7 @@ class VerifyEmailScreen extends StatelessWidget {
             SizedBox(height: 6),
             Text(
               "We sent a reset link to alpha...@gmail.com\nenter 5 digit code that mentioned in the email",
-              style: CustomTextStyles.f12W400(
+              style: CustomTextStyles.f13W400(
                 color:
                     isDark
                         ? AppColors.extraWhite.withOpacity(0.7)
@@ -60,7 +60,7 @@ class VerifyEmailScreen extends StatelessWidget {
             PinCodeTextField(
               appContext: context,
               length: 6,
-              textStyle: CustomTextStyles.f12W400(
+              textStyle: CustomTextStyles.f13W400(
                 color: isDark ? AppColors.extraWhite : AppColors.blackColor,
               ),
               controller: c.otpController,
@@ -107,7 +107,7 @@ class VerifyEmailScreen extends StatelessWidget {
                           c.canResendForgotOtp.value
                               ? "Didn't get the code? "
                               : "Resend available in ${c.forgotOtpTimer.value}s ",
-                      style: CustomTextStyles.f12W400(
+                      style: CustomTextStyles.f13W400(
                         color:
                             isDark
                                 ? AppColors.extraWhite
@@ -118,7 +118,7 @@ class VerifyEmailScreen extends StatelessWidget {
                               ? [
                                 TextSpan(
                                   text: 'Resend',
-                                  style: CustomTextStyles.f12W500(
+                                  style: CustomTextStyles.f13W500(
                                     color: AppColors.primaryColor,
                                   ),
                                 ),

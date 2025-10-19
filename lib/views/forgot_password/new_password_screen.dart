@@ -50,7 +50,7 @@ class NewPasswordScreen extends StatelessWidget {
             SizedBox(height: 6),
             Text(
               "Create a new password. Ensure it differs from\nprevious ones for security",
-              style: CustomTextStyles.f12W400(
+              style: CustomTextStyles.f13W400(
                 color:
                     isDark
                         ? AppColors.extraWhite.withOpacity(0.7)
@@ -60,7 +60,7 @@ class NewPasswordScreen extends StatelessWidget {
             SizedBox(height: 20),
             Text(
               "Password",
-              style: CustomTextStyles.f12W500(
+              style: CustomTextStyles.f13W500(
                 color: isDark ? AppColors.extraWhite : AppColors.blackColor,
               ),
             ),
@@ -78,7 +78,7 @@ class NewPasswordScreen extends StatelessWidget {
             SizedBox(height: 14),
             Text(
               "Confirm Password",
-              style: CustomTextStyles.f12W500(
+              style: CustomTextStyles.f13W500(
                 color: isDark ? AppColors.extraWhite : AppColors.blackColor,
               ),
             ),

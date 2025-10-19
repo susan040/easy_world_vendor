@@ -243,7 +243,7 @@ class HomeScreenAppBar extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           DateFormat('d MMMM, yyyy').format(DateTime.now()),
-          style: CustomTextStyles.f12W400(
+          style: CustomTextStyles.f13W400(
             color:
                 isDark
                     ? AppColors.extraWhite.withOpacity(0.7)

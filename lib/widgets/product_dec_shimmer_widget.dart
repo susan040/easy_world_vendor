@@ -48,8 +48,8 @@ class ProductDecShimmerWidget extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.only(bottom: 16),
-              height: 30,
-              width: 80,
+              height: 33,
+              width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(5),

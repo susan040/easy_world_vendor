@@ -39,7 +39,7 @@ class CustomBottomBar extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               title,
-              style: CustomTextStyles.f11W600(
+              style: CustomTextStyles.f12W600(
                 color:
                     isActive
                         ? AppColors.primaryColor

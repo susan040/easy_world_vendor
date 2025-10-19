@@ -29,7 +29,7 @@ class CustomElevatedButton extends StatelessWidget {
       onPressed: isDisabled ? null : onTap,
       child: Text(
         title,
-        style: CustomTextStyles.f12W600(color: textColor ?? Colors.white),
+        style: CustomTextStyles.f13W600(color: textColor ?? Colors.white),
       ),
     );
   }

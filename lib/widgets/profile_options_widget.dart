@@ -72,7 +72,7 @@ class ProfileOptionTile extends StatelessWidget {
                   const SizedBox(width: 12),
                   Text(
                     title,
-                    style: CustomTextStyles.f12W400(
+                    style: CustomTextStyles.f13W400(
                       color:
                           isLogout
                               ? AppColors.errorColor
@@ -133,7 +133,7 @@ class CountryBottomSheet extends StatelessWidget {
                 ),
                 title: Text(
                   "${country['name']} (${country['code']})",
-                  style: CustomTextStyles.f12W400(
+                  style: CustomTextStyles.f13W400(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   ),
                 ),

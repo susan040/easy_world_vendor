@@ -66,7 +66,7 @@ class VendorDetailsScreen extends StatelessWidget {
                   child: Text(
                     coreController.currentUser.value!.data!.storeDescription ??
                         "",
-                    style: CustomTextStyles.f11W400(
+                    style: CustomTextStyles.f13W400(
                       color: textColor.withOpacity(0.7),
                     ),
                     textAlign: TextAlign.center,

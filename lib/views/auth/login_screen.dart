@@ -88,7 +88,7 @@ class LoginScreen extends StatelessWidget {
                           },
                           child: Text(
                             "Forgot password?",
-                            style: CustomTextStyles.f12W400(
+                            style: CustomTextStyles.f13W400(
                               color:
                                   isDark
                                       ? AppColors.lightblue
@@ -109,7 +109,7 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(height: 14),
                     Text(
                       "or",
-                      style: CustomTextStyles.f12W500(
+                      style: CustomTextStyles.f13W500(
                         color:
                             isDark
                                 ? AppColors.extraWhite
@@ -148,7 +148,7 @@ class LoginScreen extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   "Login with google",
-                                  style: CustomTextStyles.f12W400(
+                                  style: CustomTextStyles.f13W400(
                                     color:
                                         isDark
                                             ? AppColors.extraWhite
@@ -171,7 +171,7 @@ class LoginScreen extends StatelessWidget {
                         child: RichText(
                           text: TextSpan(
                             text: "Don't have an account? ",
-                            style: CustomTextStyles.f12W400(
+                            style: CustomTextStyles.f13W400(
                               color:
                                   isDark
                                       ? AppColors.extraWhite
@@ -180,7 +180,7 @@ class LoginScreen extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: ' Sign Up',
-                                style: CustomTextStyles.f12W500(
+                                style: CustomTextStyles.f13W500(
                                   color: AppColors.primaryColor,
                                 ),
                               ),

@@ -94,7 +94,7 @@ class ProductsWidget extends StatelessWidget {
                   children: [
                     Text(
                       products.name ?? "",
-                      style: CustomTextStyles.f12W600(
+                      style: CustomTextStyles.f13W600(
                         color:
                             isDark
                                 ? AppColors.extraWhite
@@ -103,10 +103,9 @@ class ProductsWidget extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
                     Text(
                       "Brand: ${products.brand ?? ""}",
-                      style: CustomTextStyles.f11W400(
+                      style: CustomTextStyles.f12W400(
                         color:
                             isDark
                                 ? AppColors.extraWhite.withOpacity(0.7)
@@ -126,7 +125,6 @@ class ProductsWidget extends StatelessWidget {
                     //     maxLines: 2,
                     //     overflow: TextOverflow.ellipsis,
                     //   ),
-                    const SizedBox(height: 2),
                     Row(
                       children: [
                         Obx(() {
@@ -210,16 +208,17 @@ class ProductsWidget extends StatelessWidget {
                           children: [
                             Text(
                               "Status",
-                              style: CustomTextStyles.f11W400(
+                              style: CustomTextStyles.f12W400(
                                 color:
                                     isDark
                                         ? AppColors.hintTextColor
                                         : AppColors.secondaryTextColor,
                               ),
                             ),
+                            SizedBox(height: 3),
                             Text(
                               products.isActive == true ? "Active" : "Inactive",
-                              style: CustomTextStyles.f11W600(
+                              style: CustomTextStyles.f12W600(
                                 color:
                                     products.isActive == true
                                         ? AppColors.accepted
@@ -234,13 +233,15 @@ class ProductsWidget extends StatelessWidget {
                           children: [
                             Text(
                               "Created at:",
-                              style: CustomTextStyles.f11W400(
+                              style: CustomTextStyles.f12W400(
                                 color:
                                     isDark
                                         ? AppColors.hintTextColor
                                         : AppColors.secondaryTextColor,
                               ),
                             ),
+                            SizedBox(height: 3),
+
                             Text(
                               products.createdAt != null &&
                                       products.createdAt!.isNotEmpty
@@ -250,7 +251,7 @@ class ProductsWidget extends StatelessWidget {
                                     ).toLocal(),
                                   )
                                   : '',
-                              style: CustomTextStyles.f11W400(
+                              style: CustomTextStyles.f12W400(
                                 color:
                                     isDark
                                         ? AppColors.primaryColor

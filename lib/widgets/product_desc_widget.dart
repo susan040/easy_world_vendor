@@ -37,7 +37,7 @@ class ProductDetailsWidget extends StatelessWidget {
         const SizedBox(height: 6),
         Text(
           products.description ?? "",
-          style: CustomTextStyles.f12W400(
+          style: CustomTextStyles.f13W400(
             color:
                 isDark
                     ? AppColors.extraWhite.withOpacity(0.6)
@@ -81,6 +81,7 @@ class ProductDetailsWidget extends StatelessWidget {
             value: "${products.weight} ${products.weightUnit ?? ''}".trim(),
             isDark: isDark,
           ),
+          
 
         if (products.barcode != null && products.barcode!.isNotEmpty) ...[
           const SizedBox(height: 12),
@@ -146,7 +147,7 @@ class ProductDetailsWidget extends StatelessWidget {
             width: 90,
             child: Text(
               "$title:",
-              style: CustomTextStyles.f12W400(
+              style: CustomTextStyles.f13W400(
                 color:
                     isDark
                         ? AppColors.extraWhite.withOpacity(0.7)
@@ -157,7 +158,7 @@ class ProductDetailsWidget extends StatelessWidget {
           Expanded(
             child: Text(
               value,
-              style: CustomTextStyles.f12W400(
+              style: CustomTextStyles.f13W400(
                 color:
                     isDark
                         ? AppColors.extraWhite.withOpacity(0.6)

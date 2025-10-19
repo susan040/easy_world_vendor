@@ -133,7 +133,7 @@ class RequestPayoutScreen extends StatelessWidget {
                                   ),
                                   label: Text(
                                     "Submit Request",
-                                    style: CustomTextStyles.f12W600(
+                                    style: CustomTextStyles.f13W600(
                                       color: AppColors.extraWhite,
                                     ),
                                   ),
@@ -168,7 +168,7 @@ class RequestPayoutScreen extends StatelessWidget {
                             child: Center(
                               child: Text(
                                 "No payout history available.",
-                                style: CustomTextStyles.f12W400(
+                                style: CustomTextStyles.f13W400(
                                   color: AppColors.secondaryTextColor,
                                 ),
                               ),

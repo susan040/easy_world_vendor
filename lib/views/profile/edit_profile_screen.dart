@@ -134,7 +134,7 @@ class EditProfileScreen extends StatelessWidget {
                 SizedBox(height: 25),
                 Text(
                   "Store Name",
-                  style: CustomTextStyles.f12W500(
+                  style: CustomTextStyles.f13W500(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   ),
                 ),
@@ -148,7 +148,7 @@ class EditProfileScreen extends StatelessWidget {
                 SizedBox(height: 12),
                 Text(
                   "Country Code",
-                  style: CustomTextStyles.f12W500(
+                  style: CustomTextStyles.f13W500(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   ),
                 ),
@@ -174,7 +174,7 @@ class EditProfileScreen extends StatelessWidget {
                               : c.selectCountryCode.value,
                       hint: Text(
                         "Select country code",
-                        style: CustomTextStyles.f12W400(
+                        style: CustomTextStyles.f13W400(
                           color: AppColors.secondaryTextColor,
                         ),
                       ),
@@ -210,7 +210,7 @@ class EditProfileScreen extends StatelessWidget {
                                   value: option,
                                   child: Text(
                                     option,
-                                    style: CustomTextStyles.f12W400(
+                                    style: CustomTextStyles.f13W400(
                                       color:
                                           isDark
                                               ? AppColors.extraWhite
@@ -229,7 +229,7 @@ class EditProfileScreen extends StatelessWidget {
                 SizedBox(height: 12),
                 Text(
                   "Phone Number",
-                  style: CustomTextStyles.f12W500(
+                  style: CustomTextStyles.f13W500(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   ),
                 ),
@@ -243,13 +243,13 @@ class EditProfileScreen extends StatelessWidget {
                 SizedBox(height: 12),
                 Text(
                   "Description",
-                  style: CustomTextStyles.f12W500(
+                  style: CustomTextStyles.f13W500(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   ),
                 ),
                 SizedBox(height: 8),
                 TextFormField(
-                  style: CustomTextStyles.f12W400(
+                  style: CustomTextStyles.f13W400(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   ),
 
@@ -286,7 +286,7 @@ class EditProfileScreen extends StatelessWidget {
                         color: AppColors.errorColor,
                       ),
                     ),
-                    hintStyle: CustomTextStyles.f12W400(
+                    hintStyle: CustomTextStyles.f13W400(
                       color: AppColors.secondaryTextColor,
                     ),
                   ),
@@ -296,7 +296,7 @@ class EditProfileScreen extends StatelessWidget {
                 SizedBox(height: 12),
                 Text(
                   "Document/Image",
-                  style: CustomTextStyles.f12W500(
+                  style: CustomTextStyles.f13W500(
                     color: isDark ? AppColors.extraWhite : AppColors.blackColor,
                   ),
                 ),

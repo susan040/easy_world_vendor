@@ -79,7 +79,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               GridView.count(
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 14),
                 crossAxisCount: 2,
                 mainAxisSpacing: 13,
                 crossAxisSpacing: 13,
@@ -169,7 +169,7 @@ class HomeScreen extends StatelessWidget {
               ),
               // Recent Messages Header
               Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16),
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -186,7 +186,7 @@ class HomeScreen extends StatelessWidget {
                       onTap: () => Get.to(() => CustomersMessageScreen()),
                       child: Text(
                         "View All",
-                        style: CustomTextStyles.f12W400(
+                        style: CustomTextStyles.f13W400(
                           color: AppColors.primaryColor,
                         ),
                       ),
@@ -211,7 +211,7 @@ class HomeScreen extends StatelessWidget {
                     child: Center(
                       child: Text(
                         "No messages",
-                        style: CustomTextStyles.f12W400(
+                        style: CustomTextStyles.f13W400(
                           color: AppColors.secondaryTextColor,
                         ),
                       ),
@@ -234,20 +234,13 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final customChats = latestChats[index];
                     final chats = customChats.last;
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 8, bottom: 8),
-                      child: InkWell(
-                        onTap: () {
-                          Get.to(
-                            () =>
-                                ChatProductsScreen(customerChats: customChats),
-                          );
-                        },
-                        child: CustomMessagesWidget(
-                          isDark: isDark,
-                          chats: chats,
-                        ),
-                      ),
+                    return InkWell(
+                      onTap: () {
+                        Get.to(
+                          () => ChatProductsScreen(customerChats: customChats),
+                        );
+                      },
+                      child: CustomMessagesWidget(isDark: isDark, chats: chats),
                     );
                   },
                 );
