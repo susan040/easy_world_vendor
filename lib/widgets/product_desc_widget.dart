@@ -1,10 +1,8 @@
-import 'package:barcode/barcode.dart';
 import 'package:easy_world_vendor/controller/dashboard/products_screen_controller.dart';
 import 'package:easy_world_vendor/models/products.dart';
 import 'package:easy_world_vendor/utils/colors.dart';
 import 'package:easy_world_vendor/utils/custom_text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ProductDetailsWidget extends StatelessWidget {
@@ -19,11 +17,11 @@ class ProductDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cleanBarcode = products.barcode!.trim();
-    final barcode =
-        RegExp(r'^\d{13}$').hasMatch(cleanBarcode)
-            ? Barcode.ean13()
-            : Barcode.code128();
+    // final cleanBarcode = products.barcode!.trim();
+    // final barcode =
+    //     RegExp(r'^\d{13}$').hasMatch(cleanBarcode)
+    //         ? Barcode.ean13()
+    //         : Barcode.code128();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,53 +79,51 @@ class ProductDetailsWidget extends StatelessWidget {
             value: "${products.weight} ${products.weightUnit ?? ''}".trim(),
             isDark: isDark,
           ),
-          
 
-        if (products.barcode != null && products.barcode!.isNotEmpty) ...[
-          const SizedBox(height: 12),
-          Text(
-            "Product Barcode",
-            style: CustomTextStyles.f14W600(
-              color: isDark ? AppColors.extraWhite : AppColors.blackColor,
-            ),
-          ),
-          const SizedBox(height: 10),
+        // if (products.barcode != null && products.barcode!.isNotEmpty) ...[
+        //   const SizedBox(height: 12),
+        //   Text(
+        //     "Product Barcode",
+        //     style: CustomTextStyles.f14W600(
+        //       color: isDark ? AppColors.extraWhite : AppColors.blackColor,
+        //     ),
+        //   ),
+        //   const SizedBox(height: 10),
 
-          Container(
-            padding: const EdgeInsets.only(
-              right: 8,
-              left: 8,
-              top: 10,
-              bottom: 10,
-            ),
-            decoration: BoxDecoration(
-              color: AppColors.extraWhite,
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 6,
-                  offset: const Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SvgPicture.string(
-                  barcode.toSvg(
-                    cleanBarcode,
-                    width: Get.width / 3,
-                    height: 35,
-                    drawText: true,
-                  ),
-                  fit: BoxFit.contain,
-                ),
-              ],
-            ),
-          ),
-        ],
-
+        //   Container(
+        //     padding: const EdgeInsets.only(
+        //       right: 8,
+        //       left: 8,
+        //       top: 10,
+        //       bottom: 10,
+        //     ),
+        //     decoration: BoxDecoration(
+        //       color: AppColors.extraWhite,
+        //       borderRadius: BorderRadius.circular(5),
+        //       boxShadow: [
+        //         BoxShadow(
+        //           color: Colors.black.withOpacity(0.05),
+        //           blurRadius: 6,
+        //           offset: const Offset(0, 3),
+        //         ),
+        //       ],
+        //     ),
+        //     child: Column(
+        //       mainAxisSize: MainAxisSize.min,
+        //       children: [
+        //         SvgPicture.string(
+        //           barcode.toSvg(
+        //             cleanBarcode,
+        //             width: Get.width / 3,
+        //             height: 35,
+        //             drawText: true,
+        //           ),
+        //           fit: BoxFit.contain,
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ],
         const SizedBox(height: 16),
       ],
     );

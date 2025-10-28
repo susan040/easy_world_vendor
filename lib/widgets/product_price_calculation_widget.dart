@@ -58,7 +58,7 @@ class ProductPriceCalculationWidget extends StatelessWidget {
                     style: CustomTextStyles.f12W400(
                       color:
                           quantity > 5
-                              ? AppColors.secondaryColor
+                              ? AppColors.primaryColor
                               : AppColors.rejected,
                     ),
                   ),
@@ -67,7 +67,7 @@ class ProductPriceCalculationWidget extends StatelessWidget {
             ),
           ],
         ),
-        Row(
+        Column(
           children: [
             Obx(() {
               final convertedPrice = exchangeRateController
@@ -77,7 +77,7 @@ class ProductPriceCalculationWidget extends StatelessWidget {
               final symbol = code == 'NPR' ? 'Rs.' : '\$';
               return Text(
                 "$symbol$convertedPrice",
-                style: CustomTextStyles.f18W700(
+                style: CustomTextStyles.f16W700(
                   color:
                       isDark
                           ? AppColors.primaryColor
@@ -103,7 +103,7 @@ class ProductPriceCalculationWidget extends StatelessWidget {
                       "$symbol$convertedPrice",
                       style: const TextStyle(
                         color: AppColors.textGreyColor,
-                        fontSize: 13,
+                        fontSize: 12,
                         fontFamily: "Roboto",
                         fontWeight: FontWeight.w400,
                         decoration: TextDecoration.lineThrough,

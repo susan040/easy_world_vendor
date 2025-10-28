@@ -51,6 +51,28 @@ class OrderScreenController extends GetxController {
     );
   }
 
+  int get toPayCount =>
+      allOrderLists
+          .where((order) => (order.status ?? "").toLowerCase() == "pending")
+          .length;
+
+  int get toShipCount =>
+      allOrderLists.where((order) {
+        final status = (order.status ?? "").toLowerCase();
+        return status == "shipped" || status == "packed";
+      }).length;
+
+  int get toPackCount =>
+      allOrderLists.where((order) {
+        final status = (order.status ?? "").toLowerCase();
+        return status == "seller to pack";
+      }).length;
+
+  int get cancelledCount =>
+      allOrderLists
+          .where((order) => (order.status ?? "").toLowerCase() == "cancelled")
+          .length;
+
   final loading = SimpleFontelicoProgressDialog(
     context: Get.context!,
     barrierDimisable: false,

@@ -78,27 +78,172 @@ class OrderScreen extends StatelessWidget {
             labelStyle: CustomTextStyles.f12W600(),
             tabs: [
               Tab(
-                child: Center(child: Text("All", textAlign: TextAlign.center)),
-              ),
-              Tab(
                 child: Center(
-                  child: Text("To\nPay", textAlign: TextAlign.center),
+                  child: Text(
+                    "All\n(${c.allOrderLists.length})",
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
               Tab(
-                child: Center(
-                  child: Text("To\nShip", textAlign: TextAlign.center),
-                ),
+                child: Obx(() {
+                  final count = c.toPayCount;
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Center(
+                        child: Text("To\nPay", textAlign: TextAlign.center),
+                      ),
+                      if (count > 0)
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            constraints: const BoxConstraints(
+                              minWidth: 16,
+                              minHeight: 16,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "$count",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                }),
               ),
               Tab(
-                child: Center(
-                  child: Text("To\nReceive", textAlign: TextAlign.center),
-                ),
+                child: Obx(() {
+                  final count = c.toPackCount;
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Center(
+                        child: Text("To\nPack", textAlign: TextAlign.center),
+                      ),
+                      if (count > 0)
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            constraints: const BoxConstraints(
+                              minWidth: 16,
+                              minHeight: 16,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "$count",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                }),
+              ),
+
+              Tab(
+                child: Obx(() {
+                  final count = c.toShipCount;
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Center(
+                        child: Text("To\nShip", textAlign: TextAlign.center),
+                      ),
+                      if (count > 0)
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            constraints: const BoxConstraints(
+                              minWidth: 16,
+                              minHeight: 16,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "$count",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                }),
               ),
               Tab(
-                child: Center(
-                  child: Text("Cancel\nlations", textAlign: TextAlign.center),
-                ),
+                child: Obx(() {
+                  final count = c.cancelledCount;
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Center(
+                        child: Text(
+                          "Cancel\nlations",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      if (count > 0)
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            constraints: const BoxConstraints(
+                              minWidth: 16,
+                              minHeight: 16,
+                            ),
+                            child: Center(
+                              child: Text(
+                                "$count",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  );
+                }),
               ),
             ],
           ),
@@ -214,7 +359,7 @@ class OrderScreen extends StatelessWidget {
                 final filteredOrders =
                     c.allOrderLists.where((order) {
                       final status = (order.status ?? "").toLowerCase();
-                      return status == "seller to pack" || status == "packed";
+                      return status == "seller to pack";
                     }).toList();
 
                 if (filteredOrders.isEmpty) {
@@ -222,7 +367,7 @@ class OrderScreen extends StatelessWidget {
                     height: 100,
                     child: Center(
                       child: Text(
-                        "No shipping orders",
+                        "No orders to pack",
                         style: CustomTextStyles.f14W400(
                           color: AppColors.textGreyColor,
                         ),
@@ -250,7 +395,7 @@ class OrderScreen extends StatelessWidget {
                 final filteredOrders =
                     c.allOrderLists.where((order) {
                       final status = (order.status ?? "").toLowerCase();
-                      return status == "in transit" || status == "to receive";
+                      return status == "shipped" || status == "packed";
                     }).toList();
 
                 if (filteredOrders.isEmpty) {
