@@ -88,6 +88,7 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(4),
@@ -124,15 +125,19 @@ class OrderHistoryDetailsWidget extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              "Size: ${item.size ?? 'size'} | Color: ${item.color ?? 'Color'}",
-                              style: CustomTextStyles.f12W400(
-                                color:
-                                    isDark
-                                        ? AppColors.extraWhite
-                                        : AppColors.secondaryTextColor,
+                            Expanded(
+                              child: Text(
+                                "Size: ${item.size ?? 'size'} | Color: ${item.color ?? 'Color'}",
+                                style: CustomTextStyles.f12W400(
+                                  color:
+                                      isDark
+                                          ? AppColors.unselectedGrey
+                                          : AppColors.secondaryTextColor,
+                                ),
+                                maxLines: 2,
                               ),
                             ),
+                            SizedBox(width: 10),
                             Text(
                               "Qty: ${item.quantity ?? ""}",
                               style: CustomTextStyles.f12W400(
